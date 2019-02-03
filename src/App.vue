@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
+    <img alt="Vue logo" src="./assets/LogoGUF.png">
     <DynamicalForm_1 msg="Welcome to Your Vue.js App"/>
     <!-- <Field/> -->
   </div>
@@ -19,12 +19,12 @@ export default {
 </script>
 
 <style>
-/* #app {
+#app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-} */
+  margin-top: 20px;
+}
 </style>
