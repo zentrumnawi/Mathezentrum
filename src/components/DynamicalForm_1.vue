@@ -1,32 +1,34 @@
 <template>
   <div class="container">
     <button class="btn btn-success mt-5 mb-5"
-      @click="AddNewStudentForm">
+      @click="AddNewStudentForm()">
       Neuer Teilnehmer
     </button>
 
-    <div class="card mb-3" v-for="(student, index) in students">
-      <div class="card-body">
-        <span class="float-right" style="cursor:pointer"
-          @click="deleteStudentForm(index)">
-          X
-        </span>
+    <div class="card mb-3">
+      <div class="card mb-3" v-for="(student, index) in students">
+        <div class="card-body">
+          <span class="float-right" style="cursor:pointer"
+            @click="deleteStudentForm(index)">
+            X
+          </span>
 
-        <h4 class="card-title">Teilnehmer hinzufügen (Nr: {{ index }})</h4>
+          <h4 class="card-title">Teilnehmer hinzufügen (Nr: {{ index }})</h4>
 
-        <div class="employee-form">
-          <input type="text" class="form-control mb-2" placeholder="Vorname, Nachname"
-            v-model="student.name">
+          <div class="employee-form">
+            <input type="text" class="form-control mb-2" placeholder="Vorname, Nachname"
+              v-model="student.name">
 
-          <input type="text" class="form-control mb-2" placeholder="Matrikelnummer"
-            v-model="student.matriculation">
+            <input type="text" class="form-control mb-2" placeholder="Matrikelnummer"
+              v-model="student.matriculation">
 
-          <input type="text" class="form-control mb-2" placeholder="Studienfach"
-            v-model="student.faculty">
+            <input type="text" class="form-control mb-2" placeholder="Studienfach"
+              v-model="student.faculty">
 
-          <input type="text" class="form-control mb-2" placeholder="Fachsemester"
-            v-model="student.semester">
+            <input type="text" class="form-control mb-2" placeholder="Fachsemester"
+              v-model="student.semester">
 
+          </div>
         </div>
       </div>
     </div>
