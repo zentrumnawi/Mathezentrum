@@ -28,15 +28,15 @@
                   <!-- <td><input type="text" class="form-control mb-2" placeholder="Fachsemester"
                   v-model="row.semester"></td> -->
                   <td><select class="form-control" v-model="row.semester"><option v-for="semester in 10" :key="semester.id">{{semester}}</option></select></td>
-                  <td><span @click="deleteStudentForm(index)" style="cursor:pointer">
+                  <td><button @click="deleteStudentForm(index)" style="cursor:pointer">
                   X
-                  </span>
+                  </button>
                   </td>
               </tr>
             </tbody>
             <button class="btn btn-success mt-5 mb-5"
             @click="AddNewStudentForm()">
-            Neuer Teilnehmer
+            OK
             </button>
           </tbody>
       </div>
