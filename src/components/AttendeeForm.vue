@@ -11,9 +11,6 @@
                 v-model="rows.matriculation"></td>
                 <td><input type="text" class="form-control mb-2" placeholder="Studienfach"
                 v-model="rows.faculty"></td>
-                <!-- <td><select class="form-control" v-model="row.semester">
-                  <option v-for="semester in 10" :key="semester.id">{{semester}}</option>
-                  </select></td> -->
                 <td><select class="form-control" v-model="rows.semester"><option v-for="semester in 10" :key="semester.id">{{semester}}</option></select></td>
                 <td><button class="btn btn-success mt-5 mb-5" v-on:click="AddNewStudentForm()">
                   Save
@@ -26,7 +23,6 @@
           <tbody>
             <thead class="ui-table-header-row">
               <tr>
-                <!-- <td class="ui-table-header-cell l-padding"></td> -->
                 <th class="ui-table-header-cell center"  v-for="tableHead in tableHeader" :key="tableHead.id">
                   <td>{{tableHead}}</td>
                 </th>
@@ -47,7 +43,6 @@
             </tbody>
           </tbody>
       </div>
-
     </div>
   </div>
 </template>
@@ -57,6 +52,13 @@ export default {
   el: '.container',
   data: function() {
 return {
+    tableHeader: [
+      '#',
+      'Name',
+      'Matrikelnummer',
+      'Studienfach',
+      'Fachsemester'
+    ],
     rows: [
       {
         name: '',
