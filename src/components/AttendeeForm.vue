@@ -78,7 +78,8 @@ return {
         matriculation: this.rows.matriculation,
         faculty: this.rows.faculty,
         semester: this.rows.semester
-      })
+      }),
+      this.rows=''
     },
     deleteStudentForm (index) {
       this.attendees.splice(index, 1)
