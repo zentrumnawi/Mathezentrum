@@ -20,7 +20,7 @@
             </tbody>
         </div>
         <div class="attendees_list">
-          <tbody>
+          <table>
             <thead class="ui-table-header-row">
               <tr>
                 <th class="ui-table-header-cell center"  v-for="tableHead in tableHeader" :key="tableHead.id">
@@ -41,7 +41,7 @@
                   </td>
               </tr>
             </tbody>
-          </tbody>
+          </table>
       </div>
     </div>
   </div>
@@ -79,7 +79,10 @@ return {
         faculty: this.rows.faculty,
         semester: this.rows.semester
       }),
-      this.rows=''
+      this.rows.name=''
+      this.rows.matriculation=''
+      this.rows.faculty=''
+      this.rows.semester=''
     },
     deleteStudentForm (index) {
       this.attendees.splice(index, 1)
@@ -88,18 +91,29 @@ return {
 }
 
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.card{
+/* .card{
   border: 2px solid #000000;
+  border-radius: 3px;
+  background-color: #fff;
+} */
+table {
+  border: 2px solid #42b983;
   border-radius: 3px;
   background-color: #fff;
 }
 .attendees_list thead {
-  border: 2px solid #ffffff;
+  /* border: 2px solid #ffffff;
+  background-color: #42b983;
+  color: rgba(255,255,255,0.66); */
   background-color: #42b983;
   color: rgba(255,255,255,0.66);
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .attendees_list thead td {
   padding: 0px 0 0 10px;  
@@ -112,6 +126,6 @@ return {
 }
 td {
   min-width: 150px;
-  padding: 10px 5px;
+  padding: 10px 20px;
 }
 </style>
