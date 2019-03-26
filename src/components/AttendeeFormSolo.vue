@@ -24,6 +24,8 @@
             <v-text-field
               v-model="starttime"
               :rules="timeRules"
+              type="time"
+              hint= "HH:MM"
               label="Startzeit"
               required
             ></v-text-field>
@@ -35,7 +37,6 @@
               :menu-props="{ maxHeight: '400' }"
               :rules="courseRules"
               multiple
-              hint="Pick your favorite states"
               persistent-hint
               label="Lehrveranstaltung"
               required
@@ -53,7 +54,7 @@
             <v-select
               v-model="faculty_select"
               :items="faculties"
-              :rules="[v => !!v || 'Bitte wähle einen Studiengang aus !']"
+              :rules="facultyRules"
               label="Studiengang"
               required
           ></v-select>
@@ -81,6 +82,10 @@ return {
         v => !!v || 'Bitte geben Sie Ihren persönlichen Code an',
         v => v.length > 5 || 'Ihr Code muss mindestens 6 Zeichen lang sein'
       ],
+      starttime: '',
+      timeRules: [
+        v => !!v || 'Bitte geben Sie Ihre Startzeit an',
+      ],
       course_select: null,
       courseRules: [
         v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
@@ -97,6 +102,9 @@ return {
         v => (v.length <=2) || 'Falsche Eingabe'
       ],
       faculty_select: null,
+      facultyRules: [
+        v => !!v || 'Bitte geben Sie Ihren Studiengang an'       
+      ],
       faculties: [
         'BSc Physik',
         'BSc Meteorologie',
@@ -108,7 +116,7 @@ return {
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
-        this.snackbar = true
+        this.$refs.form.reset()
       }
     }
   }
