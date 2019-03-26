@@ -1,12 +1,12 @@
 <template>
-  <v-app>
-    <v-content>
+  <div id="app">
     <img alt="Vue logo" src="./assets/LogoGUF.png">
     <!-- <DynamicTable_1 msg="Welcome to Your Vue.js App"/> -->
     <!-- <AttendeeForm msg="Welcome to Your Vue.js App"/> -->
     <AttendeeFormSolo msg="Welcome to Your Vue.js App"/>
-    </v-content>
-  </v-app>
+
+    <!-- <Field/> -->
+  </div>
 </template>
 
 <script>
