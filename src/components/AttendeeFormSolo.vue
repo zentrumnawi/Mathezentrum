@@ -12,15 +12,15 @@
           <v-flex xs6>
               <img alt="Vue logo" src="@/assets/Physikzentrum.svg">
           </v-flex>
-          <v-flex xs12>
+          <v-flex xs6>
             <v-text-field
-              v-model="code"
-              :rules="codeRules"
-              label="Code"
+              v-model="ID"
+              :rules="IDRules"
+              label="ID"
               required
             ></v-text-field>
           </v-flex>
-          <v-flex xs4 pr-5>
+          <v-flex xs3>
             <v-text-field
               v-model="starttime"
               :rules="timeRules"
@@ -30,8 +30,19 @@
               required
             ></v-text-field>
           </v-flex>
-          <v-flex grow pl-5>
+          <v-flex xs3>
+            <v-text-field
+              v-model="endtime"
+              :rules="timeRules"
+              type="time"
+              hint= "HH:MM"
+              label="Endzeit"
+              required
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs4>
             <v-select
+              attach
               v-model="course_select"
               :items="courses"
               :menu-props="{ maxHeight: '400' }"
@@ -42,7 +53,7 @@
               required
           ></v-select>
           </v-flex>
-          <v-flex xs4 pr-5>
+          <v-flex xs4>
             <v-text-field
               v-model="semester"
               :rules="semesterRules"
@@ -50,8 +61,9 @@
               required
             ></v-text-field>
           </v-flex>
-          <v-flex grow pl-5>
+          <v-flex xs4>
             <v-select
+              attach
               v-model="faculty_select"
               :items="faculties"
               :rules="facultyRules"
@@ -77,12 +89,13 @@ export default {
   data: function() {
 return {
       valid: true,
-      code: '',
-      codeRules: [
-        v => !!v || 'Bitte geben Sie Ihren persönlichen Code an',
-        v => v.length > 5 || 'Ihr Code muss mindestens 6 Zeichen lang sein'
+      ID: '',
+      IDRules: [
+        v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
+        v => v.length > 5 || 'Ihr ID muss mindestens 6 Zeichen lang sein'
       ],
       starttime: '',
+      endtime: '',
       timeRules: [
         v => !!v || 'Bitte geben Sie Ihre Startzeit an',
       ],
@@ -124,4 +137,7 @@ return {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.v-text-field{
+  color:"#005ea8"
+}
 </style>

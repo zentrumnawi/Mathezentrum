@@ -6,6 +6,7 @@
     <!-- <AttendeeForm msg="Welcome to Your Vue.js App"/> -->
     <AttendeeFormSolo msg="Welcome to Your Vue.js App"/>
     </v-content>
+    <v-footer app></v-footer>
   </v-app>
 </template>
 
@@ -30,7 +31,7 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: #2b87e2;
   margin-top: 20px;
 }
 </style>
