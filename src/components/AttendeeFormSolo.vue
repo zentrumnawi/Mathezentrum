@@ -17,6 +17,7 @@
               v-model="ID"
               :rules="IDRules"
               label="ID"
+              placeholder="XX999999"
               required
             ></v-text-field>
           </v-flex>
@@ -27,6 +28,7 @@
               type="time"
               hint= "HH:MM"
               label="Startzeit"
+              prepend-icon="access_time"
               required
             ></v-text-field>
           </v-flex>
@@ -92,7 +94,7 @@ return {
       ID: '',
       IDRules: [
         v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
-        v => v.length > 5 || 'Ihr ID muss mindestens 6 Zeichen lang sein'
+        v => v.length > 8 || 'Ihr ID muss mindestens 8 Zeichen lang sein'
       ],
       starttime: '',
       endtime: '',
@@ -129,7 +131,10 @@ return {
   methods: {
     validate () {
       if (this.$refs.form.validate()) {
+        this.snackbar = true
+      if (this.valid == true) {
         this.$refs.form.reset()
+      }
       }
     }
   }
