@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import SignIn from '@/components/SignIn'
-import AttendeeFormSolo from '@/components/AttendeeFormSolo'
+import AttendeeFormSolo from '@/components/AttendeeForm'
 
 Vue.use(Router)
 
@@ -14,7 +14,7 @@ export default new Router({
         },
         {
             path: '/attendeeform',
-            name: 'AttendeeFormSolo',
+            name: 'AttendeeForm',
             component: AttendeeFormSolo
         }
     ],

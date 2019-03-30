@@ -4,7 +4,6 @@
       ref="form"
       v-model="valid"
       lazy-validation>
-      <!-- <v-container grid-list-md text-xs-center> -->
         <v-layout row wrap>
           <v-flex xs6>
               <img alt="Vue logo" src="@/assets/Mathezentrum.svg">
@@ -14,7 +13,6 @@
           </v-flex>
         </v-layout>
         <v-layout justify-center>
-          <!-- <v-flex xs6> -->
         <v-flex xs12 sm10 md8 lg6>
           <v-card ref="form">
             <v-card-text>
@@ -26,14 +24,13 @@
               required
             ></v-text-field>
             </v-card-text>
-            <v-card-text>
+            <v-card-text class="text-sm-left">
                 Ersten 2 Buchstaben des Vornamens Ihrer Mutter. 
                     2 Ziffern des Geburtstags Ihrer Mutter. 
                     2 Ziffern des eigenen Geburtsmonats. 
                     2 Ziffern der Nummer des eigenen Fachbereichs.
             </v-card-text>
             <v-divider class="mt-5"></v-divider>
-          <!-- </v-flex> -->
           <v-btn
             color="success"
             @click="validate"
@@ -41,9 +38,8 @@
             Validate
           </v-btn>
           </v-card>
-      </v-flex>
+        </v-flex>
         </v-layout>
-      <!-- </v-container> -->
     </v-form>
   </v-container>
 </template>
