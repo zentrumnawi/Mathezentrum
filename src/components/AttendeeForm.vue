@@ -88,55 +88,48 @@
 <script>
 export default {
   el: '.overview',
-  data: function() {
-return {
-      valid: true,
-      ID: '',
-      IDRules: [
-        v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
-        v => v.length > 8 || 'Ihr ID muss mindestens 8 Zeichen lang sein'
-      ],
-      starttime: '',
-      endtime: '',
-      timeRules: [
-        v => !!v || 'Bitte geben Sie Ihre Startzeit an',
-      ],
-      course_select: null,
-      courseRules: [
-        v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
-      ],
-      courses: [
-        'Mathe für Physiker 1',
-        'Mathe für Physiker 2',
-        'Mathe für Physiker 3',
-        'Sonstige'
-      ],
-      semester:'',
-      semesterRules: [
-        v => !!v || 'Bitte geben Sie Ihr aktuelles Fachsemester an',
-        v => (v.length <=2) || 'Falsche Eingabe'
-      ],
-      faculty_select: null,
-      facultyRules: [
-        v => !!v || 'Bitte geben Sie Ihren Studiengang an'       
-      ],
-      faculties: [
-        'BSc Physik',
-        'BSc Meteorologie',
-        'BSc Biologie',
-        'BSc Pharmazie',
-        'Sonstige'
-      ]  }
+  computed: {
+      valid(){
+          return this.$store.state.valid
+      },
+      ID(){
+          return this.$store.state.ID;
+      },
+      IDRules(){
+          return this.$store.state.IDRules;
+      },
+      starttime(){
+          return this.$store.state.starttime;
+      },
+      endtime(){
+          return this.$store.state.endtime;
+      },
+      timeRules(){
+          return this.$store.state.timerules;
+      },
+      courseRules(){
+          return this.$store.state.courseRules;
+      },
+      courses(){
+          return this.$store.state.courses;
+      },
+      semester(){
+          return this.$store.state.semester;
+      },
+      semesterRules(){
+          return this.$store.state.semesterRules;
+      },
+      facultyRules(){
+          return this.$store.state.facultyRules;
+      },
+      faculties(){
+          return this.$store.state.faculties;
+      }
   },
   methods: {
-    validate () {
-      if (this.$refs.form.validate()) {
-        this.snackbar = true
-      if (this.valid == true) {
-        this.$refs.form.reset()
-      }
-      }
-    }
+    validate: function(){
+        this.$store.commit('VALIDATE')
+    } 
   }
 }
 </script>
