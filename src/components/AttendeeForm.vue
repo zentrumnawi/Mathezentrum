@@ -51,6 +51,7 @@
               :rules="courseRules"
               multiple
               persistent-hint
+              @input="setSelectedCourses"
               label="Lehrveranstaltung"
               required
           ></v-select>
@@ -69,6 +70,7 @@
               v-model="faculty_select"
               :items="faculties"
               :rules="facultyRules"
+              @input="setSelectedfaculties"
               label="Studiengang"
               required
           ></v-select>
@@ -89,49 +91,105 @@
 export default {
   el: '.overview',
   computed: {
-      valid(){
+      valid: {
+        get() {
           return this.$store.state.valid
+        }
       },
-      ID(){
+      ID: {
+        get() {
           return this.$store.state.ID;
+        },
+        set(value) {
+          this.$store.commit('UPDATEID', value)
+        }
       },
-      IDRules(){
+      IDRules: {
+        get() {
           return this.$store.state.IDRules;
+        }
       },
-      starttime(){
+      starttime: {
+        get() {
           return this.$store.state.starttime;
+        },
+        set(value) {
+          this.$store.commit('UPDATEstarttime', value)
+        }
       },
-      endtime(){
+      endtime: {
+        get() {
           return this.$store.state.endtime;
+        },
+        set(value) {
+          this.$store.commit('UPDATEendtime', value)
+        }
       },
-      timeRules(){
+      timeRules: {
+        get() {
           return this.$store.state.timerules;
+        }
       },
-      courseRules(){
+      courseRules: {
+        get() {
           return this.$store.state.courseRules;
+        }
       },
-      courses(){
+      courses: {
+        get() {
           return this.$store.state.courses;
+        }
       },
-      semester(){
+      course_select: {
+        set(value) {
+          this.$store.commit('UPDATEcourses', value)
+        }
+      },
+      semester: {
+        get() {
           return this.$store.state.semester;
+        },
+        set(value) {
+          this.$store.commit('UPDATEsemester', value)
+        }
       },
-      semesterRules(){
+      semesterRules: {
+        get() {
           return this.$store.state.semesterRules;
+        }
       },
-      facultyRules(){
+      facultyRules: {
+        get() {
           return this.$store.state.facultyRules;
+        }
       },
-      faculties(){
-          return this.$store.state.faculties;
+      faculties: {
+        get() {
+          return this.$store.state.faculties
+        }
+      },
+      faculty_select: {
+        set(value) {
+          this.$store.commit('UPDATEfaculty', value)
+        }
       }
   },
   methods: {
+    setSelectedCourses(value) {
+      this.$store.commit('UPDATEcourses', value)
+    },
+    setSelectedFaculties(value) {
+      this.$store.commit('UPDATEfaculty', value)
+    },
     validate: function(){
+        if (this.$ref.form.validate()){
+              this.snackbar = true
+          }
         this.$store.commit('VALIDATE')
     } 
   }
 }
+
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
