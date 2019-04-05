@@ -90,23 +90,35 @@
 <script>
 export default {
   el: '.overview',
+  data: function() {
+    return {
+      valid: true,
+      IDRules: [
+        v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
+        v => v.length > 8 || 'Ihr ID muss mindestens 8 Zeichen lang sein'
+      ],
+      timeRules: [
+        v => !!v || 'Bitte geben Sie Ihre Startzeit an',
+      ],
+      courseRules: [
+        v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
+      ],
+      semesterRules: [
+        v => !!v || 'Bitte geben Sie Ihr aktuelles Fachsemester an',
+        v => (v.length <=2) || 'Falsche Eingabe'
+      ],
+      facultyRules: [
+        v => !!v || 'Bitte geben Sie Ihren Studiengang an'       
+      ],
+    }
+  },
   computed: {
-      valid: {
-        get() {
-          return this.$store.state.valid
-        }
-      },
       ID: {
         get() {
           return this.$store.state.ID;
         },
         set(value) {
           this.$store.commit('UPDATEID', value)
-        }
-      },
-      IDRules: {
-        get() {
-          return this.$store.state.IDRules;
         }
       },
       starttime: {
@@ -123,16 +135,6 @@ export default {
         },
         set(value) {
           this.$store.commit('UPDATEendtime', value)
-        }
-      },
-      timeRules: {
-        get() {
-          return this.$store.state.timerules;
-        }
-      },
-      courseRules: {
-        get() {
-          return this.$store.state.courseRules;
         }
       },
       courses: {
@@ -153,16 +155,6 @@ export default {
           this.$store.commit('UPDATEsemester', value)
         }
       },
-      semesterRules: {
-        get() {
-          return this.$store.state.semesterRules;
-        }
-      },
-      facultyRules: {
-        get() {
-          return this.$store.state.facultyRules;
-        }
-      },
       faculties: {
         get() {
           return this.$store.state.faculties
@@ -181,11 +173,14 @@ export default {
     setSelectedFaculties(value) {
       this.$store.commit('UPDATEfaculty', value)
     },
-    validate: function(){
-        if (this.$ref.form.validate()){
-              this.snackbar = true
-          }
-        this.$store.commit('VALIDATE')
+    validate () {
+      this.$store.commit('VALIDATE')
+      if (this.$ref.form.validate()){
+        this.snack = true
+        if (this.valid == true) {
+                this.$refs.form.reset()
+              }
+      }
     } 
   }
 }
