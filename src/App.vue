@@ -1,5 +1,10 @@
 <template>
   <v-app>
+    <v-toolbar app dark color="#005ea8">
+      <v-toolbar-title class="headline text-uppercase">
+        <span> Mathe- und Physikzentrum</span>
+      </v-toolbar-title>
+    </v-toolbar>
     <v-content>
     <router-view></router-view>
     </v-content>

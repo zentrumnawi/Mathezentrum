@@ -105,7 +105,7 @@ export default {
       ],
       semesterRules: [
         v => !!v || 'Bitte geben Sie Ihr aktuelles Fachsemester an',
-        v => (v.length <=2) || 'Falsche Eingabe'
+        v => v.length <=2 || 'Falsche Eingabe'
       ],
       facultyRules: [
         v => !!v || 'Bitte geben Sie Ihren Studiengang an'       
@@ -174,10 +174,9 @@ export default {
       this.$store.commit('UPDATEfaculty', value)
     },
     validate () {
-      this.$store.commit('VALIDATE')
-      if (this.$ref.form.validate()){
-        this.snack = true
+      if (this.$refs.form.validate()){
         if (this.valid == true) {
+                this.$store.commit('VALIDATE')
                 this.$refs.form.reset()
               }
       }
