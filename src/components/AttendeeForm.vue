@@ -5,13 +5,15 @@
       v-model="valid"
       lazy-validation>
       <v-container grid-list-md text-xs-center>
-        <v-layout row wrap>
+        <v-layout row wrap justify-space-around>
           <v-flex xs6>
               <img alt="Vue logo" src="@/assets/Mathezentrum.svg">
           </v-flex>
           <v-flex xs6>
               <img alt="Vue logo" src="@/assets/Physikzentrum.svg">
           </v-flex>
+        </v-layout>
+        <v-layout row wrap justify-space-around>
           <v-flex xs6>
             <v-text-field
               v-model="ID"
