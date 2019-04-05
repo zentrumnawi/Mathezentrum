@@ -80,9 +80,9 @@
           </v-flex>
           <v-flex>
             <!-- <PopupValidation></PopupValidation> -->
-          <v-dialog v-model="dialog" persistent>
+          <v-dialog v-model="dialog" persistent max-width="600">
             <template v-slot:activator="{ on }">
-              <v-btn slot="activator" color="success" @click="validate">
+              <v-btn slot="activator" color="success" @click="validate" v-on="on">
                   Abschicken
               </v-btn>
             </template>
@@ -120,7 +120,7 @@ export default {
   data: function() {
     return {
       dialog: false,
-      valid: true,
+      valid: false,
       IDRules: [
         v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
         v => v.length == 9 || 'Ihre ID muss 9 Zeichen lang sein'
