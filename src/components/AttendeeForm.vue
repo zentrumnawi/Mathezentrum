@@ -5,7 +5,8 @@
       v-model="valid"
       lazy-validation>
       <v-container grid-list-md text-xs-center>
-        <v-layout row wrap justify-space-around>
+        <v-layout row wrap>
+        <!-- <v-layout row wrap justify-space-around> -->
           <v-flex xs6>
               <img alt="Vue logo" src="@/assets/Mathezentrum.svg">
           </v-flex>
@@ -77,12 +78,34 @@
               required
           ></v-select>
           </v-flex>
-          <v-btn
-            color="success"
-            @click="validate"
-          >
-            Validate
-          </v-btn>
+          <v-flex>
+            <!-- <PopupValidation></PopupValidation> -->
+          <v-dialog v-model="dialog" persistent>
+            <template v-slot:activator="{ on }">
+              <v-btn slot="activator" color="success" @click="validate">
+                  Abschicken
+              </v-btn>
+            </template>
+            <v-card>
+              <!-- <v-card-title class="center">
+                <h2>Add a New Project</h2>
+              </v-card-title> -->
+              <v-card-text class="display-1">
+                  Sind deine Angaben korrekt ?
+              </v-card-text>
+              <v-card-actions>
+              <v-layout justify-center>
+                  <v-flex xs4 pr-5>
+                    <v-btn class="success">Ja, alles richtig !</v-btn>
+                  </v-flex>
+                  <v-flex xs4>
+                    <v-btn class="error" @click="dialog = false">Moment mal...</v-btn>
+                  </v-flex>
+              </v-layout>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          </v-flex>
         </v-layout>
       </v-container>
     </v-form>
@@ -90,14 +113,17 @@
 </template>
 
 <script>
+import PopupValidation from './PopupValidation'
 export default {
-  el: '.overview',
+  el: 'overview',
+  // components: { PopupValidation },
   data: function() {
     return {
+      dialog: false,
       valid: true,
       IDRules: [
         v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
-        v => v.length > 8 || 'Ihr ID muss mindestens 8 Zeichen lang sein'
+        v => v.length == 9 || 'Ihre ID muss 9 Zeichen lang sein'
       ],
       timeRules: [
         v => !!v || 'Bitte geben Sie Ihre Startzeit an',

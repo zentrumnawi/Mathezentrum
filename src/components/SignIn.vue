@@ -53,7 +53,7 @@ return {
       ID: '',
       IDRules: [
         v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
-        v => v.length > 8 || 'Ihr ID muss mindestens 8 Zeichen lang sein'
+        v => v.length == 9 || 'Ihre ID muss 9 Zeichen lang sein'
       ] }
   },
   methods: {
