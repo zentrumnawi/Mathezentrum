@@ -54,7 +54,7 @@ export const store = new Vuex.Store({
         UPDATEfaculty(state, faculty){
           state.faculty_select = faculty
         },
-        VALIDATE (state) {
+        SUBMIT (state) {
             state.Attendee.push(
                 {
                 ID: this.state.ID,

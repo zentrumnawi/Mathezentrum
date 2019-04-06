@@ -80,12 +80,15 @@
           </v-flex>
           <v-flex>
             <!-- <PopupValidation></PopupValidation> -->
+            <v-btn color="success" @click="validate">
+                Abschicken
+            </v-btn>
           <v-dialog v-model="dialog" persistent max-width="600">
-            <template v-slot:activator="{ on }">
-              <v-btn slot="activator" color="success" @click="validate" v-on="on">
+            <!-- <template v-slot:activator="{ on }"> -->
+              <!-- <v-btn slot="activator" color="success" @click="validate" v-on="on">
                   Abschicken
-              </v-btn>
-            </template>
+              </v-btn> -->
+            <!-- </template> -->
             <v-card>
               <!-- <v-card-title class="center">
                 <h2>Add a New Project</h2>
@@ -96,7 +99,7 @@
               <v-card-actions>
               <v-layout justify-center>
                   <v-flex xs4 pr-5>
-                    <v-btn class="success">Ja, alles richtig !</v-btn>
+                    <v-btn class="success" @click="submit">Ja, alles richtig !</v-btn>
                   </v-flex>
                   <v-flex xs4>
                     <v-btn class="error" @click="dialog = false">Moment mal...</v-btn>
@@ -113,7 +116,7 @@
 </template>
 
 <script>
-import PopupValidation from './PopupValidation'
+// import PopupValidation from './PopupValidation'
 export default {
   el: 'overview',
   // components: { PopupValidation },
@@ -121,6 +124,7 @@ export default {
     return {
       dialog: false,
       valid: false,
+      disabled: 0,
       IDRules: [
         v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
         v => v.length == 9 || 'Ihre ID muss 9 Zeichen lang sein'
@@ -204,11 +208,17 @@ export default {
     validate () {
       if (this.$refs.form.validate()){
         if (this.valid == true) {
-                this.$store.commit('VALIDATE')
-                this.$refs.form.reset()
-              }
+                // this.$store.commit('VALIDATE')
+                // this.$refs.form.reset()
+                this.dialog = true
+        }
       }
-    } 
+    },
+      submit () {
+        this.$store.commit('SUBMIT')
+        // this.$refs.form.reset()
+        this.dialog = false
+      }
   }
 }
 
