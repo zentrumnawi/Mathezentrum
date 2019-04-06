@@ -65,10 +65,6 @@ export const store = new Vuex.Store({
                 faculty: this.state.faculty_select
                 }
             )
-            // if (this.$refs.form.validate()) {
-            //   this.valid = true
-            // if (this.valid == true) {
-            //   this.$refs.form.reset()
             }
             }
 

@@ -79,20 +79,11 @@
           ></v-select>
           </v-flex>
           <v-flex>
-            <!-- <PopupValidation></PopupValidation> -->
             <v-btn color="success" @click="validate">
                 Abschicken
             </v-btn>
           <v-dialog v-model="dialog" persistent max-width="600">
-            <!-- <template v-slot:activator="{ on }"> -->
-              <!-- <v-btn slot="activator" color="success" @click="validate" v-on="on">
-                  Abschicken
-              </v-btn> -->
-            <!-- </template> -->
             <v-card>
-              <!-- <v-card-title class="center">
-                <h2>Add a New Project</h2>
-              </v-card-title> -->
               <v-card-text class="display-1">
                   Sind deine Angaben korrekt ?
               </v-card-text>
@@ -116,10 +107,8 @@
 </template>
 
 <script>
-// import PopupValidation from './PopupValidation'
 export default {
   el: 'overview',
-  // components: { PopupValidation },
   data: function() {
     return {
       dialog: false,
@@ -208,8 +197,6 @@ export default {
     validate () {
       if (this.$refs.form.validate()){
         if (this.valid == true) {
-                // this.$store.commit('VALIDATE')
-                // this.$refs.form.reset()
                 this.dialog = true
         }
       }
