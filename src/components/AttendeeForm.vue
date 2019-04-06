@@ -216,7 +216,7 @@ export default {
     },
       submit () {
         this.$store.commit('SUBMIT')
-        // this.$refs.form.reset()
+        this.$refs.form.reset()
         this.dialog = false
       }
   }
