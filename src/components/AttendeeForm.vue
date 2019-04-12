@@ -8,12 +8,12 @@
         <v-layout row wrap>
         <!-- <v-layout row wrap justify-space-around> -->
           <!-- <v-flex xs6> -->
-              <v-img :src="require('@/assets/Mathezentrum.svg')">
-              </v-img>
+              <img class="thumbnail float-center" :src="require('@/assets/Mathezentrum.svg')">
+              <!-- </v-img> -->
           <!-- </v-flex> -->
           <!-- <v-flex xs6> -->
-              <v-img :src="require('@/assets/Physikzentrum.svg')">
-              </v-img>
+              <img class="thumbnail float-center" :src="require('@/assets/Physikzentrum.svg')">
+              <!-- </v-img> -->
           <!-- </v-flex> -->
         </v-layout>
         <v-layout row wrap justify-space-around>

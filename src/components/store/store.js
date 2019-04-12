@@ -92,7 +92,7 @@ export const store = new Vuex.Store({
 store.subscribe((mutation, state) => {
   let store = {
     date: state.date,
-    Attendee: state.Attendee
+    Attendees: state.Attendee
   };
   localStorage.setItem('store', JSON.stringify(store))
 })
