@@ -2,22 +2,26 @@
   <v-app>
     <v-toolbar app dark color="#005ea8">
       <v-toolbar-title class="headline text-uppercase">
-        <span> Mathe- und Physikzentrum</span>
+        <span> Anwesenheitsformular</span>
       </v-toolbar-title>
     </v-toolbar>
     <v-content>
-    <router-view></router-view>
+    <AttendeeForm></AttendeeForm>
+    <!-- <router-view></router-view> -->
     </v-content>
     <v-footer app dark color="#005ea8"></v-footer>
   </v-app>
 </template>
 
 <script>
-import SignIn from './components/SignIn.vue'
+// import SignIn from './components/SignIn.vue'
+import AttendeeForm from './components/AttendeeForm.vue'
+
 export default {
   name: 'app',
   components: {
-    SignIn
+    // SignIn
+    AttendeeForm
   }
 }
 </script>

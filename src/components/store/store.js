@@ -3,8 +3,17 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex);
 
+var today = new Date();
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = mm + '/' + dd + '/' + yyyy;
+
 export const store = new Vuex.Store({
     state: {
+        // Cache version
+        date: today,
         ID: '',
         starttime: [{}],
         endtime: [{}],
@@ -65,7 +74,25 @@ export const store = new Vuex.Store({
                 faculty: this.state.faculty_select
                 }
             )
-            }
-            }
+            },
+        initialiseStore(state) {
+          // Check if the ID exists
+          if(localStorage.getItem('store')) {
+            // Replace the state object with the stored item
+            this.replaceState(
+              Object.assign(state, JSON.parse(localStorage.getItem('store')))
+            )
+          }
+        }
+      }
 
+})
+
+// Storing data whenever the store is updated
+store.subscribe((mutation, state) => {
+  let store = {
+    date: state.date,
+    Attendee: state.Attendee
+  };
+  localStorage.setItem('store', JSON.stringify(store))
 })
