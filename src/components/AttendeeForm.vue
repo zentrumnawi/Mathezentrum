@@ -5,14 +5,15 @@
       v-model="valid"
       lazy-validation>
       <v-container grid-list-md text-xs-center>
-        <v-layout row wrap>
+        <v-layout row wrap align-center justify-space-around>
         <!-- <v-layout row wrap justify-space-around> -->
           <!-- <v-flex xs6> -->
-              <img class="thumbnail float-center" :src="require('@/assets/Mathezentrum.svg')">
+              <img width=40% class="thumbnail float-center" :src="require('@/assets/Mathezentrum.svg')">
               <!-- </v-img> -->
           <!-- </v-flex> -->
           <!-- <v-flex xs6> -->
-              <img class="thumbnail float-center" :src="require('@/assets/Physikzentrum.svg')">
+            <v-spacer></v-spacer>
+              <img width=40% class="thumbnail float-center" :src="require('@/assets/Physikzentrum.svg')">
               <!-- </v-img> -->
           <!-- </v-flex> -->
         </v-layout>
@@ -52,7 +53,6 @@
               attach
               v-model="course_select"
               :items="courses"
-              :menu-props="{ maxHeight: '400' }"
               :rules="courseRules"
               multiple
               persistent-hint
@@ -117,11 +117,11 @@ export default {
       valid: false,
       disabled: 0,
       IDRules: [
-        v => !!v || 'Bitte geben Sie Ihren persönlichen ID an',
+        v => !!v || 'Bitte geben Sie Ihre persönlichen 9 stellige ID an',
         v => v.length == 9 || 'Ihre ID muss 9 Zeichen lang sein'
       ],
       timeRules: [
-        v => !!v || 'Bitte geben Sie Ihre Startzeit an',
+        v => !!v || 'Bitte geben Sie Ihre Anwesenheitszeit an',
       ],
       courseRules: [
         v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
@@ -207,6 +207,7 @@ export default {
         this.$store.commit('SUBMIT')
         this.$refs.form.reset()
         this.dialog = false
+        this.valid = false
       }
   }
 }

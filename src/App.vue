@@ -9,7 +9,11 @@
     <AttendeeForm></AttendeeForm>
     <!-- <router-view></router-view> -->
     </v-content>
-    <v-footer app dark color="#005ea8"></v-footer>
+    <v-footer app dark color="#005ea8">
+      <!-- <img width=10% class="thumbnail float-center" :src="require('@/assets/LogoGUF.png')"> -->
+      <v-card-actions class="justify-center">
+        &copy; 2019 — <strong>Starker Start</strong>
+      </v-card-actions>    </v-footer>
   </v-app>
 </template>
 
