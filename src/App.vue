@@ -4,6 +4,8 @@
       <v-toolbar-title class="headline text-uppercase">
         <span> Anwesenheitsformular</span>
       </v-toolbar-title>
+      <v-img aspect-ratio="2.5" contain max-height="80px" max-width="100px" :src="require('@/assets/GU-Logo-weiss.png')">
+      </v-img>
     </v-toolbar>
     <v-content>
     <AttendeeForm></AttendeeForm>
@@ -11,8 +13,8 @@
     </v-content>
     <v-footer app dark color="#005ea8">
       <!-- <img width=10% class="thumbnail float-center" :src="require('@/assets/LogoGUF.png')"> -->
-      <v-card-actions class="justify-center">
-        &copy; 2019 — <strong>Starker Start</strong>
+      <v-card-actions class="justify-left">
+        &copy; 2019 — <strong>Starker Start  </strong>
       </v-card-actions>    </v-footer>
   </v-app>
 </template>
