@@ -1,5 +1,6 @@
 <template>
-  <v-container overview>
+  <v-container>
+    <div v-for="attendee in $store.state.attendees" :key="attendee.id">{{ attendee }}</div>
     <v-form
       ref="form"
       v-model="valid"
@@ -20,8 +21,9 @@
         <v-layout row wrap justify-space-around>
           <v-flex xs6>
             <v-text-field
-              v-model="ID"
+              v-model="form.id"
               :rules="IDRules"
+              maxlength="9"
               label="ID"
               placeholder="XX999999"
               required
@@ -29,7 +31,7 @@
           </v-flex>
           <v-flex xs3>
             <v-text-field
-              v-model="starttime"
+              v-model="form.start"
               :rules="timeRules"
               type="time"
               hint= "HH:MM"
@@ -40,7 +42,7 @@
           </v-flex>
           <v-flex xs3>
             <v-text-field
-              v-model="endtime"
+              v-model="form.end"
               :rules="timeRules"
               type="time"
               hint= "HH:MM"
@@ -51,31 +53,30 @@
           <v-flex xs4>
             <v-select
               attach
-              v-model="course_select"
+              v-model="form.courses"
               :items="courses"
               :rules="courseRules"
               multiple
               persistent-hint
-              @input="setSelectedCourses"
               label="Lehrveranstaltung"
               required
           ></v-select>
           </v-flex>
           <v-flex xs4>
             <v-text-field
-              v-model="semester"
+              v-model="form.semester"
               :rules="semesterRules"
               label="Fachsemester"
+              maxlength="2"
               required
             ></v-text-field>
           </v-flex>
           <v-flex xs4>
             <v-select
               attach
-              v-model="faculty_select"
+              v-model="form.faculty"
               :items="faculties"
               :rules="facultyRules"
-              @input="setSelectedfaculties"
               label="Studiengang"
               required
           ></v-select>
@@ -109,10 +110,35 @@
 </template>
 
 <script>
+function initializeForm() {
+  return {
+    id: "",
+    start: "",
+    end: "",
+    date: new Date(),
+    courses: [],
+    semester: "",
+    faculty: null
+  }
+}
+
 export default {
-  el: 'overview',
   data: function() {
     return {
+      form: initializeForm(),
+      courses: [
+        'Mathe für Physiker 1',
+        'Mathe für Physiker 2',
+        'Mathe für Physiker 3',
+        'Sonstige'
+      ],
+      faculties: [
+        'BSc Physik',
+        'BSc Meteorologie',
+        'BSc Biologie',
+        'BSc Pharmazie',
+        'Sonstige'
+      ] ,
       dialog: false,
       valid: false,
       disabled: 0,
@@ -135,84 +161,25 @@ export default {
       ],
     }
   },
-  computed: {
-      ID: {
-        get() {
-          return this.$store.state.ID;
-        },
-        set(value) {
-          this.$store.commit('UPDATEID', value)
-        }
-      },
-      starttime: {
-        get() {
-          return this.$store.state.starttime;
-        },
-        set(value) {
-          this.$store.commit('UPDATEstarttime', value)
-        }
-      },
-      endtime: {
-        get() {
-          return this.$store.state.endtime;
-        },
-        set(value) {
-          this.$store.commit('UPDATEendtime', value)
-        }
-      },
-      courses: {
-        get() {
-          return this.$store.state.courses;
-        }
-      },
-      course_select: {
-        set(value) {
-          this.$store.commit('UPDATEcourses', value)
-        }
-      },
-      semester: {
-        get() {
-          return this.$store.state.semester;
-        },
-        set(value) {
-          this.$store.commit('UPDATEsemester', value)
-        }
-      },
-      faculties: {
-        get() {
-          return this.$store.state.faculties
-        }
-      },
-      faculty_select: {
-        set(value) {
-          this.$store.commit('UPDATEfaculty', value)
-        }
-      }
-  },
   methods: {
-    setSelectedCourses(value) {
-      this.$store.commit('UPDATEcourses', value)
-    },
-    setSelectedFaculties(value) {
-      this.$store.commit('UPDATEfaculty', value)
-    },
     validate () {
       if (this.$refs.form.validate()){
         if (this.valid == true) {
-                this.dialog = true
+          this.dialog = true
         }
       }
     },
-      submit () {
-        this.$store.commit('SUBMIT')
-        this.$refs.form.reset()
-        this.dialog = false
-        this.valid = false
-      }
+    submit () {
+      this.$store.dispatch('submitForm', this.form)
+      this.$refs.form.reset()
+      this.form = initializeForm()
+      this.dialog = false
+      this.valid = false
+    }
   }
 }
-
 </script>
+
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .v-text-field{
