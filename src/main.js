@@ -3,7 +3,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 import App from './App.vue'
 // import Router from './components/Router' // Link to Routing setup
-import { store } from './components/store/store'
+import { store } from './store/store'
 
 Vue.use(Vuetify, {
   breakpoints: {
