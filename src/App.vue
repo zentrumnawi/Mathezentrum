@@ -8,8 +8,7 @@
       </v-img>
     </v-toolbar>
     <v-content>
-    <AttendeeForm></AttendeeForm>
-    <!-- <router-view></router-view> -->
+    <router-view></router-view>
     </v-content>
     <v-footer app dark color="#005ea8">
       <!-- <img width=10% class="thumbnail float-center" :src="require('@/assets/LogoGUF.png')"> -->
@@ -20,14 +19,15 @@
 </template>
 
 <script>
-// import SignIn from './components/SignIn.vue'
-import AttendeeForm from './components/AttendeeForm.vue'
+
+// import Form from './components/AttendeeForm.vue'
+// import Admin from '@/components/Admin'
 
 export default {
   name: 'app',
   components: {
-    // SignIn
-    AttendeeForm
+    // Form,
+    // Admin
   }
 }
 </script>

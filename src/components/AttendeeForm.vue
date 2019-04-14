@@ -1,6 +1,5 @@
 <template>
   <v-container>
-    <div v-for="attendee in $store.state.attendees" :key="attendee.id">{{ attendee }}</div>
     <v-form
       ref="form"
       v-model="valid"
@@ -123,6 +122,7 @@ function initializeForm() {
 }
 
 export default {
+  el: 'Form',
   data: function() {
     return {
       form: initializeForm(),
