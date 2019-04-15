@@ -25,7 +25,6 @@
 
 <script>
 export default {
-  // el: 'FormData',
   data: function() {
     return {
       headers: [
