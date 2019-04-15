@@ -4,12 +4,9 @@
       <v-toolbar-title class="headline text-uppercase">
         Anwesenheitsformular
       </v-toolbar-title>
-<<<<<<< HEAD
       <v-spacer></v-spacer>
       <v-img aspect-ratio="1.5" contain max-height="100px" max-width="80px" :src="require('@/assets/Goethe-Kopf-weiss.svg')">
       </v-img>
-=======
->>>>>>> 199ccd94b72d36537db111b60346627622b88fda
     </v-toolbar>
     <v-content>
     <router-view></router-view>
@@ -20,19 +17,6 @@
 <<<<<<< HEAD
         &copy; 2019&nbsp;&nbsp;|&nbsp;&nbsp;<img height=20px :src="require('@/assets/Icon_ZentrumNaturwissenschaften.svg')">&nbsp;&nbsp;<strong>Zentrum Naturwissenschaften</strong>
       </v-card-actions>    </v-footer>
-=======
-        &copy; 2019 — <strong>Starker Start</strong>
-      </v-card-actions>
-      <v-spacer></v-spacer>
-      <v-img aspect-ratio="1.5" contain max-height="100px" max-width="100px" :src="require('@/assets/Mathezentrum.svg')">
-        </v-img>
-      <v-img aspect-ratio="1.5" contain max-height="100px" max-width="100px" :src="require('@/assets/Physikzentrum.svg')">
-        </v-img>
-        <v-spacer></v-spacer>
-      <v-img aspect-ratio="3.8" contain max-height="80px" max-width="100px" :src="require('@/assets/GU-Logo-weiss.png')">
-        </v-img>
-      </v-footer>
->>>>>>> 199ccd94b72d36537db111b60346627622b88fda
   </v-app>
 </template>
 
