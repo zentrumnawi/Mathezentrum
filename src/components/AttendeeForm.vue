@@ -5,18 +5,6 @@
       v-model="valid"
       lazy-validation>
       <v-container grid-list-md text-xs-center>
-        <v-layout row wrap align-center justify-space-around>
-        <!-- <v-layout row wrap justify-space-around> -->
-          <!-- <v-flex xs6> -->
-              <img width=40% class="thumbnail float-center" :src="require('@/assets/Mathezentrum.svg')">
-              <!-- </v-img> -->
-          <!-- </v-flex> -->
-          <!-- <v-flex xs6> -->
-            <v-spacer></v-spacer>
-              <img width=40% class="thumbnail float-center" :src="require('@/assets/Physikzentrum.svg')">
-              <!-- </v-img> -->
-          <!-- </v-flex> -->
-        </v-layout>
         <v-layout row wrap justify-space-around>
           <v-flex xs6>
             <v-text-field
@@ -122,7 +110,6 @@ function initializeForm() {
 }
 
 export default {
-  el: 'Form',
   data: function() {
     return {
       form: initializeForm(),
