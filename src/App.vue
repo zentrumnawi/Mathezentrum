@@ -4,8 +4,6 @@
       <v-toolbar-title class="headline text-uppercase">
         <span>Anwesenheitsformular</span>
       </v-toolbar-title>
-      <v-img aspect-ratio="2.5" contain max-height="80px" max-width="100px" :src="require('@/assets/GU-Logo-weiss.png')">
-      </v-img>
     </v-toolbar>
     <v-content>
     <router-view></router-view>
@@ -14,7 +12,16 @@
       <!-- <img width=10% class="thumbnail float-center" :src="require('@/assets/LogoGUF.png')"> -->
       <v-card-actions class="justify-left">
         &copy; 2019 — <strong>Starker Start</strong>
-      </v-card-actions>    </v-footer>
+      </v-card-actions>
+      <v-spacer></v-spacer>
+      <v-img aspect-ratio="1.5" contain max-height="100px" max-width="100px" :src="require('@/assets/Mathezentrum.svg')">
+        </v-img>
+      <v-img aspect-ratio="1.5" contain max-height="100px" max-width="100px" :src="require('@/assets/Physikzentrum.svg')">
+        </v-img>
+        <v-spacer></v-spacer>
+      <v-img aspect-ratio="3.8" contain max-height="80px" max-width="100px" :src="require('@/assets/GU-Logo-weiss.png')">
+        </v-img>
+      </v-footer>
   </v-app>
 </template>
 

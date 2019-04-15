@@ -3,7 +3,7 @@
     <!-- <h1>Ich bin Admin</h1> -->
     <v-data-table
           :headers="headers"
-          :items="desserts"
+          :items="values"
           class="elevation-1"
         >
           <template v-slot:items="props">
@@ -22,7 +22,7 @@
 
 <script>
 export default {
-  el: 'FormData',
+  // el: 'FormData',
   data: function() {
     return {
       headers: [
@@ -39,7 +39,7 @@ export default {
         { text: 'Semester', value: 'semester' },
         { text: 'Studiengang', value: 'faculty'}
       ],
-      desserts: [
+      values: [
         {
           ID: 'Frozen Yogurt',
           date: 159,
