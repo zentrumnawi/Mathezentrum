@@ -2,9 +2,10 @@
   <v-app>
     <v-toolbar app dark color="#005ea8">
       <v-toolbar-title class="headline text-uppercase">
-        <span>Anwesenheitsformular</span>
+        Anwesenheitsformular
       </v-toolbar-title>
-      <v-img aspect-ratio="2.5" contain max-height="80px" max-width="100px" :src="require('@/assets/GU-Logo-weiss.png')">
+      <v-spacer></v-spacer>
+      <v-img aspect-ratio="1.5" contain max-height="100px" max-width="80px" :src="require('@/assets/Goethe-Kopf-weiss.svg')">
       </v-img>
     </v-toolbar>
     <v-content>
@@ -13,7 +14,7 @@
     <v-footer app dark color="#005ea8">
       <!-- <img width=10% class="thumbnail float-center" :src="require('@/assets/LogoGUF.png')"> -->
       <v-card-actions class="justify-left">
-        &copy; 2019 — <strong>Starker Start</strong>
+        &copy; 2019&nbsp;&nbsp;|&nbsp;&nbsp;<img height=20px :src="require('@/assets/Icon_ZentrumNaturwissenschaften.svg')">&nbsp;&nbsp;<strong>Zentrum Naturwissenschaften</strong>
       </v-card-actions>    </v-footer>
   </v-app>
 </template>
