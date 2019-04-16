@@ -40,9 +40,9 @@ const router = new VueRouter({
 new Vue({
   el: '#app',
   store: store,
-  beforeCreate() {
-    this.$store.commit('initialiseStore')
-  },
+  // beforeCreate() {
+  //   this.$store.commit('initialiseStore')
+  // },
   router: router,
   render: h => h(App),
 });

@@ -30,11 +30,9 @@
           <v-flex xs3>
             <v-text-field
               v-model="form.end"
-              :rules="timeRules"
-              type="time"
-              hint= "HH:MM"
+              disabled="true"
+              :placeholder= "today"
               label="Endzeit"
-              required
             ></v-text-field>
           </v-flex>
           <v-flex xs4>
@@ -97,6 +95,14 @@
 </template>
 
 <script>
+var today = new Date();
+var hh = String(today.getTime());
+var dd = String(today.getDate()).padStart(2, '0');
+var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+var yyyy = today.getFullYear();
+
+today = hh + '/' + dd;
+
 function initializeForm() {
   return {
     id: "",
@@ -136,6 +142,7 @@ export default {
       timeRules: [
         v => !!v || 'Bitte geben Sie Ihre Anwesenheitszeit an',
       ],
+      today: today,
       courseRules: [
         v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
       ],
