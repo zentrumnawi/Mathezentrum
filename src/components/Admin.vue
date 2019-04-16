@@ -11,11 +11,11 @@
           class="elevation-1"
         >
           <template v-slot:items="props">
-            <td>{{ props.item.ID }}</td>
+            <td>{{ props.item.id }}</td>
             <td class="text-xs-center">{{ props.item.date }}</td>
             <td class="text-xs-center">{{ props.item.start }}</td>
             <td class="text-xs-center">{{ props.item.end }}</td>
-            <td class="text-xs-center">{{ props.item.course }}</td>
+            <td class="text-xs-center">{{ props.item.courses.join(', ') }}</td>
             <td class="text-xs-center">{{ props.item.semester }}</td>
             <td class="text-xs-center">{{ props.item.faculty }}</td>
           </template>

@@ -109,7 +109,7 @@ function initializeForm() {
     start: "",
     end: "",
     date: new Date(),
-    courses: [],
+    courses: "",
     semester: "",
     faculty: null
   }
