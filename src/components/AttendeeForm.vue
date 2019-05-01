@@ -95,11 +95,12 @@
 </template>
 
 <script>
+
 var today = new Date();
 var hh = String(today.getTime());
 var dd = String(today.getDate()).padStart(2, '0');
-var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-var yyyy = today.getFullYear();
+// var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+// var yyyy = today.getFullYear();
 
 today = hh + '/' + dd;
 
@@ -118,6 +119,12 @@ function initializeForm() {
 export default {
   data: function() {
     return {
+      data: [
+                {id: 1, fruit: 'Apple', price: 4.50, unit: 'lb'},
+                {id: 2, fruit: 'Blueberry', price: 3.00, unit: 'lb'},
+                {id: 3, fruit: 'Pineapple', price: 5.15, unit: 'each'},
+            ],
+            fields: ['fruit', 'price', 'unit'],
       form: initializeForm(),
       courses: [
         'Mathe für Physiker 1',
