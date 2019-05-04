@@ -25,7 +25,11 @@
           :data="this.$store.state.attendees"
           :fields="headers.text"
         >
-        Download csv
+        <a :download="downloadName" :href="downloadUrl" :disabled="this.$store.state.attendees.length === 0">
+          <slot>
+            <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+          </slot>
+        </a>
       </json2csv>
     </v-btn>
     </div>
@@ -49,18 +53,24 @@ export default {
         { text: 'Kurse', value: 'courses' },
         { text: 'Semester', value: 'semester' },
         { text: 'Studiengang', value: 'faculty'}
-      ]
+      ],
+        fields: undefined,
+        data: undefined,
+        delimiter: ";",
+        downloadName: {
+            default: 'export.csv'
+        }
     }
   },
   components: {
-    json2csv: Json2Csv
+    json2csv: Json2Csv,
   },
   computed: {
     values () {
       return this.$store.state.attendees
     },
     downloadURL() {
-      return this.data.length > 0 ? "data:text/csv," + encodeURIComponent(Json2Csv({data: this.data, fields: this.fields})) : 'javascript:void(0);';
+      return this.$store.state.attendees.length > 0 ? "data:text/csv," + encodeURIComponent(Json2Csv({data: this.data, fields: this.fields})) : 'javascript:void(0);';
     }
   }
 }
