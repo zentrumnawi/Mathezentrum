@@ -21,24 +21,19 @@
           </template>
         </v-data-table>
       <v-btn class="success">
-        <vue-csv-downloader
-          v-model: commatosemicolon
+        <json2csv
           :data="this.$store.state.attendees"
           :fields="headers.text"
         >
         Download csv
-      </vue-csv-downloader>
+      </json2csv>
     </v-btn>
     </div>
 </template>
 
 <script>
-import VueCsvDownloader from 'vue-csv-downloader';
-
+import Json2Csv from 'json2csv';
 export default {
-  components: {
-    VueCsvDownloader
-  },
   data: function() {
     return {
       headers: [
@@ -57,24 +52,16 @@ export default {
       ]
     }
   },
+  components: {
+    json2csv: Json2Csv
+  },
   computed: {
     values () {
       return this.$store.state.attendees
     },
-    commatosemicolon () {
-      // this.$store.state.attendees == this.$store.state.attendees.split(',').join(';')
-      this.$store.state.attendees == this.$store.state.attendees.replace(',').join(';')
-      return this.$store.state.attendees
+    downloadURL() {
+      return this.data.length > 0 ? "data:text/csv," + encodeURIComponent(Json2Csv({data: this.data, fields: this.fields})) : 'javascript:void(0);';
     }
-    // },
-    // downloadObjectAsJson(values, exportName) {
-    //     var dataStr = values;
-    //     var downloadAnchorNode = document.createElement('a');
-    //     downloadAnchorNode.setAttribute("href",     dataStr);
-    //     downloadAnchorNode.setAttribute("download", exportName + ".json");
-    //     document.body.appendChild(downloadAnchorNode); // required for firefox
-    //     downloadAnchorNode.click();
-    //     downloadAnchorNode.remove();
   }
 }
 </script>
