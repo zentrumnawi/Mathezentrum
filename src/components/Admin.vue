@@ -59,12 +59,20 @@ export default {
         { text: 'Semester', value: 'semester' },
         { text: 'Studiengang', value: 'faculty'}
       ],
-        delimiter: ";",
+        // delimiter: ";",
+        // downloadName: {
+        //     default: 'export.csv'
+        // }
+    }
+  },
+      props: {
+        fields: undefined,
+        data: undefined,
         downloadName: {
             default: 'export.csv'
         }
-    }
-  },
+    },
+
   // components: {
   //   json2csv: Json2Csv,
   // },
