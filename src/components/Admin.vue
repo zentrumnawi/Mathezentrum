@@ -63,13 +63,16 @@ export default {
         // downloadName: {
         //     default: 'export.csv'
         // }
+      // data: this.$store.state.attendees,
+      // fields: this.headers.text
     }
   },
       props: {
-        fields: undefined,
-        data: undefined,
         downloadName: {
             default: 'export.csv'
+        },
+        delimiter: {
+          default: ';'
         }
     },
 
@@ -80,8 +83,14 @@ export default {
     values () {
       return this.$store.state.attendees
     },
+    data () {
+      return this.$store.state.attendees
+    },
+    fields () {
+      return this.headers.text
+    },
     downloadURL() {
-      return this.$store.state.attendees.length > 0 ? "data:text/csv," + encodeURIComponent(json2csv({data: this.$store.state.attendees, fields: this.headers.text})) : 'javascript:void(0);';
+      return this.$store.state.attendees.length > 0 ? "data:text/csv," + encodeURIComponent(json2csv({data:this.data, fields:this.fields})) : 'javascript:void(0);';
     }
   }
 }
