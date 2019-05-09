@@ -17,23 +17,10 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs3>
-            <v-text-field
-              v-model="form.start"
-              :rules="timeRules"
-              type="time"
-              hint= "HH:MM"
-              label="Startzeit"
-              prepend-icon="access_time"
-              required
-            ></v-text-field>
+            <time-input v-model="form.start" :rules="timeRules" label="Startzeit" required></time-input>
           </v-flex>
           <v-flex xs3>
-            <v-text-field
-              v-model="form.end"
-              disabled
-              :placeholder= "today"
-              label="Endzeit"
-            ></v-text-field>
+            <time-input v-model="form.end" label="Endzeit" disabled></time-input>
           </v-flex>
           <v-flex xs4>
             <v-select
@@ -95,20 +82,14 @@
 </template>
 
 <script>
-
-var today = new Date();
-var hh = String(today.getTime());
-var dd = String(today.getDate()).padStart(2, '0');
-// var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-// var yyyy = today.getFullYear();
-
-today = hh + '/' + dd;
+import { subHours } from "date-fns";
+import TimeInput from "@/components/TimeInput";
 
 function initializeForm() {
   return {
     id: "",
-    start: "",
-    end: "",
+    start: new Date(),
+    end: new Date(),
     date: new Date(),
     courses: "",
     semester: "",
@@ -117,8 +98,10 @@ function initializeForm() {
 }
 
 export default {
+  components: { TimeInput },
   data: function() {
     return {
+      interval: null,
       form: initializeForm(),
       courses: [
         'Mathe für Physiker 1',
@@ -143,7 +126,6 @@ export default {
       timeRules: [
         v => !!v || 'Bitte geben Sie Ihre Anwesenheitszeit an',
       ],
-      today: today,
       courseRules: [
         v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
       ],
@@ -156,7 +138,27 @@ export default {
       ],
     }
   },
+  created() {
+    // Set the end time to initialize the form.
+    this.setTime();
+
+    // Update the start time to some hours before the current end time.
+    // This substracts a given amount of hours from a date.
+    this.$nextTick(() => {
+      this.form.start = subHours(this.form.end, 2)
+    })
+
+    // Create an interval to update current time every 1000ms
+    this.interval = setInterval(() => (this.setTime()), 1000);
+  },
+  destroyed() {
+    // Cleanup interval when we leave the page.
+    clearInterval(this.interval);
+  },
   methods: {
+    setTime() {
+      this.form.end = new Date();
+    },
     validate () {
       if (this.$refs.form.validate()){
         if (this.valid == true) {
