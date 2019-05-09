@@ -4,6 +4,7 @@ import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
 import DataTable from 'v-data-table'
 import { store } from './store/store'
+import json2csv from 'json2csv'
 
 import App from './App.vue'
 import Admin from '@/components/Admin'
@@ -17,7 +18,8 @@ Vue.use(Vuetify, {
 Vue.config.productionTip = false
 
 Vue.use(VueRouter);
-Vue.use(DataTable)
+Vue.use(DataTable);
+Vue.use(json2csv)
 
 const routes = [
       {

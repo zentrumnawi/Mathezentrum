@@ -20,23 +20,27 @@
             <td class="text-xs-center">{{ props.item.faculty }}</td>
           </template>
         </v-data-table>
-      <v-btn class="success">
-        <json2csv
+      <v-btn class="success" @click="downloadURL">
+        <!-- <json2csv
           :data="this.$store.state.attendees"
           :fields="headers.text"
-        >
-        <a :download="downloadName" :href="downloadUrl" :disabled="this.$store.state.attendees.length === 0">
-          <slot>
+        > -->
+        <a 
+          :download="downloadName"
+          :href="downloadURL"
+          :disabled="this.$store.state.attendees.length === 0">
+          Download
+          <!-- <slot>
             <i class="fa fa-file-excel-o" aria-hidden="true"></i>
-          </slot>
+          </slot> -->
         </a>
-      </json2csv>
+      <!-- </json2csv> -->
     </v-btn>
     </div>
 </template>
 
 <script>
-import Json2Csv from 'json2csv';
+import json2csv from 'json2csv';
 export default {
   data: function() {
     return {
@@ -54,23 +58,21 @@ export default {
         { text: 'Semester', value: 'semester' },
         { text: 'Studiengang', value: 'faculty'}
       ],
-        fields: undefined,
-        data: undefined,
         delimiter: ";",
         downloadName: {
             default: 'export.csv'
         }
     }
   },
-  components: {
-    json2csv: Json2Csv,
-  },
+  // components: {
+  //   json2csv: Json2Csv,
+  // },
   computed: {
     values () {
       return this.$store.state.attendees
     },
     downloadURL() {
-      return this.$store.state.attendees.length > 0 ? "data:text/csv," + encodeURIComponent(Json2Csv({data: this.data, fields: this.fields})) : 'javascript:void(0);';
+      return this.$store.state.attendees.length > 0 ? "data:text/csv," + encodeURIComponent(json2csv({data: this.$store.state.attendees, fields: this.headers.text})) : 'javascript:void(0);';
     }
   }
 }
