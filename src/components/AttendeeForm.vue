@@ -1,9 +1,6 @@
 <template>
   <v-container>
-    <v-form
-      ref="form"
-      v-model="valid"
-      lazy-validation>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap justify-space-around>
           <v-flex xs6>
@@ -17,7 +14,7 @@
             ></v-text-field>
           </v-flex>
           <v-flex xs3>
-            <time-input v-model="form.start" :rules="timeRules" label="Startzeit" required></time-input>
+            <time-input v-model="form.start" :max="maxStartTime" :rules="timeRules" label="Startzeit" required></time-input>
           </v-flex>
           <v-flex xs3>
             <time-input v-model="form.end" label="Endzeit" disabled></time-input>
@@ -32,7 +29,7 @@
               persistent-hint
               label="Lehrveranstaltung"
               required
-          ></v-select>
+            ></v-select>
           </v-flex>
           <v-flex xs4>
             <v-text-field
@@ -51,29 +48,25 @@
               :rules="facultyRules"
               label="Studiengang"
               required
-          ></v-select>
+            ></v-select>
           </v-flex>
           <v-flex>
-            <v-btn color="success" @click="validate">
-                Abschicken
-            </v-btn>
-          <v-dialog v-model="dialog" persistent max-width="600">
-            <v-card>
-              <v-card-text class="display-1">
-                  Sind deine Angaben korrekt ?
-              </v-card-text>
-              <v-card-actions>
-              <v-layout justify-center>
-                  <v-flex xs4 pr-5>
-                    <v-btn class="success" @click="submit">Ja, alles richtig !</v-btn>
-                  </v-flex>
-                  <v-flex xs4>
-                    <v-btn class="error" @click="dialog = false">Moment mal...</v-btn>
-                  </v-flex>
-              </v-layout>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+            <v-btn color="success" @click="validate">Abschicken</v-btn>
+            <v-dialog v-model="dialog" persistent max-width="600">
+              <v-card>
+                <v-card-text class="display-1">Sind deine Angaben korrekt ?</v-card-text>
+                <v-card-actions>
+                  <v-layout justify-center>
+                    <v-flex xs4 pr-5>
+                      <v-btn class="success" @click="submit">Ja, alles richtig !</v-btn>
+                    </v-flex>
+                    <v-flex xs4>
+                      <v-btn class="error" @click="dialog = false">Moment mal...</v-btn>
+                    </v-flex>
+                  </v-layout>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-flex>
         </v-layout>
       </v-container>
@@ -82,19 +75,18 @@
 </template>
 
 <script>
-import { subHours } from "date-fns";
+import { format, subHours, subMinutes } from "date-fns";
 import TimeInput from "@/components/TimeInput";
 
 function initializeForm() {
   return {
     id: "",
-    start: new Date(),
+    start: subHours(new Date(), 2),
     end: new Date(),
-    date: new Date(),
     courses: "",
     semester: "",
     faculty: null
-  }
+  };
 }
 
 export default {
@@ -104,82 +96,81 @@ export default {
       interval: null,
       form: initializeForm(),
       courses: [
-        'Mathe für Physiker 1',
-        'Mathe für Physiker 2',
-        'Mathe für Physiker 3',
-        'Sonstige'
+        "Mathe für Physiker 1",
+        "Mathe für Physiker 2",
+        "Mathe für Physiker 3",
+        "Sonstige"
       ],
       faculties: [
-        'BSc Physik',
-        'BSc Meteorologie',
-        'BSc Biologie',
-        'BSc Pharmazie',
-        'Sonstige'
-      ] ,
+        "BSc Physik",
+        "BSc Meteorologie",
+        "BSc Biologie",
+        "BSc Pharmazie",
+        "Sonstige"
+      ],
       dialog: false,
       valid: false,
       disabled: 0,
       IDRules: [
-        v => !!v || 'Bitte geben Sie Ihre persönlichen 9 stellige ID an',
-        v => v.length == 9 || 'Ihre ID muss 9 Zeichen lang sein'
+        v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
+        v => v.length == 9 || "Ihre ID muss 9 Zeichen lang sein"
       ],
-      timeRules: [
-        v => !!v || 'Bitte geben Sie Ihre Anwesenheitszeit an',
-      ],
+      timeRules: [v => !!v || "Bitte geben Sie Ihre Anwesenheitszeit an"],
       courseRules: [
-        v => !!v || 'Bitte wählen Sie mindestens eine Lehrveranstaltung aus'       
+        v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
       ],
       semesterRules: [
-        v => !!v || 'Bitte geben Sie Ihr aktuelles Fachsemester an',
-        v => v.length <=2 || 'Falsche Eingabe'
+        v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an",
+        v => v.length <= 2 || "Falsche Eingabe"
       ],
-      facultyRules: [
-        v => !!v || 'Bitte geben Sie Ihren Studiengang an'       
-      ],
-    }
+      facultyRules: [v => !!v || "Bitte geben Sie Ihren Studiengang an"]
+    };
   },
   created() {
-    // Set the end time to initialize the form.
-    this.setTime();
-
-    // Update the start time to some hours before the current end time.
-    // This substracts a given amount of hours from a date.
-    this.$nextTick(() => {
-      this.form.start = subHours(this.form.end, 2)
-    })
-
     // Create an interval to update current time every 1000ms
-    this.interval = setInterval(() => (this.setTime()), 1000);
+    this.interval = setInterval(() => this.setEndTime(), 1000);
   },
   destroyed() {
     // Cleanup interval when we leave the page.
     clearInterval(this.interval);
   },
+  computed: {
+    maxStartTime() {
+      return format(subMinutes(this.form.end, 10), "HH:mm")
+    },
+    localizedForm() {
+      return {
+        ...this.form,
+        start: this.form.start.toString(),
+        end: this.form.end.toString()
+      };
+    }
+  },
   methods: {
-    setTime() {
+    setEndTime() {
       this.form.end = new Date();
     },
-    validate () {
-      if (this.$refs.form.validate()){
+    validate() {
+      if (this.$refs.form.validate()) {
         if (this.valid == true) {
-          this.dialog = true
+          this.dialog = true;
         }
       }
     },
-    submit () {
-      this.$store.dispatch('submitForm', this.form)
-      this.$refs.form.reset()
-      this.form = initializeForm()
-      this.dialog = false
-      this.valid = false
+    submit() {
+      this.$store.dispatch("submitForm", this.localizedForm);
+      this.form = initializeForm();
+      this.$refs.form.resetValidation();
+      this.dialog = false;
+      this.valid = false;
     }
   }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.v-text-field{
-  color:"#005ea8"
+.v-text-field {
+  color: "#005ea8";
 }
 </style>

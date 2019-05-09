@@ -48,6 +48,14 @@ export default {
       type: String,
       default: null
     },
+    min: {
+      type: String,
+      default: "08:00"
+    },
+    max: {
+      type: String,
+      default: null
+    },
     rules: {
       type: Array,
       default: null
@@ -68,12 +76,6 @@ export default {
         const date = new Date(year, month - 1, day, hours, minutes);
         this.$emit("input", date);
       }
-    },
-    min() {
-      return "08:00";
-    },
-    max() {
-      return format(new Date(), "HH:mm");
     }
   }
 };
