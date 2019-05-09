@@ -40,7 +40,8 @@
 </template>
 
 <script>
-import json2csv from 'json2csv';
+// import json2csv from 'json2csv';
+const json2csv = require('json2csv').parse
 export default {
   data: function() {
     return {
