@@ -8,7 +8,6 @@
     <v-data-table :headers="headers" :items="values" class="elevation-1">
       <template v-slot:items="props">
         <td>{{ props.item.id }}</td>
-        <td class="text-xs-center">{{ props.item.date }}</td>
         <td class="text-xs-center">{{ props.item.start }}</td>
         <td class="text-xs-center">{{ props.item.end }}</td>
         <td class="text-xs-center">{{ props.item.courses.join(', ') }}</td>
@@ -35,7 +34,6 @@ export default {
           sortable: true,
           value: "id"
         },
-        { text: "Datum", value: "date" },
         { text: "Startzeit", value: "start" },
         { text: "Endzeit", value: "end" },
         { text: "Kurse", value: "courses" },
