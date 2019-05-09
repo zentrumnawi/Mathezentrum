@@ -119,12 +119,6 @@ function initializeForm() {
 export default {
   data: function() {
     return {
-      data: [
-                {id: 1, fruit: 'Apple', price: 4.50, unit: 'lb'},
-                {id: 2, fruit: 'Blueberry', price: 3.00, unit: 'lb'},
-                {id: 3, fruit: 'Pineapple', price: 5.15, unit: 'each'},
-            ],
-            fields: ['fruit', 'price', 'unit'],
       form: initializeForm(),
       courses: [
         'Mathe für Physiker 1',
