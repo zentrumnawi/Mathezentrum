@@ -30,7 +30,7 @@
           <v-flex xs3>
             <v-text-field
               v-model="form.end"
-              disabled="true"
+              disabled
               :placeholder= "today"
               label="Endzeit"
             ></v-text-field>
