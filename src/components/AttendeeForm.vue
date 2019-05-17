@@ -20,16 +20,61 @@
             <time-input v-model="form.end" label="Endzeit" disabled></time-input>
           </v-flex>
           <v-flex xs4>
-            <v-select
+
+              <v-autocomplete
+                v-model="form.courses"
+                :items="courses"
+                chips
+                label="Select"
+                item-text="name"
+                item-value="name"
+                multiple
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    :selected="data.selected"
+                    close
+                    class="chip--select-multi"
+                    @input="remove(data.item)"
+                  >
+                    {{ data.item.name }}
+                  </v-chip>
+                </template>
+                <template v-slot:item="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                  </template>
+                  <template v-else>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+
+            <!-- <v-select
               attach
               v-model="form.courses"
               :items="courses"
               :rules="courseRules"
-              multiple
               persistent-hint
+              item-text="`${data.item.name}`"
+              item-value="`${data.item.name}`"
               label="Lehrveranstaltung"
+              multiple
               required
-            ></v-select>
+            >
+              <template slot="selection" slot-scope="data">
+                    {{data.item.name}}
+              </template>
+              <template slot="item" slot-scope="data">
+                  <v-list-tile-content>
+                    <v-list-tile-title v-html="`${data.item.name}`">
+                    </v-list-tile-title>
+                  </v-list-tile-content>
+            </template>
+            </v-select> -->
           </v-flex>
           <v-flex xs4>
             <v-text-field
@@ -95,11 +140,15 @@ export default {
     return {
       interval: null,
       form: initializeForm(),
+      courses_selected: [],
       courses: [
-        "Mathe für Physiker 1",
-        "Mathe für Physiker 2",
-        "Mathe für Physiker 3",
-        "Sonstige"
+        {header: 'Physik'},
+        {name: "Mathe für Physiker 1", group: 'Physik'},
+        {name: "Mathe für Physiker 2", group: 'Physik'},
+        {name: "Mathe für Physiker 3", group: 'Physik'},
+        {divider: true},
+        {header: 'Mathematik'},
+        {name: "Algebra", group: 'Mathematik'}
       ],
       faculties: [
         "BSc Physik",
@@ -146,7 +195,20 @@ export default {
       };
     }
   },
+
+watch: {
+    isUpdating (val) {
+      if (val) {
+        setTimeout(() => (this.isUpdating = false), 3000)
+      }
+    }
+  },
+
   methods: {
+    remove (item) {
+      const index = this.courses.indexOf(item.name)
+      if (index >= 0) this.courses.splice(index, 1)
+    },
     setEndTime() {
       this.form.end = new Date();
     },
