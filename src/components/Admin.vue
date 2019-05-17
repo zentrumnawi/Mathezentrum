@@ -17,18 +17,18 @@
         <td class="text-xs-left">{{ props.item.courses.join(', ') }}</td>
       </template>
     </v-data-table>
+    <!--v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
+      Download
+    </v-btn-->
     <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
-      Download 1
-    </v-btn>
-    <v-btn class="success" :download="downloadName" :href="downloadURL2" :disabled="this.$store.state.attendees.length === 0">
-      Download 2
+      Download
     </v-btn>
     
   </div>
 </template>
 
 <script>
-import { parse } from "json2csv";
+//import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
 
 export default {
@@ -80,53 +80,52 @@ export default {
 
     return this.$store.state.attendees;
     },
-    data() {
-
-            return this.$store.state.attendees;
-    },
+//    data() {
+//          return this.$store.state.attendees;
+//    },
     fields() {
       return this.headers.map(item => item.text);
     },
-    csv() {
-      const opts = {...this.fields, delimiter: this.delimiter, quote: this.quote };
-
-      const csv = parse(this.values, opts);
-
-      return csv;
-    },
+//    csv() {
+//      const opts = {...this.fields, delimiter: this.delimiter, quote: this.quote };
+//
+//      const csv = parse(this.values, opts);
+//
+//      return csv;
+ //   },
     mancsv() {
 
-      let mancsv = "";
+      let output = "";
      
       this.fields.forEach(element => {
-        mancsv += element;
-        mancsv += this.delimiter; 
+        output += element;
+        output += this.delimiter; 
         
       } );
 
-      mancsv += '\n';
+      output += '\n';
 
       this.$store.state.attendees.forEach(element => {
-        mancsv += element.date + this.delimiter;
-        mancsv += element.id + this.delimiter;
-        mancsv += element.start + this.delimiter;
-        mancsv += element.end + this.delimiter;
-        mancsv += element.presence + this.delimiter;
-        mancsv += element.faculty + this.delimiter;
-        mancsv += element.semester + this.delimiter;
-        mancsv += element.courses.join(', ') + this.delimiter;
-        mancsv += '\n';
+        output += element.date + this.delimiter;
+        output += element.id + this.delimiter;
+        output += element.start + this.delimiter;
+        output += element.end + this.delimiter;
+        output += element.presence + this.delimiter;
+        output += element.faculty + this.delimiter;
+        output += element.semester + this.delimiter;
+        output += element.courses.join(', ') + this.delimiter;
+        output += '\n';
       });
 
-      return mancsv;
+      return output;
     },
 
+//    downloadURL() {
+//     return this.$store.state.attendees.length > 0
+//        ? "data:text/csv," + encodeURIComponent(this.csv)
+//        : "javascript:void(0);";
+//    },
     downloadURL() {
-      return this.$store.state.attendees.length > 0
-        ? "data:text/csv," + encodeURIComponent(this.csv)
-        : "javascript:void(0);";
-    },
-    downloadURL2() {
       return this.$store.state.attendees.length > 0
         ? "data:text/csv," + encodeURIComponent(this.mancsv)
         : "javascript:void(0);";
