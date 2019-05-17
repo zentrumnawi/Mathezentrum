@@ -25,7 +25,7 @@
                 v-model="form.courses"
                 :items="courses"
                 chips
-                label="Select"
+                label="Lehrveranstaltung"
                 item-text="name"
                 item-value="name"
                 multiple
@@ -52,29 +52,6 @@
                   </template>
                 </template>
               </v-autocomplete>
-
-            <!-- <v-select
-              attach
-              v-model="form.courses"
-              :items="courses"
-              :rules="courseRules"
-              persistent-hint
-              item-text="`${data.item.name}`"
-              item-value="`${data.item.name}`"
-              label="Lehrveranstaltung"
-              multiple
-              required
-            >
-              <template slot="selection" slot-scope="data">
-                    {{data.item.name}}
-              </template>
-              <template slot="item" slot-scope="data">
-                  <v-list-tile-content>
-                    <v-list-tile-title v-html="`${data.item.name}`">
-                    </v-list-tile-title>
-                  </v-list-tile-content>
-            </template>
-            </v-select> -->
           </v-flex>
           <v-flex xs4>
             <v-text-field
@@ -143,12 +120,12 @@ export default {
       courses_selected: [],
       courses: [
         {header: 'Physik'},
-        {name: "Mathe für Physiker 1", group: 'Physik'},
-        {name: "Mathe für Physiker 2", group: 'Physik'},
-        {name: "Mathe für Physiker 3", group: 'Physik'},
+        {name: "Mathe für Physiker 1"},
+        {name: "Mathe für Physiker 2"},
+        {name: "Mathe für Physiker 3"},
         {divider: true},
         {header: 'Mathematik'},
-        {name: "Algebra", group: 'Mathematik'}
+        {name: "Algebra"}
       ],
       faculties: [
         "BSc Physik",
@@ -206,8 +183,8 @@ watch: {
 
   methods: {
     remove (item) {
-      const index = this.courses.indexOf(item.name)
-      if (index >= 0) this.courses.splice(index, 1)
+      const index = this.form.courses.indexOf(item.name)
+      if (index >= 0) this.form.courses.splice(index, 1)
     },
     setEndTime() {
       this.form.end = new Date();
