@@ -51,9 +51,6 @@ export default {
   props: {
     downloadName: {
       default: "export.csv"
-    },
-    delimiter: {
-      default: ";"
     }
   },
   computed: {
@@ -67,7 +64,7 @@ export default {
       return this.headers.map(item => item.value);
     },
     csv() {
-      const opts = { ...this.fields };
+      const opts = {  ...this.fields, delimiter:';' };
 
       const csv = parse(this.data, opts);
       return csv;
