@@ -105,9 +105,9 @@ function initializeForm() {
     id: "",
     start: subHours(new Date(), 2),
     end: new Date(),
-    courses: "",
+    faculty: null,
     semester: "",
-    faculty: null
+    courses: ""
   };
 }
 
