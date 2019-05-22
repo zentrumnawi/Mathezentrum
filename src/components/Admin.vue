@@ -48,7 +48,7 @@ export default {
         },
         { text: "Startzeit", value: "start" },
         { text: "Endzeit", value: "end" },
-        { text: "Präsenzzeit", value: "presence" },
+        { text: "Anwesend", value: "presence" },
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
         { text: "Kurse", value: "courses" },
