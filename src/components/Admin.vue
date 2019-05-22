@@ -14,12 +14,14 @@
         <td class="text-xs-left">{{ props.item.presence }}</td>
         <td class="text-xs-left">{{ props.item.faculty }}</td>
         <td class="text-xs-left">{{ props.item.semester }}</td>
-        <td class="text-xs-left">{{ props.item.courses.join(', ') }}</td>
+        <td class="text-xs-left">{{ props.item.courses }}</td>
       </template>
     </v-data-table>
     <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
       Download
     </v-btn>
+    <hr>
+    {{values}}
   </div>
 
 </template>
@@ -67,14 +69,15 @@ export default {
   methods: {
 
     format(element) {
-      const differenceMinutes = differenceInMinutes(element.end, element.start)
-      const differenceDate = addMinutes(new Date(0), differenceMinutes)
+      const differenceMinutes = differenceInMinutes(element.end, element.start);
+      const differenceDate = addMinutes(new Date(0), differenceMinutes);
 
       return {
         presence: format(differenceDate,'HH:mm'),
         date: format(element.start, 'MM.DD.YYYY'),
         start: format(element.start,'HH:mm'),
-        end: format(element.end,'HH:mm')
+        end: format(element.end,'HH:mm'),
+        courses: element.courses.join(', ')
       };
     },
   },
