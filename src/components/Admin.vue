@@ -20,8 +20,6 @@
     <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
       Download
     </v-btn>
-    <hr>
-    {{values}}
   </div>
 
 </template>
