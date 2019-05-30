@@ -173,13 +173,13 @@ export default {
     }
   },
 
-watch: {
-    isUpdating (val) {
-      if (val) {
-        setTimeout(() => (this.isUpdating = false), 3000)
-      }
-    }
-  },
+// watch: {
+//     isUpdating (val) {
+//       if (val) {
+//         setTimeout(() => (this.isUpdating = false), 3000)
+//       }
+//     }
+//   },
 
   methods: {
     remove (item) {
