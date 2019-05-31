@@ -1,5 +1,24 @@
 <template>
-  <div id="FormData">
+  <v-layout v-if="!authenticated">
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-card-title primary-title class="justify-center">
+          <h2>Authentifizierung</h2>
+        </v-card-title>
+          <v-card-text>
+            <p>Bitte geben Sie das Passwort ein.</p>
+          <v-text-field v-model="password" label="Password"></v-text-field>
+          </v-card-text>
+
+          <v-card-actions class="justify-center">
+            <v-spacer></v-spacer>
+            <v-btn class="error" @click="authenticate">Absenden</v-btn>
+          </v-card-actions>
+      </v-card>
+    </v-flex>
+  </v-layout>
+
+  <div v-else id="FormData">
     <v-card-title color="black">
       <div>
         <h3 class="headline mb-0">Teilnehmerliste</h3>
@@ -34,6 +53,9 @@ import { format, addMinutes, differenceInMinutes } from "date-fns";
 export default {
   data: function() {
     return {
+      authenticated: false,
+      password: null,
+      requiredPassword: "helloworld",
       headers: [
         {
           text: "Datum",
@@ -67,8 +89,14 @@ export default {
       default: ''
     }
   },
-  computed: {
-    
+  methods: {
+      authenticate() {
+        if (this.password != this.requiredPassword) return;
+
+        this.authenticated = true;
+      }
+    },
+  computed: {    
     values() {
 
         this.$store.state.attendees.forEach(element => {
