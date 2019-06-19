@@ -54,7 +54,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat @click.native="stepper = 1">Zurück</v-btn>
+                    <!-- <v-btn flat @click.native="this.stepper = 1">Zurück</v-btn> -->
                     <!-- @click.native="valid ? stepper = 2 : stepper = 1" -->
                     <v-btn color="primary" @click="validate">Weiter</v-btn>
                 </v-card-actions>
@@ -99,18 +99,6 @@
                     </template>
                   </template>
                 </v-autocomplete>
-              </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn flat @click.native="stepper = 1">Zurück</v-btn>
-                    <v-btn color="primary" @click="validate">Weiter</v-btn>
-                </v-card-actions>
-            </v-stepper-content>
-          </v-form>
-
-          <v-form ref="form_coursephysic" v-model="valid" lazy-validation>
-            <v-stepper-content step="3">
-              <v-card-text>
                 <v-card-title class="justify-center">
                   <h2>Physik</h2>
                 </v-card-title>
@@ -146,23 +134,24 @@
                     </template>
                   </template>
                 </v-autocomplete>
+
               </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat @click.native="stepper = 2">Zurück</v-btn>
-                    <v-btn color="primary" @click="validate" @click.native="stepper = 4">Weiter</v-btn>
+                    <v-btn flat @click.native="stepper = 1">Zurück</v-btn>
+                    <v-btn color="primary" @click="validate">Weiter</v-btn>
                 </v-card-actions>
             </v-stepper-content>
           </v-form>
 
-            <v-stepper-content step="4">
+            <v-stepper-content step="3">
               <v-card-text>
                   <time-input v-model="form.start" :max="maxStartTime" :rules="timeRules" label="Startzeit" required></time-input>
                   <time-input v-model="form.end" label="Endzeit" disabled></time-input>
               </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat @click.native="stepper = 3">Zurück</v-btn>
+                    <v-btn flat @click.native="stepper = 2">Zurück</v-btn>
                     <v-btn color="primary" @click="validate">Absenden</v-btn>
                       <v-dialog v-model="dialog" persistent max-width="600">
                         <v-card>
@@ -184,6 +173,8 @@
           </v-form>
         </v-stepper-items>
       </v-stepper>
+      Valid: {{ this.valid == null ? 'null' : this.valid }}
+      Stepper: {{ this.stepper}}
     <!-- </v-form> -->
   </v-container>
 </template>
@@ -215,10 +206,6 @@ export default {
                 },
                 {
                     label: 'Course detail mathmatics',
-                    completed: false,
-                },
-                {
-                    label: 'Course detail physics',
                     completed: false,
                 },
                 {
@@ -289,7 +276,7 @@ export default {
         "Sonstige"
       ],
       dialog: false,
-      valid: false,
+      valid: true,
       disabled: 0,
       IDRules: [
         v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
@@ -344,32 +331,47 @@ export default {
       this.form.end = new Date();
     },
     validate() {
-      if (this.$refs.form.validate()) {
-        if (this.valid == true && this.stepper == 4) {
-          this.dialog = true;
-        }
-        if (this.$refs.form_studinfo.validate()) {
-          if (this.valid == true) {
-            this.stepper += 1
-            this.valid = false
-          }
-        }
-        if (this.$refs.form_coursemath.validate()) {
-          if (this.valid == true) {
-            this.stepper += 1
-            this.valid = false
-          }
-        }
-        if (this.$refs.form_coursephysic.validate()) {
-          if (this.valid == true) {
-            this.stepper += 1
-            this.valid = false
-          }
-        }
-
-
+      // if (this.$refs.form.validate()) {
+      if (this.valid == true && this.stepper == 3) {
+        this.dialog = true;
+        this.stepper -= 1
       }
+      if (this.$refs.form_studinfo.validate()) {
+        if (this.valid == true) {
+          this.stepper += 1
+          this.valid = false
+        }
+      }
+      if (this.$refs.form_coursemath.validate()) {
+        if (this.valid == true) {
+          this.valid = true
+          this.stepper += 1
+        }
+      }
+      // }
     },
+
+    // validate() {
+    //   if (this.$refs.form.validate()) {
+    //     if (this.valid == true && this.stepper == 3) {
+    //       this.dialog = true;
+    //       this.stepper -= 1
+    //     }
+    //     if (this.$refs.form_studinfo.validate()) {
+    //       if (this.valid == true) {
+    //         this.stepper += 1
+    //         this.valid = false
+    //       }
+    //     }
+    //     if (this.$refs.form_coursemath.validate()) {
+    //       if (this.valid == true) {
+            
+    //         this.stepper += 1
+    //         this.valid = true
+    //       }
+    //     }
+    //   }
+    // },
     submit() {
       this.$store.dispatch("submitForm", this.localizedForm);
       this.form = initializeForm();
