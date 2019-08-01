@@ -2,7 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css' // Ensure you are using css-loader
-// import VeeValidate from 'vee-validate'
+import VeeValidate from 'vee-validate'
 import DataTable from 'v-data-table'
 import { store } from './store/store'
 import json2csv from 'json2csv'
@@ -18,6 +18,7 @@ Vue.use(Vuetify, {
 });
 Vue.config.productionTip = false
 
+Vue.use(VeeValidate);
 // Vue.use(VeeValidate)
 Vue.use(VueRouter);
 Vue.use(DataTable);
