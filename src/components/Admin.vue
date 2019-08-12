@@ -55,7 +55,7 @@ export default {
     return {
       authenticated: false,
       password: null,
-      requiredPassword: "helloworld",
+      requiredPassword: "Passwort",
       headers: [
         {
           text: "Datum",

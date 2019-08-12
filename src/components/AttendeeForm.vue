@@ -173,9 +173,9 @@
         <!-- </v-form> -->
       </v-stepper-items>
     </v-stepper>
-    Valid: {{ this.valid == null ? 'null' : this.valid }}
+<!--     Valid: {{ this.valid == null ? 'null' : this.valid }}
     Stepper: {{ this.stepper}}
-    <!-- </v-form> -->
+ -->    <!-- </v-form> -->
   </v-container>
 </template>
 
@@ -199,15 +199,15 @@ export default {
       stepper: 0,
       steps: [
         {
-          label: "Personal Infos",
+          label: "Studenten-ID",
           completed: false
         },
         {
-          label: "Course detail mathmatics",
+          label: "Lehrveranstaltungen",
           completed: false
         },
         {
-          label: "Timestamp",
+          label: "Zeitangabe",
           completed: false
         }
       ],
@@ -284,6 +284,7 @@ export default {
         v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
       ],
       semesterRules: [
+        v => v < 30 || "Falsche Eingabe", 
         v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an",
         v => v.length <= 2 || "Falsche Eingabe"
       ],
@@ -310,13 +311,6 @@ export default {
       };
     }
   },
-  // watch: {
-  //     isUpdating (val) {
-  //       if (val) {
-  //         setTimeout(() => (this.isUpdating = false), 3000)
-  //       }
-  //     }
-  //   },
   methods: {
     remove(item) {
       const index = this.form.courses.indexOf(item.name);
