@@ -1,57 +1,158 @@
 <template>
   <v-container>
-    <v-form ref="form" v-model="valid" lazy-validation>
-      <v-container grid-list-md text-xs-center>
-        <v-layout row wrap justify-space-around>
-          <v-flex xs6>
-            <v-text-field
-              v-model="form.id"
-              :rules="IDRules"
-              maxlength="9"
-              label="ID"
-              placeholder="XX999999"
+    <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
+    <!-- <v-container grid-list-md text-xs-center>
+    <v-layout row wrap justify-space-around>-->
+    <!-- <v-flex xs6> -->
+    <v-stepper v-model="stepper">
+      <v-stepper-header>
+        <div class="step" v-for="(step, index) in steps" :key="index">
+          <v-stepper-step
+            color="success"
+            :edit-icon="'check_circle'"
+            :complete-icon="'edit'"
+            :step="index + 1"
+            :complete="(index + 1 ) <= stepper"
+            :editable="(index + 1) < stepper"
+          >{{ step.label }}</v-stepper-step>
+          <v-divider></v-divider>
+        </div>
+      </v-stepper-header>
+      <v-stepper-items>
+        <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
+        <v-stepper-content step="1">
+          <v-form ref="form_studinfo" v-model="valid" lazy-validation>
+            <v-card-text>
+              <v-text-field
+                v-model="form.id"
+                :rules="IDRules"
+                maxlength="9"
+                label="ID"
+                placeholder="XX999999"
+                required
+              ></v-text-field>
+            </v-card-text>
+            <v-card-text>
+              <v-text-field
+                v-model="form.semester"
+                :rules="semesterRules"
+                label="Fachsemester"
+                maxlength="2"
+                required
+              ></v-text-field>
+            </v-card-text>
+            <v-card-text>
+              <v-select
+                attach
+                v-model="form.faculty"
+                :items="faculties"
+                :rules="facultyRules"
+                label="Studiengang"
+                required
+              ></v-select>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <!-- <v-btn flat @click.native="this.stepper = 1">Zurück</v-btn> -->
+              <!-- @click.native="valid ? stepper = 2 : stepper = 1" -->
+              <v-btn color="primary" @click="validate" :disabled="!valid">Weiter</v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-stepper-content>
+
+        <v-stepper-content step="2">
+          <v-form ref="form_coursemath" v-model="valid" lazy-validation>
+            <v-card-text>
+              <v-card-title class="justify-center">
+                <h2>Mathematik</h2>
+              </v-card-title>
+              <v-autocomplete
+                v-model="form.courses"
+                :items="courses_math"
+                :rules="courseRules"
+                chips
+                label="Lehrveranstaltung"
+                item-text="name"
+                item-value="name"
+                multiple
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    :selected="data.selected"
+                    close
+                    class="chip--select-multi"
+                    @input="remove(data.item)"
+                  >{{ data.item.name }}</v-chip>
+                </template>
+                <template v-slot:item="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                  </template>
+                  <template v-else>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+              <v-card-title class="justify-center">
+                <h2>Physik</h2>
+              </v-card-title>
+              <v-autocomplete
+                v-model="form.courses"
+                :items="courses_physics"
+                :rules="courseRules"
+                chips
+                label="Lehrveranstaltung"
+                item-text="name"
+                item-value="name"
+                multiple
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    :selected="data.selected"
+                    close
+                    class="chip--select-multi"
+                    @input="remove(data.item)"
+                  >{{ data.item.name }}</v-chip>
+                </template>
+                <template v-slot:item="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                  </template>
+                  <template v-else>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+            </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn flat @click.native="stepper = 1">Zurück</v-btn>
+              <v-btn color="primary" @click="validate">Weiter</v-btn>
+            </v-card-actions>
+          </v-form>
+        </v-stepper-content>
+
+        <v-stepper-content step="3">
+          <v-card-text>
+            <time-input
+              v-model="form.start"
+              :max="maxStartTime"
+              :rules="timeRules"
+              label="Startzeit"
               required
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs3>
-            <time-input v-model="form.start" :max="maxStartTime" :rules="timeRules" label="Startzeit" required></time-input>
-          </v-flex>
-          <v-flex xs3>
+            ></time-input>
             <time-input v-model="form.end" label="Endzeit" disabled></time-input>
-          </v-flex>
-          <v-flex xs4>
-            <v-select
-              attach
-              v-model="form.courses"
-              :items="courses"
-              :rules="courseRules"
-              multiple
-              persistent-hint
-              label="Lehrveranstaltung"
-              required
-            ></v-select>
-          </v-flex>
-          <v-flex xs4>
-            <v-text-field
-              v-model="form.semester"
-              :rules="semesterRules"
-              label="Fachsemester"
-              maxlength="2"
-              required
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs4>
-            <v-select
-              attach
-              v-model="form.faculty"
-              :items="faculties"
-              :rules="facultyRules"
-              label="Studiengang"
-              required
-            ></v-select>
-          </v-flex>
-          <v-flex>
-            <v-btn color="success" @click="validate">Abschicken</v-btn>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn flat @click.native="stepper = 2">Zurück</v-btn>
+            <v-btn color="primary" @click="validate">Absenden</v-btn>
             <v-dialog v-model="dialog" persistent max-width="600">
               <v-card>
                 <v-card-text class="display-1">Sind deine Angaben korrekt ?</v-card-text>
@@ -67,49 +168,111 @@
                 </v-card-actions>
               </v-card>
             </v-dialog>
-          </v-flex>
-        </v-layout>
-      </v-container>
-    </v-form>
+          </v-card-actions>
+        </v-stepper-content>
+        <!-- </v-form> -->
+      </v-stepper-items>
+    </v-stepper>
+Valid: {{ this.valid == null ? 'null' : this.valid }}
+Stepper: {{ this.stepper}}
   </v-container>
 </template>
 
 <script>
 import { format, subHours, subMinutes } from "date-fns";
 import TimeInput from "@/components/TimeInput";
-
 function initializeForm() {
   return {
     id: "",
     start: subHours(new Date(), 2),
     end: new Date(),
-    courses: "",
+    faculty: null,
     semester: "",
-    faculty: null
+    courses: ""
   };
 }
-
 export default {
   components: { TimeInput },
   data: function() {
     return {
+      stepper: 0,
+      steps: [
+        {
+          label: "Studenten-ID",
+          completed: false
+        },
+        {
+          label: "Lehrveranstaltungen",
+          completed: false
+        },
+        {
+          label: "Zeitangabe",
+          completed: false
+        }
+      ],
       interval: null,
       form: initializeForm(),
-      courses: [
-        "Mathe für Physiker 1",
-        "Mathe für Physiker 2",
-        "Mathe für Physiker 3",
-        "Sonstige"
+      courses_selected: [],
+      courses_physics: [
+        { header: "Physik" },
+        { name: "Theoretische Physik 1" },
+        { name: "Theoretische Physik 2" },
+        { name: "Theoretische Physik 3" },
+        { name: "Theoretische Physik 4" },
+        { name: "Experimentalphysik 1a" },
+        { name: "Experimentalphysik 1b" },
+        { name: "Experimentalphysik 2" },
+        { name: "Experimentalphysik 4a" },
+        { name: "Experimentalphysik 4b" },
+        { name: "Anfängerpraktikum 1" },
+        { name: "Anfängerpraktikum 2" },
+        { name: "Numerische Methoden der Physik" },
+        { name: "Einführung in Programmierung 2" },
+        { name: "Einführung in Programmierung 1" },
+        { name: "Astrophysik 1" },
+        { name: "Astrophysik 2" },
+        { name: "Physikalische Chemie I" },
+        { name: "Physik und Chemie der Atmosphäre" },
+        { name: "Einführung in die Geophysik" },
+        { name: "Physik für Biologen" },
+        { name: "Physik für Pharmazeuten" },
+        { name: "Physik für Zahnmediziner" },
+        { name: "Physik für Chemiker & andere NatWiss 2" },
+        { name: "Physik für Chemiker & andere NatWiss 2" }
+      ],
+      courses_math: [
+        { header: "Mathematik" },
+        { name: "Mathe 1 (Physik)" },
+        { name: "Mathe 2 (Physik)" },
+        { name: "Mathe 3 (Physik)" },
+        { name: "Mathe 1 (Meteorologie)" },
+        { name: "Mathe 2 (Meteorologie)" },
+        { name: "Mathe 1 (Informatik)" },
+        { name: "Mathe 2 (Informatik)" },
+        { name: "Mathe 1 (Naturwissenschaften)" },
+        { name: "Mathe 2 (Naturwissenschaften)" },
+        { name: "Mathe (Pharmazie)" },
+        { name: "Mathematische Verfahren 1 (Chemie)" },
+        { name: "Mathematische Verfahren 2 (Chemie)" }
       ],
       faculties: [
-        "BSc Physik",
-        "BSc Meteorologie",
-        "BSc Biologie",
-        "BSc Pharmazie",
+        "Mathematik",
+        "Physik",
+        "Meteorologie",
+        "Informatik",
+        "Chemie",
+        "Geowissenschaften",
+        "Biophysik",
+        "Bioinformatik",
+        "Biochemie",
+        "Pharmazie",
+        "Medizin",
+        "Zahnmedizin",
+        "Wirtschaftspädagogik",
         "Sonstige"
       ],
       dialog: false,
-      valid: false,
+      valid: true,
       disabled: 0,
       IDRules: [
         v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
@@ -120,6 +283,7 @@ export default {
         v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
       ],
       semesterRules: [
+        v => v < 30 || "Falsche Eingabe", 
         v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an",
         v => v.length <= 2 || "Falsche Eingabe"
       ],
@@ -136,7 +300,7 @@ export default {
   },
   computed: {
     maxStartTime() {
-      return format(subMinutes(this.form.end, 10), "HH:mm")
+      return format(subMinutes(this.form.end, 10), "HH:mm");
     },
     localizedForm() {
       return {
@@ -147,22 +311,87 @@ export default {
     }
   },
   methods: {
+    remove(item) {
+      const index = this.form.courses.indexOf(item.name);
+      if (index >= 0) this.form.courses.splice(index, 1);
+    },
     setEndTime() {
       this.form.end = new Date();
     },
+    progress() {
+      this.stepper += 1;
+      // this.valid = false
+     
+    },
     validate() {
-      if (this.$refs.form.validate()) {
-        if (this.valid == true) {
-          this.dialog = true;
+      // if (this.$refs.form.validate()) {
+        if (this.stepper == 3) {
+          this.dialog = true
+        }
+        if (this.stepper == 2) {
+         this.$refs.form_coursemath.validate();
+
+        if (this.valid && this.form.courses.length > 0) {
+          this.$refs.form_coursemath.resetValidation();
+          this.progress();
         }
       }
+      if (this.stepper == 1) {
+        this.$refs.form_studinfo.validate();
+
+        if (this.valid) {
+          this.$refs.form_studinfo.resetValidation();
+          this.progress();
+        }
+      }
+      
+      // if (this.valid == true && this.stepper == 3) {
+      //   this.dialog = true;
+      //   this.stepper -= 1
+      // }
+      // if (this.$refs.form_studinfo.validate()) {
+      //   if (this.valid == true) {
+      //     this.stepper += 1
+      //     this.valid = false
+      //   }
+      // }
+      // if (this.$refs.form_coursemath.validate()) {
+      //   if (this.valid == true) {
+      //     this.valid = false
+      //     this.stepper += 1
+      //   }
+      // }
+      // }
     },
+    // validate() {
+    //   if (this.$refs.form.validate()) {
+    //     if (this.valid == true && this.stepper == 3) {
+    //       this.dialog = true;
+    //       this.stepper -= 1
+    //     }
+    //     if (this.$refs.form_studinfo.validate()) {
+    //       if (this.valid == true) {
+    //         this.stepper += 1
+    //         this.valid = false
+    //       }
+    //     }
+    //     if (this.$refs.form_coursemath.validate()) {
+    //       if (this.valid == true) {
+
+    //         this.stepper += 1
+    //         this.valid = true
+    //       }
+    //     }
+    //   }
+    // },
     submit() {
       this.$store.dispatch("submitForm", this.localizedForm);
       this.form = initializeForm();
-      this.$refs.form.resetValidation();
+      this.$refs.form_studinfo.reset();
+      this.$refs.form_coursemath.reset();
       this.dialog = false;
       this.valid = false;
+      this.stepper = 1;
     }
   }
 };

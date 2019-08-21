@@ -14,7 +14,11 @@
     <v-footer app dark color="#005ea8">
       <!-- <img width=10% class="thumbnail float-center" :src="require('@/assets/LogoGUF.png')"> -->
       <v-card-actions class="justify-left">
-        &copy; 2019&nbsp;&nbsp;|&nbsp;&nbsp;<img height=20px :src="require('@/assets/Icon_ZentrumNaturwissenschaften.svg')">&nbsp;&nbsp;<strong>Zentrum Naturwissenschaften</strong>
+        &copy; 2019&nbsp;&nbsp;|&nbsp;&nbsp;
+        <router-link to="/admin">
+          <img height=20px :src="require('@/assets/Icon_ZentrumNaturwissenschaften.svg')">
+        </router-link>
+          &nbsp;&nbsp;<strong>Zentrum Naturwissenschaften</strong>
       </v-card-actions>    </v-footer>
   </v-app>
 </template>
