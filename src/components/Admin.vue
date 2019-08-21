@@ -16,6 +16,9 @@
           </v-card-actions>
       </v-card>
     </v-flex>
+    Password: {{this.requiredPassword}}
+    this.password: {{this.password}}
+    this.password != this.requiredPassword: {{this.password != this.requiredPassword}}
   </v-layout>
 
   <div v-else id="FormData">
@@ -55,7 +58,7 @@ export default {
     return {
       authenticated: false,
       password: null,
-      requiredPassword: "Passwort",
+      requiredPassword: "HelloWorld",
       headers: [
         {
           text: "Datum",
@@ -101,7 +104,7 @@ export default {
 
         this.$store.state.attendees.forEach(element => {
         element.presence = format(addMinutes(new Date(0),differenceInMinutes(element.end, element.start)),'HH:mm');
-        element.date = format(element.start, 'MM.DD.YYYY');
+        element.date = format(element.start, 'DD.MM.YYYY');
         element.start = format(element.start,'HH:mm');
         element.end = format(element.end,'HH:mm');
       });
@@ -125,7 +128,8 @@ export default {
 
       let output = "";
      
-      this.fields.forEach(element => {
+        Object.keys(this.fields).forEach(element => {
+      // this.fields.forEach(element => {
         output += element;
         output += this.delimiter; 
         

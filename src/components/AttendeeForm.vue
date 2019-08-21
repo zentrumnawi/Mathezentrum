@@ -173,9 +173,8 @@
         <!-- </v-form> -->
       </v-stepper-items>
     </v-stepper>
-<!--     Valid: {{ this.valid == null ? 'null' : this.valid }}
-    Stepper: {{ this.stepper}}
- -->    <!-- </v-form> -->
+Valid: {{ this.valid == null ? 'null' : this.valid }}
+Stepper: {{ this.stepper}}
   </v-container>
 </template>
 
