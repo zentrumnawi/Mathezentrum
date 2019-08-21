@@ -16,9 +16,6 @@
           </v-card-actions>
       </v-card>
     </v-flex>
-    Password: {{this.requiredPassword}}
-    this.password: {{this.password}}
-    this.password != this.requiredPassword: {{this.password != this.requiredPassword}}
   </v-layout>
 
   <div v-else id="FormData">
