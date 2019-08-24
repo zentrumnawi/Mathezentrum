@@ -33,7 +33,7 @@
         <td class="text-xs-left">{{ props.item.presence }}</td>
         <td class="text-xs-left">{{ props.item.faculty }}</td>
         <td class="text-xs-left">{{ props.item.semester }}</td>
-        <td class="text-xs-left">{{ props.item.courses.join(', ') }}</td>
+        <td class="text-xs-left">{{ props.item.courses }}</td>
       </template>
     </v-data-table>
     <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
