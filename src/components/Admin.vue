@@ -52,7 +52,8 @@ export default {
     return {
       authenticated: false,
       password: null,
-      requiredPassword: "HelloWorld",
+      requiredPassword: null,
+      flds: [],
       headers: [
         {
           text: "Datum",
@@ -105,25 +106,25 @@ export default {
       };
     },
   },
+  created() {
+        this.flds = this.headers.map(item => ({
+      label: item.text,
+      value: item.value
+    }));
+    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD !== undefined ? process.env.VUE_APP_ADMIN_PASSWORD : "HelloWorld";
+  },
   computed: {
-    
     values() {
       const newvalues = this.$store.state.attendees;
       return newvalues.map(element => ({ ...element, ...this.format(element) }));
     },
-    fields() {
-      return this.headers.map(item => ({
-        label: item.text,
-        value: item.value
-      }));
-    },
     csv() {
-      const opts = {fields: this.fields, delimiter: this.delimiter, quote: this.quote, withBOM: true};    
-      const csv = parse(this.values, opts);      
+      const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
+      const csv = parse(this.values, opts);
+
       return csv;
     },  
     downloadURL() {
-
       return this.$store.state.attendees.length > 0
         ? "data:text/csv," + encodeURIComponent(this.csv)
         : "javascript:void(0);";
