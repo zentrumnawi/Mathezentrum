@@ -33,13 +33,14 @@
               ></v-text-field>
             </v-card-text>
             <v-card-text>
-              <v-text-field
+              <v-select
+                attach
                 v-model="form.semester"
+                :items="semester"
                 :rules="semesterRules"
                 label="Fachsemester"
-                maxlength="2"
                 required
-              ></v-text-field>
+              ></v-select>
             </v-card-text>
             <v-card-text>
               <v-select
@@ -255,6 +256,9 @@ export default {
         { name: "Mathematische Verfahren 1 (Chemie)" },
         { name: "Mathematische Verfahren 2 (Chemie)" }
       ],
+      semester: [
+        "1","2","3","4","5","6","6+"
+      ],
       faculties: [
         "Mathematik",
         "Physik",
@@ -283,9 +287,7 @@ export default {
         v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
       ],
       semesterRules: [
-        v => v < 30 || "Falsche Eingabe", 
         v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an",
-        v => v.length <= 2 || "Falsche Eingabe"
       ],
       facultyRules: [v => !!v || "Bitte geben Sie Ihren Studiengang an"]
     };
