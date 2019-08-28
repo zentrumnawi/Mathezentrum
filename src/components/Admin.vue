@@ -78,7 +78,7 @@ export default {
   },
   props: {
     downloadName: {
-      default: format(Date.now(), 'YYMMDD_HHMMSS') + '_mz.csv'
+      default: format(Date.now(), 'YYMMDD_HHmm') + '_mz.csv'
     },
     delimiter: {
       default: ";"
