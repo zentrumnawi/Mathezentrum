@@ -189,6 +189,7 @@ Stepper: {{ this.stepper}} -->
 <script>
 import { format, subHours, subMinutes } from "date-fns";
 import TimeInput from "@/components/TimeInput";
+import uuid from 'uuid/v4';
 function initializeForm() {
   return {
     id: "",
@@ -391,7 +392,7 @@ export default {
     //   }
     // },
     submit() {
-      this.$store.dispatch("submitForm", this.localizedForm);
+      this.$store.dispatch("submitForm", { ...this.localizedForm, idnumber: uuid()});
       this.form = initializeForm();
       this.$refs.form_studinfo.reset();
       this.$refs.form_coursemath.reset();

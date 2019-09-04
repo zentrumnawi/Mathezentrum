@@ -24,7 +24,7 @@
         <h3 class="headline mb-0">Teilnehmerliste</h3>
       </div>
     </v-card-title>
-    <v-data-table :headers="headers" :items="values" class="elevation-1">
+    <v-data-table :headers="headers" :items="values" item-key="idnumber" class="elevation-1">
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.date }}</td>
         <td class="text-xs-left">{{ props.item.id }}</td>
