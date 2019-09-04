@@ -3,7 +3,6 @@
     <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
     <!-- <v-container grid-list-md text-xs-center>
     <v-layout row wrap justify-space-around>-->
-    <!-- <v-flex xs6> -->
     <v-stepper v-model="stepper">
       <v-stepper-header>
         <div class="step" v-for="(step, index) in steps" :key="index">
@@ -22,36 +21,44 @@
         <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
         <v-stepper-content step="1">
           <v-form ref="form_studinfo" v-model="valid" lazy-validation>
-            <v-card-text>
-              <v-text-field
-                v-model="form.id"
-                :rules="IDRules"
-                maxlength="9"
-                label="ID"
-                placeholder="XX999999"
-                required
-              ></v-text-field>
-            </v-card-text>
-            <v-card-text>
-              <v-select
-                attach
-                v-model="form.semester"
-                :items="semester"
-                :rules="semesterRules"
-                label="Fachsemester"
-                required
-              ></v-select>
-            </v-card-text>
-            <v-card-text>
-              <v-select
-                attach
-                v-model="form.faculty"
-                :items="faculties"
-                :rules="facultyRules"
-                label="Studiengang"
-                required
-              ></v-select>
-            </v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12 md6>
+                <v-card-text>
+                  <v-text-field
+                    v-model="form.id"
+                    :rules="IDRules"
+                    maxlength="9"
+                    label="ID"
+                    placeholder="XX999999"
+                    required
+                  ></v-text-field>
+                </v-card-text>
+            </v-flex>
+            <v-flex xs6 md6>
+              <v-card-text>
+                <v-select
+                  attach
+                  v-model="form.semester"
+                  :items="semester"
+                  :rules="semesterRules"
+                  label="Fachsemester"
+                  required
+                ></v-select>             
+              </v-card-text>
+            </v-flex>
+            <v-flex xs6 md6>
+              <v-card-text>
+                <v-select
+                  attach
+                  v-model="form.faculty"
+                  :items="faculties"
+                  :rules="facultyRules"
+                  label="Studiengang"
+                  required
+                ></v-select>
+              </v-card-text>
+            </v-flex>
+            </v-layout>
             <v-card-actions>
               <v-spacer></v-spacer>
               <!-- <v-btn flat @click.native="this.stepper = 1">Zurück</v-btn> -->
@@ -332,7 +339,6 @@ export default {
         }
         if (this.stepper == 2) {
          this.$refs.form_coursemath.validate();
-
         if (this.valid && this.form.courses.length > 0) {
           this.$refs.form_coursemath.resetValidation();
           this.progress();
@@ -340,7 +346,6 @@ export default {
       }
       if (this.stepper == 1) {
         this.$refs.form_studinfo.validate();
-
         if (this.valid) {
           this.$refs.form_studinfo.resetValidation();
           this.progress();
@@ -379,7 +384,6 @@ export default {
     //     }
     //     if (this.$refs.form_coursemath.validate()) {
     //       if (this.valid == true) {
-
     //         this.stepper += 1
     //         this.valid = true
     //       }
