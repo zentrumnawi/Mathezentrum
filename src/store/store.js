@@ -6,7 +6,10 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    attendees: []
+    attendees: [],
+    courses_phy_act: [],
+    courses_math_act: [],
+    faculties_act: []
   },
   actions: {
     submitForm({ commit }, formData) {

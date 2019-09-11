@@ -1,5 +1,5 @@
 <template>
-  <v-layout v-if="!authenticated">
+  <v-layout v-if="authenticated">
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-card-title primary-title class="justify-center">
@@ -19,31 +19,54 @@
   </v-layout>
 
   <div v-else id="FormData">
-    <v-card-title color="black">
-      <div>
-        <h3 class="headline mb-0">Teilnehmerliste</h3>
-      </div>
+    <v-tabs>
+      <v-tab ripple>Teilnehmerliste</v-tab>
+      <v-tab ripple>Kurse</v-tab>
+      <!--v-tab ripple>Einstellungen</v-tab-->
+
       <v-spacer></v-spacer>
       <v-btn class="secondary" to="/">
         Logout
       </v-btn>
-    </v-card-title>
-    <v-data-table :headers="headers" :items="values" class="elevation-1">
-      <template v-slot:items="props">
-        <td class="text-xs-left">{{ props.item.date }}</td>
-        <td class="text-xs-left">{{ props.item.id }}</td>
-        <td class="text-xs-left">{{ props.item.start }}</td>
-        <td class="text-xs-left">{{ props.item.end }}</td>
-        <td class="text-xs-left">{{ props.item.presence }}</td>
-        <td class="text-xs-left">{{ props.item.faculty }}</td>
-        <td class="text-xs-left">{{ props.item.semester }}</td>
-        <td class="text-xs-left">{{ props.item.courses }}</td>
-      </template>
-    </v-data-table>
-    <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
-      Download
-    </v-btn>
-    
+
+      <v-tab-item>
+        <v-data-table :headers="headers" :items="values" class="elevation-1">
+          <template v-slot:items="props">
+            <td class="text-xs-left">{{ props.item.date }}</td>
+            <td class="text-xs-left">{{ props.item.id }}</td>
+            <td class="text-xs-left">{{ props.item.start }}</td>
+            <td class="text-xs-left">{{ props.item.end }}</td>
+            <td class="text-xs-left">{{ props.item.presence }}</td>
+            <td class="text-xs-left">{{ props.item.faculty }}</td>
+            <td class="text-xs-left">{{ props.item.semester }}</td>
+            <td class="text-xs-left">{{ props.item.courses }}</td>
+          </template>
+        </v-data-table>
+        <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
+          Download
+        </v-btn>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card>
+          <v-card-text>
+            <v-text-field
+                  label="Kurs hinzufügen"
+                ></v-text-field>
+            <v-btn>
+              hinzufügen
+            </v-btn>
+          </v-card-text>
+        </v-card>
+
+        <v-card>
+           
+
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
+
+
   </div>
 </template>
 
@@ -77,6 +100,62 @@ export default {
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
         { text: "Kurse", value: "courses" },
+      ],
+      courses_physics: [
+        { key: "Th1", name: "Theoretische Physik 1" },
+        { key: "Th2", name: "Theoretische Physik 2" },
+        { key: "Th3", name: "Theoretische Physik 3" },
+        { key: "Th4", name: "Theoretische Physik 4" },
+        { key: "Ex1a", name: "Experimentalphysik 1a" },
+        { key: "Ex1b", name: "Experimentalphysik 1b" },
+        { key: "Ex2", name: "Experimentalphysik 2" },
+        { key: "Ex4a", name: "Experimentalphysik 4a" },
+        { key: "Ex4b", name: "Experimentalphysik 4b" },
+        { key: "AP1", name: "Anfängerpraktikum 1" },
+        { key: "AP2", name: "Anfängerpraktikum 2" },
+        { key: "NumPhy", name: "Numerische Methoden der Physik" },
+        { key: "EPR1", name: "Einführung in Programmierung 1" },
+        { key: "EPR2", name: "Einführung in Programmierung 2" },
+        { key: "Astro1", name: "Astrophysik 1" },
+        { key: "Astro2", name: "Astrophysik 2" },
+        { key: "PCI", name: "Physikalische Chemie I" },
+        { key: "PCAA", name: "Physik und Chemie der Atmosphäre" },
+        { key: "GPhy1", name: "Einführung in die Geophysik" },
+        { key: "PhyBio", name: "Physik für Biologen" },
+        { key: "PhyPharma", name: "Physik für Pharmazeuten" },
+        { key: "PhyZahn", name: "Physik für Zahnmediziner" },
+        { key: "PhyChemNawi 1", name: "Physik für Chemiker & andere NatWiss 2" },
+        { key: "PhyChemNawi 1", name: "Physik für Chemiker & andere NatWiss 2" }
+      ],
+      courses_math: [
+        { key: "MathPhy1", name: "Mathe 1 (Physik)" },
+        { key: "MathPhy2", name: "Mathe 2 (Physik)" },
+        { key: "MathPhy3", name: "Mathe 3 (Physik)" },
+        { key: "MathMet1", name: "Mathe 1 (Meteorologie)" },
+        { key: "MathMet2", name: "Mathe 2 (Meteorologie)" },
+        { key: "MathInf1", name: "Mathe 1 (Informatik)" },
+        { key: "MathInf2", name: "Mathe 2 (Informatik)" },
+        { key: "MathNaWi1", name: "Mathe 1 (Naturwissenschaften)" },
+        { key: "MathNaWi2", name: "Mathe 2 (Naturwissenschaften)" },
+        { key: "MathPharma", name: "Mathe (Pharmazie)" },
+        { key: "MathChem1", name: "Mathematische Verfahren 1 (Chemie)" },
+        { key: "MathChem2", name: "Mathematische Verfahren 2 (Chemie)" }
+      ],
+      faculties: [
+        "Mathematik",
+        "Physik",
+        "Meteorologie",
+        "Informatik",
+        "Chemie",
+        "Geowissenschaften",
+        "Biophysik",
+        "Bioinformatik",
+        "Biochemie",
+        "Pharmazie",
+        "Medizin",
+        "Zahnmedizin",
+        "Wirtschaftspädagogik",
+        "Sonstige"
       ]
     };
   },

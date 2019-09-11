@@ -45,7 +45,7 @@
               <v-select
                 attach
                 v-model="form.faculty"
-                :items="faculties"
+                :items="this.$store.state.faculties_act"
                 :rules="facultyRules"
                 label="Studiengang"
                 required
@@ -68,7 +68,7 @@
               </v-card-title>
               <v-autocomplete
                 v-model="form.courses"
-                :items="courses_math"
+                :items="this.$store.state.courses_math_act"
                 :rules="courseRules"
                 chips
                 label="Lehrveranstaltung"
@@ -101,7 +101,7 @@
               </v-card-title>
               <v-autocomplete
                 v-model="form.courses"
-                :items="courses_physics"
+                :items="this.$store.state.courses_physics_act"
                 :rules="courseRules"
                 chips
                 label="Lehrveranstaltung"
@@ -213,64 +213,6 @@ export default {
       interval: null,
       form: initializeForm(),
       courses_selected: [],
-      courses_physics: [
-        { header: "Physik" },
-        { name: "Theoretische Physik 1" },
-        { name: "Theoretische Physik 2" },
-        { name: "Theoretische Physik 3" },
-        { name: "Theoretische Physik 4" },
-        { name: "Experimentalphysik 1a" },
-        { name: "Experimentalphysik 1b" },
-        { name: "Experimentalphysik 2" },
-        { name: "Experimentalphysik 4a" },
-        { name: "Experimentalphysik 4b" },
-        { name: "Anfängerpraktikum 1" },
-        { name: "Anfängerpraktikum 2" },
-        { name: "Numerische Methoden der Physik" },
-        { name: "Einführung in Programmierung 2" },
-        { name: "Einführung in Programmierung 1" },
-        { name: "Astrophysik 1" },
-        { name: "Astrophysik 2" },
-        { name: "Physikalische Chemie I" },
-        { name: "Physik und Chemie der Atmosphäre" },
-        { name: "Einführung in die Geophysik" },
-        { name: "Physik für Biologen" },
-        { name: "Physik für Pharmazeuten" },
-        { name: "Physik für Zahnmediziner" },
-        { name: "Physik für Chemiker & andere NatWiss 2" },
-        { name: "Physik für Chemiker & andere NatWiss 2" }
-      ],
-      courses_math: [
-        { header: "Mathematik" },
-        { name: "Mathe 1 (Physik)" },
-        { name: "Mathe 2 (Physik)" },
-        { name: "Mathe 3 (Physik)" },
-        { name: "Mathe 1 (Meteorologie)" },
-        { name: "Mathe 2 (Meteorologie)" },
-        { name: "Mathe 1 (Informatik)" },
-        { name: "Mathe 2 (Informatik)" },
-        { name: "Mathe 1 (Naturwissenschaften)" },
-        { name: "Mathe 2 (Naturwissenschaften)" },
-        { name: "Mathe (Pharmazie)" },
-        { name: "Mathematische Verfahren 1 (Chemie)" },
-        { name: "Mathematische Verfahren 2 (Chemie)" }
-      ],
-      faculties: [
-        "Mathematik",
-        "Physik",
-        "Meteorologie",
-        "Informatik",
-        "Chemie",
-        "Geowissenschaften",
-        "Biophysik",
-        "Bioinformatik",
-        "Biochemie",
-        "Pharmazie",
-        "Medizin",
-        "Zahnmedizin",
-        "Wirtschaftspädagogik",
-        "Sonstige"
-      ],
       dialog: false,
       valid: true,
       disabled: 0,
