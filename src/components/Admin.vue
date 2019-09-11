@@ -23,6 +23,10 @@
       <div>
         <h3 class="headline mb-0">Teilnehmerliste</h3>
       </div>
+      <v-spacer></v-spacer>
+      <v-btn class="secondary" to="/">
+        Logout
+      </v-btn>
     </v-card-title>
     <v-data-table :headers="headers" :items="values" class="elevation-1">
       <template v-slot:items="props">
