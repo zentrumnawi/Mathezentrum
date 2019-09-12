@@ -276,7 +276,7 @@ export default {
         ],
         time: [v => !!v || "Bitte geben Sie Ihre Anwesenheitszeit an"],
         course: [
-          v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
+          v => v.length > 0 || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
         ],
         semester: [v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an"],
         faculty: [v => !!v || "Bitte geben Sie Ihren Studiengang an"]
@@ -306,7 +306,9 @@ export default {
   methods: {
     remove(item) {
       const index = this.form.courses.indexOf(item.name);
-      if (index >= 0) this.form.courses.splice(index, 1);
+      if (index >= 0) {
+        this.form.courses.splice(index, 1);
+      }
     },
     setEndTime() {
       this.form.end = new Date();
@@ -315,7 +317,7 @@ export default {
       if (this.stepper == 2) {
         this.$refs.form_coursemath.validate();
 
-        if (this.valid && this.form.courses.length > 0) {
+        if (this.valid2 && this.form.courses.length > 0) {
           this.$refs.form_coursemath.resetValidation();
           return true;
         }
