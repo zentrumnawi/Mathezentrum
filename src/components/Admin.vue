@@ -50,6 +50,7 @@
       <v-tab-item>
         <v-card>
           <v-card-text>
+            {{ $options.config2.courses_math }}
             <v-text-field
                   label="Kurs hinzufügen"
                 ></v-text-field>
@@ -60,7 +61,7 @@
         </v-card>
 
         <v-card>
-           
+           blubb
 
         </v-card>
       </v-tab-item>
@@ -73,8 +74,12 @@
 <script>
 import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
+import configuration from '../assets/test.json'
+import configuration2 from '../assets/courses.json'
 
 export default {
+  config: configuration,
+  config2: configuration2,
   data: function() {
     return {
       authenticated: false,

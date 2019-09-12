@@ -68,7 +68,7 @@
               </v-card-title>
               <v-autocomplete
                 v-model="form.courses"
-                :items="this.$store.state.courses_math_act"
+                :items="this.$options.config2.courses_math"
                 :rules="courseRules"
                 chips
                 label="Lehrveranstaltung"
@@ -181,6 +181,8 @@ Stepper: {{ this.stepper}} -->
 <script>
 import { format, subHours, subMinutes } from "date-fns";
 import TimeInput from "@/components/TimeInput";
+import configuration2 from '../assets/courses.json'
+
 function initializeForm() {
   return {
     id: "",
@@ -192,6 +194,7 @@ function initializeForm() {
   };
 }
 export default {
+  config2: configuration2,
   components: { TimeInput },
   data: function() {
     return {
