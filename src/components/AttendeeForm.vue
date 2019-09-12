@@ -15,29 +15,30 @@
     </v-stepper-header>
     <v-stepper-items>
       <v-stepper-content step="1">
-        <v-form ref="form_studinfo" v-model="valid" lazy-validation>
+        <v-form ref="form_studinfo" v-model="valid">
           <v-card>
             <v-card-text>
               <v-text-field
                 v-model="form.id"
-                :rules="IDRules"
+                :rules="rules.id"
                 maxlength="9"
                 label="ID"
                 placeholder="XX999999"
                 required
               ></v-text-field>
+
               <v-select
                 v-model="form.semester"
+                :rules="rules.time"
                 :items="semester"
-                :rules="semesterRules"
                 label="Fachsemester"
                 required
               ></v-select>
 
               <v-select
                 v-model="form.faculty"
+                :rules="rules.faculty"
                 :items="faculties"
-                :rules="facultyRules"
                 label="Studiengang"
                 required
               ></v-select>
@@ -51,7 +52,7 @@
       </v-stepper-content>
 
       <v-stepper-content step="2">
-        <v-form ref="form_coursemath" v-model="valid" lazy-validation>
+        <v-form ref="form_coursemath" v-model="valid2">
           <v-card>
             <v-card-title class="justify-center">
               <h2>Mathematik</h2>
@@ -60,41 +61,8 @@
             <v-card-text>
               <v-autocomplete
                 v-model="form.courses"
+                :rules="rules.course"
                 :items="courses_math"
-                :rules="courseRules"
-                chips
-                label="Lehrveranstaltung"
-                item-text="name"
-                item-value="name"
-                multiple
-              >
-                <template v-slot:selection="data">
-                  <v-chip
-                    :selected="data.selected"
-                    close
-                    class="chip--select-multi"
-                    @input="remove(data.item)"
-                  >{{ data.item.name }}</v-chip>
-                </template>
-                <template v-slot:item="data">
-                  <template v-if="typeof data.item !== 'object'">
-                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
-                  </template>
-                  <template v-else>
-                    <v-list-tile-content>
-                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
-                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </template>
-                </template>
-              </v-autocomplete>
-              <v-card-title class="justify-center">
-                <h2>Physik</h2>
-              </v-card-title>
-              <v-autocomplete
-                v-model="form.courses"
-                :items="courses_physics"
-                :rules="courseRules"
                 chips
                 label="Lehrveranstaltung"
                 item-text="name"
@@ -123,9 +91,48 @@
               </v-autocomplete>
             </v-card-text>
 
+            <v-card-title class="justify-center">
+              <h2>Physik</h2>
+            </v-card-title>
+
+            <v-card-text>
+              <v-autocomplete
+                v-model="form.courses"
+                :rules="rules.course"
+                :items="courses_physics"
+                chips
+                label="Lehrveranstaltung"
+                item-text="name"
+                item-value="name"
+                multiple
+              >
+                <template v-slot:selection="data">
+                  <v-chip
+                    :selected="data.selected"
+                    close
+                    class="chip--select-multi"
+                    @input="remove(data.item)"
+                  >{{ data.item.name }}</v-chip>
+                </template>
+
+                <template v-slot:item="data">
+                  <template v-if="typeof data.item !== 'object'">
+                    <v-list-tile-content v-text="data.item"></v-list-tile-content>
+                  </template>
+
+                  <template v-else>
+                    <v-list-tile-content>
+                      <v-list-tile-title v-html="data.item.name"></v-list-tile-title>
+                      <v-list-tile-sub-title v-html="data.item.group"></v-list-tile-sub-title>
+                    </v-list-tile-content>
+                  </template>
+                </template>
+              </v-autocomplete>
+            </v-card-text>
+
             <v-card-actions>
-              <v-btn color="primary" @click="next">Weiter</v-btn>
-              <v-btn flat @click.native="stepper -= 1">Zurück</v-btn>
+              <v-btn color="primary" @click="next" :disabled="!valid2">Weiter</v-btn>
+              <v-btn flat @click.native="previous">Zurück</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -134,13 +141,7 @@
       <v-stepper-content step="3">
         <v-card>
           <v-card-text>
-            <time-input
-              v-model="form.start"
-              :max="maxStartTime"
-              :rules="timeRules"
-              label="Startzeit"
-              required
-            ></time-input>
+            <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" required></time-input>
             <time-input v-model="form.end" label="Endzeit" disabled></time-input>
           </v-card-text>
 
@@ -266,19 +267,20 @@ export default {
       ],
       dialog: false,
       valid: true,
+      valid2: true,
       disabled: 0,
-      IDRules: [
-        v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
-        v => v.length == 9 || "Ihre ID muss 9 Zeichen lang sein"
-      ],
-      timeRules: [v => !!v || "Bitte geben Sie Ihre Anwesenheitszeit an"],
-      courseRules: [
-        v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
-      ],
-      semesterRules: [
-        v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an"
-      ],
-      facultyRules: [v => !!v || "Bitte geben Sie Ihren Studiengang an"]
+      rules: {
+        id: [
+          v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
+          v => v.length === 9 || "Ihre ID muss 9 Zeichen lang sein"
+        ],
+        time: [v => !!v || "Bitte geben Sie Ihre Anwesenheitszeit an"],
+        course: [
+          v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
+        ],
+        semester: [v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an"],
+        faculty: [v => !!v || "Bitte geben Sie Ihren Studiengang an"]
+      }
     };
   },
   created() {
@@ -315,18 +317,25 @@ export default {
     next() {
       if (this.stepper == 2) {
         this.$refs.form_coursemath.validate();
+
         if (this.valid && this.form.courses.length > 0) {
           this.$refs.form_coursemath.resetValidation();
           this.progress();
         }
       }
+
       if (this.stepper == 1) {
         this.$refs.form_studinfo.validate();
+
         if (this.valid) {
           this.$refs.form_studinfo.resetValidation();
           this.progress();
         }
       }
+    },
+    previous() {
+      this.stepper -= 1;
+      this.$refs.form_coursemath.resetValidation();
     },
     submit() {
       this.$store.dispatch("submitForm", {
