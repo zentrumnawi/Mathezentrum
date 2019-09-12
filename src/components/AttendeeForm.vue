@@ -311,16 +311,13 @@ export default {
     setEndTime() {
       this.form.end = new Date();
     },
-    progress() {
-      this.stepper += 1;
-    },
-    next() {
+    validate() {
       if (this.stepper == 2) {
         this.$refs.form_coursemath.validate();
 
         if (this.valid && this.form.courses.length > 0) {
           this.$refs.form_coursemath.resetValidation();
-          this.progress();
+          return true;
         }
       }
 
@@ -329,9 +326,16 @@ export default {
 
         if (this.valid) {
           this.$refs.form_studinfo.resetValidation();
-          this.progress();
+          return true;
         }
       }
+
+      return false;
+    },
+    next() {
+      this.validate()
+
+      this.stepper += 1;
     },
     previous() {
       this.stepper -= 1;
