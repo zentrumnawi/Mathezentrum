@@ -1,79 +1,63 @@
 <template>
-  <v-container>
-    <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
-    <!-- <v-container grid-list-md text-xs-center>
-    <v-layout row wrap justify-space-around>-->
-    <v-stepper v-model="stepper">
-      <v-stepper-header>
-        <div class="step" v-for="(step, index) in steps" :key="index">
-          <v-stepper-step
-            color="success"
-            :edit-icon="'check_circle'"
-            :complete-icon="'edit'"
-            :step="index + 1"
-            :complete="(index + 1 ) <= stepper"
-            :editable="(index + 1) < stepper"
-          >{{ step.label }}</v-stepper-step>
-          <v-divider></v-divider>
-        </div>
-      </v-stepper-header>
-      <v-stepper-items>
-        <!-- <v-form ref="form" v-model="valid" lazy-validation> -->
-        <v-stepper-content step="1">
-          <v-form ref="form_studinfo" v-model="valid" lazy-validation>
-            <v-layout row wrap>
-              <v-flex xs12 md6>
-                <v-card-text>
-                  <v-text-field
-                    v-model="form.id"
-                    :rules="IDRules"
-                    maxlength="9"
-                    label="ID"
-                    placeholder="XX999999"
-                    required
-                  ></v-text-field>
-                </v-card-text>
-            </v-flex>
-            <v-flex xs6 md6>
-              <v-card-text>
-                <v-select
-                  attach
-                  v-model="form.semester"
-                  :items="semester"
-                  :rules="semesterRules"
-                  label="Fachsemester"
-                  required
-                ></v-select>             
-              </v-card-text>
-            </v-flex>
-            <v-flex xs6 md6>
-              <v-card-text>
-                <v-select
-                  attach
-                  v-model="form.faculty"
-                  :items="faculties"
-                  :rules="facultyRules"
-                  label="Studiengang"
-                  required
-                ></v-select>
-              </v-card-text>
-            </v-flex>
-            </v-layout>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <!-- <v-btn flat @click.native="this.stepper = 1">Zurück</v-btn> -->
-              <!-- @click.native="valid ? stepper = 2 : stepper = 1" -->
-              <v-btn color="primary" @click="validate" :disabled="!valid">Weiter</v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-stepper-content>
-
-        <v-stepper-content step="2">
-          <v-form ref="form_coursemath" v-model="valid" lazy-validation>
+  <v-stepper v-model="stepper">
+    <v-stepper-header>
+      <div class="step" v-for="(step, index) in steps" :key="index">
+        <v-stepper-step
+          color="success"
+          :edit-icon="'check_circle'"
+          :complete-icon="'edit'"
+          :step="index + 1"
+          :complete="(index + 1 ) <= stepper"
+          :editable="(index + 1) < stepper"
+        >{{ step.label }}</v-stepper-step>
+        <v-divider></v-divider>
+      </div>
+    </v-stepper-header>
+    <v-stepper-items>
+      <v-stepper-content step="1">
+        <v-form ref="form_studinfo" v-model="valid" lazy-validation>
+          <v-card>
             <v-card-text>
-              <v-card-title class="justify-center">
-                <h2>Mathematik</h2>
-              </v-card-title>
+              <v-text-field
+                v-model="form.id"
+                :rules="IDRules"
+                maxlength="9"
+                label="ID"
+                placeholder="XX999999"
+                required
+              ></v-text-field>
+              <v-select
+                v-model="form.semester"
+                :items="semester"
+                :rules="semesterRules"
+                label="Fachsemester"
+                required
+              ></v-select>
+
+              <v-select
+                v-model="form.faculty"
+                :items="faculties"
+                :rules="facultyRules"
+                label="Studiengang"
+                required
+              ></v-select>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-btn color="primary" @click="next" :disabled="!valid">Weiter</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-stepper-content>
+
+      <v-stepper-content step="2">
+        <v-form ref="form_coursemath" v-model="valid" lazy-validation>
+          <v-card>
+            <v-card-title class="justify-center">
+              <h2>Mathematik</h2>
+            </v-card-title>
+
+            <v-card-text>
               <v-autocomplete
                 v-model="form.courses"
                 :items="courses_math"
@@ -138,15 +122,17 @@
                 </template>
               </v-autocomplete>
             </v-card-text>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn flat @click.native="stepper = 1">Zurück</v-btn>
-              <v-btn color="primary" @click="validate">Weiter</v-btn>
-            </v-card-actions>
-          </v-form>
-        </v-stepper-content>
 
-        <v-stepper-content step="3">
+            <v-card-actions>
+              <v-btn color="primary" @click="next">Weiter</v-btn>
+              <v-btn flat @click.native="stepper -= 1">Zurück</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-stepper-content>
+
+      <v-stepper-content step="3">
+        <v-card>
           <v-card-text>
             <time-input
               v-model="form.start"
@@ -157,39 +143,36 @@
             ></time-input>
             <time-input v-model="form.end" label="Endzeit" disabled></time-input>
           </v-card-text>
+
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn flat @click.native="stepper = 2">Zurück</v-btn>
-            <v-btn color="primary" @click="validate">Absenden</v-btn>
             <v-dialog v-model="dialog" persistent max-width="600">
+              <template v-slot:activator="{ on }">
+                <v-btn color="primary" v-on="on">Absenden</v-btn>
+              </template>
+
               <v-card>
-                <v-card-text class="display-1">Sind deine Angaben korrekt ?</v-card-text>
+                <v-card-title class="headline" primary-title>Angaben bestätigen</v-card-title>
+
+                <v-card-text>Du hast noch die Möglichkeit deine Angaben zu korrigieren. Sind deine Angaben korrekt?</v-card-text>
+
                 <v-card-actions>
-                  <v-layout justify-center>
-                    <v-flex xs4 pr-5>
-                      <v-btn class="success" @click="submit">Ja, alles richtig !</v-btn>
-                    </v-flex>
-                    <v-flex xs4>
-                      <v-btn class="error" @click="dialog = false">Moment mal...</v-btn>
-                    </v-flex>
-                  </v-layout>
+                  <v-btn class="primary" @click="submit">Ja</v-btn>
+                  <v-btn @click="dialog = false" flat>Nein</v-btn>
                 </v-card-actions>
               </v-card>
             </v-dialog>
+            <v-btn flat @click.native="stepper -= 1">Zurück</v-btn>
           </v-card-actions>
-        </v-stepper-content>
-        <!-- </v-form> -->
-      </v-stepper-items>
-    </v-stepper>
-<!-- Valid: {{ this.valid == null ? 'null' : this.valid }}
-Stepper: {{ this.stepper}} -->
-  </v-container>
+        </v-card>
+      </v-stepper-content>
+    </v-stepper-items>
+  </v-stepper>
 </template>
 
 <script>
 import { format, subHours, subMinutes } from "date-fns";
 import TimeInput from "@/components/TimeInput";
-import uuid from 'uuid/v4';
+import uuid from "uuid/v4";
 function initializeForm() {
   return {
     id: "",
@@ -264,9 +247,7 @@ export default {
         { name: "Mathematische Verfahren 1 (Chemie)" },
         { name: "Mathematische Verfahren 2 (Chemie)" }
       ],
-      semester: [
-        "1","2","3","4","5","6","6+"
-      ],
+      semester: ["1", "2", "3", "4", "5", "6", "6+"],
       faculties: [
         "Mathematik",
         "Physik",
@@ -295,7 +276,7 @@ export default {
         v => !!v || "Bitte wählen Sie mindestens eine Lehrveranstaltung aus"
       ],
       semesterRules: [
-        v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an",
+        v => !!v || "Bitte geben Sie Ihr aktuelles Fachsemester an"
       ],
       facultyRules: [v => !!v || "Bitte geben Sie Ihren Studiengang an"]
     };
@@ -330,16 +311,10 @@ export default {
     },
     progress() {
       this.stepper += 1;
-      // this.valid = false
-     
     },
-    validate() {
-      // if (this.$refs.form.validate()) {
-        if (this.stepper == 3) {
-          this.dialog = true
-        }
-        if (this.stepper == 2) {
-         this.$refs.form_coursemath.validate();
+    next() {
+      if (this.stepper == 2) {
+        this.$refs.form_coursemath.validate();
         if (this.valid && this.form.courses.length > 0) {
           this.$refs.form_coursemath.resetValidation();
           this.progress();
@@ -352,50 +327,15 @@ export default {
           this.progress();
         }
       }
-      
-      // if (this.valid == true && this.stepper == 3) {
-      //   this.dialog = true;
-      //   this.stepper -= 1
-      // }
-      // if (this.$refs.form_studinfo.validate()) {
-      //   if (this.valid == true) {
-      //     this.stepper += 1
-      //     this.valid = false
-      //   }
-      // }
-      // if (this.$refs.form_coursemath.validate()) {
-      //   if (this.valid == true) {
-      //     this.valid = false
-      //     this.stepper += 1
-      //   }
-      // }
-      // }
     },
-    // validate() {
-    //   if (this.$refs.form.validate()) {
-    //     if (this.valid == true && this.stepper == 3) {
-    //       this.dialog = true;
-    //       this.stepper -= 1
-    //     }
-    //     if (this.$refs.form_studinfo.validate()) {
-    //       if (this.valid == true) {
-    //         this.stepper += 1
-    //         this.valid = false
-    //       }
-    //     }
-    //     if (this.$refs.form_coursemath.validate()) {
-    //       if (this.valid == true) {
-    //         this.stepper += 1
-    //         this.valid = true
-    //       }
-    //     }
-    //   }
-    // },
     submit() {
-      this.$store.dispatch("submitForm", { ...this.localizedForm, idnumber: uuid()});
+      this.$store.dispatch("submitForm", {
+        ...this.localizedForm,
+        idnumber: uuid()
+      });
       this.form = initializeForm();
-      this.$refs.form_studinfo.reset();
-      this.$refs.form_coursemath.reset();
+      this.$refs.form_studinfo.resetValidation();
+      this.$refs.form_coursemath.resetValidation();
       this.dialog = false;
       this.valid = false;
       this.stepper = 1;
@@ -403,10 +343,3 @@ export default {
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.v-text-field {
-  color: "#005ea8";
-}
-</style>
