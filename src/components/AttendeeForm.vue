@@ -188,7 +188,10 @@
                     label="Lehrveranstaltung"
                     readonly
                   ></v-text-field>
-                
+
+                  <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" readonly></time-input>
+                  <time-input v-model="form.end" label="Endzeit" disabled></time-input>
+                  
                 </v-card-text>
                 <v-card-text>Du hast noch die Möglichkeit deine Angaben zu korrigieren. Sind deine Angaben korrekt?</v-card-text>
 
