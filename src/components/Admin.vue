@@ -34,6 +34,7 @@
         <td class="text-xs-left">{{ props.item.faculty }}</td>
         <td class="text-xs-left">{{ props.item.semester }}</td>
         <td class="text-xs-left">{{ props.item.courses.join(', ') }}</td>
+        <td class="text-xs-left">{{ props.item.comments }}</td>
       </template>
     </v-data-table>
     <!--v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
@@ -75,6 +76,7 @@ export default {
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
         { text: "Kurse", value: "courses" },
+        { text: "Kommentar", value: "comments" },
       ]
     };
   },
@@ -143,6 +145,7 @@ export default {
         output += element.faculty + this.delimiter;
         output += element.semester + this.delimiter;
         output += element.courses.join(', ') + this.delimiter;
+        output += element.comments + this.delimiter;
         output += '\n';
       });
 

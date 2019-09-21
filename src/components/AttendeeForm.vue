@@ -143,6 +143,11 @@
           <v-card-text>
             <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" required></time-input>
             <time-input v-model="form.end" label="Endzeit" disabled></time-input>
+            <v-textarea
+              v-model="form.comments"
+              label="Kommentarfeld"
+              no-resize="true"
+            ></v-textarea>
           </v-card-text>
 
           <v-card-actions>
@@ -153,7 +158,38 @@
 
               <v-card>
                 <v-card-title class="headline" primary-title>Angaben bestätigen</v-card-title>
+                
+                <v-card-text>
+                  <v-text-field
+                    v-model="form.id"
+                    maxlength="9"
+                    label="ID"
+                    placeholder="XX999999"
+                    readonly
+                  ></v-text-field>
 
+                  <v-text-field
+                    v-model="form.semester"
+                    :items="semester"
+                    label="Fachsemester"
+                    readonly
+                  ></v-text-field>
+
+                  <v-text-field
+                    v-model="form.faculty"
+                    :items="faculties"
+                    label="Studiengang"
+                    readonly
+                  ></v-text-field>
+
+                  <v-text-field
+                    v-model="form.courses"
+                    :items="courses_selected"
+                    label="Lehrveranstaltung"
+                    readonly
+                  ></v-text-field>
+                
+                </v-card-text>
                 <v-card-text>Du hast noch die Möglichkeit deine Angaben zu korrigieren. Sind deine Angaben korrekt?</v-card-text>
 
                 <v-card-actions>
@@ -181,7 +217,8 @@ function initializeForm() {
     end: new Date(),
     faculty: null,
     semester: "",
-    courses: ""
+    courses: "",
+    comments: ""
   };
 }
 export default {
