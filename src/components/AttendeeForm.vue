@@ -272,7 +272,7 @@ export default {
         { name: "Physik für Zahnmediziner" },
         { name: "Physik für Chemiker & andere NatWiss 2" },
         { name: "Physik für Chemiker & andere NatWiss 2" }
-      ],
+      ].sort((a, b)=> (a.name > b.name) ? 1 : -1),
       courses_math: [
         { header: "Mathematik" },
         { name: "Mathe 1 (Physik)" },
@@ -287,7 +287,7 @@ export default {
         { name: "Mathe (Pharmazie)" },
         { name: "Mathematische Verfahren 1 (Chemie)" },
         { name: "Mathematische Verfahren 2 (Chemie)" }
-      ],
+      ].sort((a, b)=> (a.name > b.name) ? 1 : -1),
       semester: ["1", "2", "3", "4", "5", "6", "6+"],
       faculties: [
         "Mathematik",
@@ -304,7 +304,7 @@ export default {
         "Zahnmedizin",
         "Wirtschaftspädagogik",
         "Sonstige"
-      ],
+      ].sort((a, b)=> (a > b) ? 1 : -1),
       dialog: false,
       valid: true,
       valid2: true,
