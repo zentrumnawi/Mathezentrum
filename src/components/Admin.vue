@@ -24,7 +24,7 @@
         <h3 class="headline mb-0">Teilnehmerliste</h3>
       </div>
     </v-card-title>
-    <v-data-table :headers="headers" :items="values" class="elevation-1">
+    <v-data-table :headers="headers" :items="values" item-key="idnumber" class="elevation-1">
       <template v-slot:items="props">
         <td class="text-xs-left">{{ props.item.date }}</td>
         <td class="text-xs-left">{{ props.item.id }}</td>
@@ -33,13 +33,11 @@
         <td class="text-xs-left">{{ props.item.presence }}</td>
         <td class="text-xs-left">{{ props.item.faculty }}</td>
         <td class="text-xs-left">{{ props.item.semester }}</td>
-        <td class="text-xs-left">{{ props.item.courses }}</td>
       </template>
     </v-data-table>
     <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
       Download
-    </v-btn>
-    
+    </v-btn> 
   </div>
 </template>
 
@@ -73,6 +71,7 @@ export default {
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
         { text: "Kurse", value: "courses" },
+        { text: "Kommentar", value: "comments" },
       ]
     };
   },
@@ -104,19 +103,6 @@ export default {
         end: format(element.end,'HH:mm'),
         courses: element.courses.join(', ')
       };
-    },
-  },
-  created() {
-        this.flds = this.headers.map(item => ({
-      label: item.text,
-      value: item.value
-    }));
-    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD !== undefined ? process.env.VUE_APP_ADMIN_PASSWORD : "HelloWorld";
-  },
-  computed: {
-    values() {
-      const newvalues = this.$store.state.attendees;
-      return newvalues.map(element => ({ ...element, ...this.format(element) }));
     },
     csv() {
       const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
