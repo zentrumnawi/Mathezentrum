@@ -309,8 +309,8 @@ export default {
       disabled: 0,
       rules: {
         id: [
-          v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
-          v => v.length === 9 || "Ihre ID muss 9 Zeichen lang sein"
+          v => !!v || "Bitte geben Sie Ihre persönlichen 8 stellige ID an",
+          v => v.length === 8 || "Ihre ID muss 8 Zeichen lang sein"
         ],
         time: [v => !!v || "Bitte geben Sie Ihre Anwesenheitszeit an"],
         course: [

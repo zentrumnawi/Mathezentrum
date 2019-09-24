@@ -33,6 +33,7 @@
         <td class="text-xs-left">{{ props.item.presence }}</td>
         <td class="text-xs-left">{{ props.item.faculty }}</td>
         <td class="text-xs-left">{{ props.item.semester }}</td>
+        <td class="text-xs-left">{{ props.item.comments }}</td>
       </template>
     </v-data-table>
     <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
@@ -50,7 +51,7 @@ export default {
     return {
       authenticated: false,
       password: null,
-      requiredPassword: null,
+      requiredPassword: "HelloWorld",
       flds: [],
       headers: [
         {
