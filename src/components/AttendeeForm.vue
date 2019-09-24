@@ -21,9 +21,9 @@
               <v-text-field
                 v-model="form.id"
                 :rules="rules.id"
-                maxlength="9"
+                maxlength="8"
                 label="ID"
-                placeholder="XX999999"
+                placeholder="XX888888"
                 required
               ></v-text-field>
 
