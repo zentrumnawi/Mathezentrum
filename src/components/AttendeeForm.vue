@@ -21,9 +21,9 @@
               <v-text-field
                 v-model="form.id"
                 :rules="rules.id"
-                maxlength="9"
+                maxlength="8"
                 label="ID"
-                placeholder="XX999999"
+                placeholder="XX888888"
                 required
               ></v-text-field>
 
@@ -142,11 +142,11 @@
         <v-card>
           <v-card-text>
             <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" required></time-input>
-            <time-input v-model="form.end" label="Endzeit" disabled></time-input>
+            <time-input v-model="form.end" label="Jetzt" disabled></time-input>
             <v-textarea
               v-model="form.comments"
               label="Kommentarfeld"
-              no-resize="true"
+              no-resize=true
             ></v-textarea>
           </v-card-text>
 
@@ -162,9 +162,7 @@
                 <v-card-text>
                   <v-text-field
                     v-model="form.id"
-                    maxlength="9"
                     label="ID"
-                    placeholder="XX999999"
                     readonly
                   ></v-text-field>
 
@@ -210,13 +208,13 @@
 </template>
 
 <script>
-import { format, subHours, subMinutes } from "date-fns";
+import { format, subHours, subMinutes, setMinutes, setHours, isBefore } from "date-fns";
 import TimeInput from "@/components/TimeInput";
 import uuid from "uuid/v4";
 function initializeForm() {
   return {
     id: "",
-    start: subHours(new Date(), 2),
+    start: isBefore(setHours(new Date(),8), subHours(new Date(),2)) ? subHours(new Date(),2) : (setHours(setMinutes(new Date(),0),8)),
     end: new Date(),
     faculty: null,
     semester: "",
@@ -247,7 +245,6 @@ export default {
       form: initializeForm(),
       courses_selected: [],
       courses_physics: [
-        { header: "Physik" },
         { name: "Theoretische Physik 1" },
         { name: "Theoretische Physik 2" },
         { name: "Theoretische Physik 3" },
@@ -274,7 +271,6 @@ export default {
         { name: "Physik für Chemiker & andere NatWiss 2" }
       ].sort((a, b)=> (a.name > b.name) ? 1 : -1),
       courses_math: [
-        { header: "Mathematik" },
         { name: "Mathe 1 (Physik)" },
         { name: "Mathe 2 (Physik)" },
         { name: "Mathe 3 (Physik)" },
@@ -311,8 +307,8 @@ export default {
       disabled: 0,
       rules: {
         id: [
-          v => !!v || "Bitte geben Sie Ihre persönlichen 9 stellige ID an",
-          v => v.length === 9 || "Ihre ID muss 9 Zeichen lang sein"
+          v => !!v || "Bitte geben Sie Ihre persönlichen 8 stellige ID an",
+          v => v.length === 8 || "Ihre ID muss 8 Zeichen lang sein"
         ],
         time: [v => !!v || "Bitte geben Sie Ihre Anwesenheitszeit an"],
         course: [
