@@ -162,9 +162,7 @@
                 <v-card-text>
                   <v-text-field
                     v-model="form.id"
-                    maxlength="9"
                     label="ID"
-                    placeholder="XX999999"
                     readonly
                   ></v-text-field>
 
