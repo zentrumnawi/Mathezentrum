@@ -7,7 +7,6 @@
     lazy
     transition="scale-transition"
     offset-y
-    full-width
     :disabled="disabled"
   >
     <template v-slot:activator="{ on }">
@@ -16,7 +15,7 @@
         v-on="on"
         :label="label"
         readonly
-        prepend-inner-icon="access_time"
+        prepend-icon="access_time"
       ></v-text-field>
     </template>
     <v-time-picker

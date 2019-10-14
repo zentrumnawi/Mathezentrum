@@ -23,10 +23,13 @@
                 :rules="rules.id"
                 maxlength="8"
                 label="ID"
-                placeholder="XX888888"
+                append-outer-icon="help"
+                persistent-hint
+                placeholder="XX999999"
                 required
+                @click:append-outer="idhelp = true"
               ></v-text-field>
-
+              
               <v-select
                 v-model="form.semester"
                 :rules="rules.time"
@@ -64,7 +67,7 @@
                 :rules="rules.course"
                 :items="courses_math"
                 chips
-                label="Lehrveranstaltung"
+                label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
                 item-value="name"
                 multiple
@@ -101,7 +104,7 @@
                 :rules="rules.course"
                 :items="courses_physics"
                 chips
-                label="Lehrveranstaltung"
+                label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
                 item-value="name"
                 multiple
@@ -146,9 +149,24 @@
             <v-textarea
               v-model="form.comments"
               label="Kommentarfeld"
-              no-resize="true"
+              no-resize
             ></v-textarea>
           </v-card-text>
+
+          <v-dialog v-model="idhelp"  max-width="600">
+            <v-card>
+              <v-card-title class="headline">ID</v-card-title>
+              <v-card-text>
+                <p>Die ID setzt sich zusammen aus...</p> 
+                <ul>
+                  <li>den ersten 2 Buchstaben des Vornamens Ihrer Mutter.</li>
+                  <li>den 2 Ziffern des Geburts<em>tags</em> Ihrer Mutter.</li>
+                  <li>2 Ziffern Ihres eigenen Geburts<em>monats</em>.</li>
+                  <li>2 Ziffern der Nummer Ihres Fachbereichs.</li>
+                </ul>
+              </v-card-text>
+            </v-card>
+          </v-dialog>
 
           <v-card-actions>
             <v-dialog v-model="dialog" persistent max-width="600">
@@ -179,19 +197,19 @@
                     label="Studiengang"
                     readonly
                   ></v-text-field>
-
                   <v-text-field
                     v-model="form.courses"
                     :items="courses_selected"
-                    label="Lehrveranstaltung"
+                    label="Lehrveranstaltungen"
                     readonly
                   ></v-text-field>
 
                   <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" readonly></time-input>
-                  <time-input v-model="form.end" label="Endzeit" disabled></time-input>
+                  <time-input v-model="form.end" label="Endzeit (jetzt)" disabled></time-input>
                   
                 </v-card-text>
-                <v-card-text>Du hast noch die Möglichkeit deine Angaben zu korrigieren. Sind deine Angaben korrekt?</v-card-text>
+                
+                <v-card-text>Sind die Angaben korrekt?</v-card-text>
 
                 <v-card-actions>
                   <v-btn class="primary" @click="submit">Ja</v-btn>
@@ -304,6 +322,7 @@ export default {
         "Sonstige"
       ].sort((a, b)=> (a > b) ? 1 : -1),
       dialog: false,
+      idhelp: false,
       valid: true,
       valid2: true,
       disabled: 0,
