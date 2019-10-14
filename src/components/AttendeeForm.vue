@@ -145,7 +145,7 @@
         <v-card>
           <v-card-text>
             <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" required></time-input>
-            <time-input v-model="form.end" label="Endzeit" disabled></time-input>
+            <time-input v-model="form.end" label="Jetzt" disabled></time-input>
             <v-textarea
               v-model="form.comments"
               label="Kommentarfeld"
@@ -226,13 +226,13 @@
 </template>
 
 <script>
-import { format, subHours, subMinutes } from "date-fns";
+import { format, subHours, subMinutes, setMinutes, setHours, isBefore } from "date-fns";
 import TimeInput from "@/components/TimeInput";
 import uuid from "uuid/v4";
 function initializeForm() {
   return {
     id: "",
-    start: subHours(new Date(), 2),
+    start: isBefore(setHours(new Date(),8), subHours(new Date(),2)) ? subHours(new Date(),2) : (setHours(setMinutes(new Date(),0),8)),
     end: new Date(),
     faculty: null,
     semester: "",
@@ -263,7 +263,6 @@ export default {
       form: initializeForm(),
       courses_selected: [],
       courses_physics: [
-        { header: "Physik" },
         { name: "Theoretische Physik 1" },
         { name: "Theoretische Physik 2" },
         { name: "Theoretische Physik 3" },
@@ -290,7 +289,6 @@ export default {
         { name: "Physik für Chemiker & andere NatWiss 2" }
       ].sort((a, b)=> (a.name > b.name) ? 1 : -1),
       courses_math: [
-        { header: "Mathematik" },
         { name: "Mathe 1 (Physik)" },
         { name: "Mathe 2 (Physik)" },
         { name: "Mathe 3 (Physik)" },

@@ -7,6 +7,7 @@
     lazy
     transition="scale-transition"
     offset-y
+    :max-width="290"
     :disabled="disabled"
   >
     <template v-slot:activator="{ on }">
