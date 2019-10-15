@@ -27,7 +27,7 @@
                 persistent-hint
                 placeholder="XX999999"
                 required
-                @click:append-outer="idhelp = true"
+                @click:append-outer="idhelper = true"
               ></v-text-field>
               
               <v-select
@@ -153,7 +153,7 @@
             ></v-textarea>
           </v-card-text>
 
-          <v-dialog v-model="idhelp"  max-width="600">
+          <v-dialog v-model="idhelper"  max-width="600">
             <v-card>
               <v-card-title class="headline">ID</v-card-title>
               <v-card-text>
@@ -169,46 +169,58 @@
           </v-dialog>
 
           <v-card-actions>
-            <v-dialog v-model="dialog" persistent max-width="600">
+            <v-dialog v-model="dialog" persistent max-width="500">
               <template v-slot:activator="{ on }">
                 <v-btn color="primary" v-on="on">Absenden</v-btn>
               </template>
 
               <v-card>
                 <v-card-title class="headline" primary-title>Angaben bestätigen</v-card-title>
-                
-                <v-card-text>
-                  <v-text-field
-                    v-model="form.id"
-                    label="ID"
-                    readonly
-                  ></v-text-field>
+               
+                <v-list>
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>ID</v-list-tile-sub-title>
+                      {{form.id}}
+                    </v-list-tile-content>
+                  </v-list-tile>
+                  <v-divider></v-divider>
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>Studienfach</v-list-tile-sub-title>
+                      {{form.faculty}}
+                    </v-list-tile-content>
 
-                  <v-text-field
-                    v-model="form.semester"
-                    :items="semester"
-                    label="Fachsemester"
-                    readonly
-                  ></v-text-field>
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>Fachsemester</v-list-tile-sub-title>
+                      {{form.semester}}
+                    </v-list-tile-content>
+                  </v-list-tile>
 
-                  <v-text-field
-                    v-model="form.faculty"
-                    :items="faculties"
-                    label="Studiengang"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="form.courses"
-                    :items="courses_selected"
-                    label="Lehrveranstaltungen"
-                    readonly
-                  ></v-text-field>
+                  <v-divider></v-divider>
 
-                  <time-input v-model="form.start" :max="maxStartTime" label="Startzeit" readonly></time-input>
-                  <time-input v-model="form.end" label="Endzeit (jetzt)" disabled></time-input>
-                  
-                </v-card-text>
-                
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>Startzeit</v-list-tile-sub-title>
+                      {{form.start | formatTime}}
+                    </v-list-tile-content>
+
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>Endzeit</v-list-tile-sub-title>
+                      {{form.end | formatTime}}
+                    </v-list-tile-content>
+                  </v-list-tile>
+
+                  <v-divider></v-divider>
+
+                  <v-list-tile>
+                    <v-list-tile-content>
+                      <v-list-tile-sub-title>Lehrveranstaltungen</v-list-tile-sub-title>
+                      {{form.courses | formatCourselist}}
+                    </v-list-tile-content>
+                  </v-list-tile>
+                </v-list>
+
                 <v-card-text>Sind die Angaben korrekt?</v-card-text>
 
                 <v-card-actions>
@@ -236,7 +248,7 @@ function initializeForm() {
     end: new Date(),
     faculty: null,
     semester: "",
-    courses: "",
+    courses: [],
     comments: ""
   };
 }
@@ -247,7 +259,7 @@ export default {
       stepper: 0,
       steps: [
         {
-          label: "Studenten-ID",
+          label: "Persönliche ID",
           completed: false
         },
         {
@@ -320,7 +332,7 @@ export default {
         "Sonstige"
       ].sort((a, b)=> (a > b) ? 1 : -1),
       dialog: false,
-      idhelp: false,
+      idhelper: false,
       valid: true,
       valid2: true,
       disabled: 0,
@@ -356,6 +368,14 @@ export default {
         start: this.form.start.toString(),
         end: this.form.end.toString()
       };
+    }
+  },
+  filters: {
+    formatTime(time) {
+      return format(time, "HH:mm")
+    },
+    formatCourselist(courselist) {
+      return courselist.join(", ")
     }
   },
   methods: {
