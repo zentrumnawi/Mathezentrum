@@ -41,7 +41,7 @@
               <v-select
                 v-model="form.faculty"
                 :items="this.$store.state.faculties_act"
-                :rules="facultyRules"
+                :rules="rules.faculty"
                 label="Studiengang"
                 required
               ></v-select>
@@ -65,7 +65,7 @@
               <v-autocomplete
                 v-model="form.courses"
                 :items="this.$options.config2.courses_math"
-                :rules="courseRules"
+                :rules="rules.course"
                 chips
                 label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
@@ -102,7 +102,7 @@
               <v-autocomplete
                 v-model="form.courses"
                 :items="this.$store.state.courses_physics_act"
-                :rules="courseRules"
+                :rules="rules.course"
                 chips
                 label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
@@ -240,6 +240,7 @@
 <script>
 import { format, subHours, subMinutes, setMinutes, setHours, isBefore } from "date-fns";
 import TimeInput from "@/components/TimeInput";
+import uuid from "uuid/v4";
 import configuration2 from '../assets/courses.json'
 
 function initializeForm() {
@@ -276,6 +277,7 @@ export default {
       interval: null,
       form: initializeForm(),
       courses_selected: [],
+      semester: ["1", "2", "3", "4", "5", "6", "6+"],
       dialog: false,
       idhelper: false,
       valid: true,

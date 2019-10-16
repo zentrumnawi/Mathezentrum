@@ -42,6 +42,9 @@
             <td class="text-xs-left">{{ props.item.courses }}</td>
           </template>
         </v-data-table>
+        <v-btn class="warning" :href="downloadURL">
+          Clear
+        </v-btn>
         <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
           Download
         </v-btn>
