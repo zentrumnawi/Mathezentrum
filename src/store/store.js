@@ -9,22 +9,7 @@ export const store = new Vuex.Store({
     attendees: [],
     courses_phy_act: [],
     courses_math_act: [],
-    faculties_act: [
-      "Mathematik",
-      "Physik",
-      "Meteorologie",
-      "Informatik",
-      "Chemie",
-      "Geowissenschaften",
-      "Biophysik",
-      "Bioinformatik",
-      "Biochemie",
-      "Pharmazie",
-      "Medizin",
-      "Zahnmedizin",
-      "Wirtschaftspädagogik",
-      "Sonstige"
-    ],
+    faculties_act: [],
     semester_toggle: 0
   },
   actions: {

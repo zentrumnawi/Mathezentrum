@@ -26,7 +26,7 @@
     { "semester": "WiSe", "tag": "PhyChemNawi 2", "name": "Physik für Chemiker & andere NatWiss 2" }
   ],
   "courses_math": [
-    { "semester": "WiSe", "tag": "MathPhy1", "name": "Mathe 1 (Physik)" },
+    { "semester": "WiSe", "tag": "MathPhy1", "name": "Mäthe 1 (Physik)" },
     { "semester": "SoSe", "tag": "MathPhy2", "name": "Mathe 2 (Physik)" },
     { "semester": "WiSe", "tag": "MathPhy3", "name": "Mathe 3 (Physik)" },
     { "semester": "SoSe", "tag": "MathMet1", "name": "Mathe 1 (Meteorologie)" },
@@ -40,7 +40,7 @@
     { "semester": "SoSe", "tag": "MathChem2", "name": "Mathematische Verfahren 2 (Chemie)" }
   ],
   "faculties": [
-    "Mathematik",
+    "Müdematik",
     "Physik",
     "Meteorologie",
     "Informatik",
