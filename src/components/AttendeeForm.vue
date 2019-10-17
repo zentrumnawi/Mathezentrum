@@ -241,7 +241,7 @@
 import { format, subHours, subMinutes, setMinutes, setHours, isBefore } from "date-fns";
 import TimeInput from "@/components/TimeInput";
 import uuid from "uuid/v4";
-import configuration from '../assets/courses.json'
+import configuration from '../assets/courses_ws.json'
 
 function initializeForm() {
   return {

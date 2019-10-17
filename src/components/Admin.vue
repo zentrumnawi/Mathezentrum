@@ -44,9 +44,9 @@
             <td class="text-xs-left">{{ props.item.comments }}</td>
           </template>
         </v-data-table>
-        <v-btn class="warning" :href="downloadURL">
+        <!--v-btn class="warning" :href="downloadURL">
           Clear
-        </v-btn>
+        </v-btn-->
         <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
           Download
         </v-btn>
@@ -54,6 +54,8 @@
 
       <v-tab-item>
         <v-card>
+           <v-card-title>Work in Progress...</v-card-title>
+
           <v-card-text>
             {{ $options.config.courses_math }}
           </v-card-text>
@@ -62,13 +64,14 @@
 
       <v-tab-item>
         <v-card>
+          <v-card-title>Work in Progress...</v-card-title>
           <v-card-text>{{this.$store.state.faculties_act}}</v-card-text>
           <v-list dense>
           <template v-for="(course) in $options.config.faculties">
             <v-list-tile
               :key="course"
               ripple
-              @click="select(course_act)"
+              @click="select(course)"
             >
               <v-list-tile-content>
                 <v-list-tile-title>{{ course }}</v-list-tile-title>
@@ -149,12 +152,12 @@ export default {
 
       return {
         presence: format(differenceDate,'HH:mm'),
-        date: format(element.start, 'MM.DD.YYYY'),
+        date: format(element.start, 'DD.MM.YYYY'),
         start: format(element.start,'HH:mm'),
         end: format(element.end,'HH:mm'),
         courses: element.courses.join(', ')
       };
-    },
+    }
   },
   created() {
         this.flds = this.headers.map(item => ({
