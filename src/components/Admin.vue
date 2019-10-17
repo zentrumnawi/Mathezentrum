@@ -1,5 +1,5 @@
 <template>
-  <v-layout v-if="authenticated">
+  <v-layout v-if="!authenticated">
     <v-flex xs12 sm6 offset-sm3>
       <v-card>
         <v-card-title primary-title class="justify-center">
@@ -40,7 +40,8 @@
             <td class="text-xs-left">{{ props.item.presence }}</td>
             <td class="text-xs-left">{{ props.item.faculty }}</td>
             <td class="text-xs-center">{{ props.item.semester }}</td>
-            <td class="text-xs-left">{{ props.item.courses | formatCourseList }}</td>
+            <td class="text-xs-left">{{ props.item.courses }}</td>
+            <td class="text-xs-left">{{ props.item.comments }}</td>
           </template>
         </v-data-table>
         <v-btn class="warning" :href="downloadURL">
@@ -88,7 +89,7 @@
 <script>
 import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
-import configuration from '../assets/courses.json'
+import configuration from '../assets/courses_ws.json'
 
 export default {
   config: configuration,
@@ -97,6 +98,7 @@ export default {
       authenticated: false,
       password: null,
       requiredPassword: "HelloWorld",
+      flds: [],
       course: "",
       course_act: "",
       headers: [
@@ -118,6 +120,7 @@ export default {
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
         { text: "Kurse", value: "courses" },
+        { text: "Kommentar", value: "comments" },
       ]
     };
   },
@@ -132,14 +135,6 @@ export default {
       default: ''
     }
   },
-  filters: {
-    formatTime(time) {
-      return format(time, "HH:mm")
-    },
-    formatCourseList(courselist) {
-      return courselist.join(", ")
-    }
-  },
   methods: {
     authenticate() {
         if (this.password != this.requiredPassword) return;
@@ -147,8 +142,7 @@ export default {
     },
     select(course) {
        this.$store.state.faculties_act.push(course)
-    }
-  },
+    },
     format(element) {
       const differenceMinutes = differenceInMinutes(element.end, element.start);
       const differenceDate = addMinutes(new Date(0), differenceMinutes);
@@ -160,6 +154,7 @@ export default {
         end: format(element.end,'HH:mm'),
         courses: element.courses.join(', ')
       };
+    },
   },
   created() {
         this.flds = this.headers.map(item => ({
