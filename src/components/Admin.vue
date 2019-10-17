@@ -67,7 +67,7 @@
             <v-list-tile
               :key="course"
               ripple
-              @click="select(course)"
+              @click="select(course_act)"
             >
               <v-list-tile-content>
                 <v-list-tile-title>{{ course }}</v-list-tile-title>
@@ -75,7 +75,7 @@
 
             </v-list-tile>
           </template>
-        </v-list>
+         </v-list>
         </v-card>
       </v-tab-item>
 
@@ -98,6 +98,7 @@ export default {
       password: null,
       requiredPassword: "HelloWorld",
       course: "",
+      course_act: "",
       headers: [
         {
           text: "Datum",
