@@ -21,9 +21,9 @@
   <div v-else id="FormData">
     <v-tabs>
       <v-tab ripple>Teilnehmerliste</v-tab>
-      <v-tab ripple>Kurse</v-tab>
+      <!--v-tab ripple>Kurse</v-tab>
       <v-tab ripple>Studienfächer</v-tab>
-      <!--v-tab ripple>Einstellungen</v-tab-->
+      <v-tab ripple>Einstellungen</v-tab-->
 
       <v-spacer></v-spacer>
       <v-btn class="secondary" to="/">
