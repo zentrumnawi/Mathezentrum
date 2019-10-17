@@ -86,7 +86,7 @@
 </template>
 
 <script>
-//import { parse } from "json2csv";
+import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
 import configuration from '../assets/courses.json'
 
@@ -114,11 +114,11 @@ export default {
         },
         { text: "Startzeit", value: "start" },
         { text: "Endzeit", value: "end" },
-        { text: "Präsenzzeit", value: "presence" },
+        { text: "Anwesend", value: "presence" },
         { text: "Studiengang", value: "faculty" },
-        { text: "Fachsemester", value: "semester" },
+        { text: "Semester", value: "semester" },
         { text: "Kurse", value: "courses" },
-      ],
+      ]
     };
   },
   props: {
@@ -142,70 +142,49 @@ export default {
   },
   methods: {
     authenticate() {
-      if (this.password != this.requiredPassword) return;
-      this.authenticated = true;
+        if (this.password != this.requiredPassword) return;
+        this.authenticated = true;
     },
     select(course) {
        this.$store.state.faculties_act.push(course)
     }
   },
-  computed: {    
+    format(element) {
+      const differenceMinutes = differenceInMinutes(element.end, element.start);
+      const differenceDate = addMinutes(new Date(0), differenceMinutes);
+
+      return {
+        presence: format(differenceDate,'HH:mm'),
+        date: format(element.start, 'MM.DD.YYYY'),
+        start: format(element.start,'HH:mm'),
+        end: format(element.end,'HH:mm'),
+        courses: element.courses.join(', ')
+      };
+  },
+  created() {
+        this.flds = this.headers.map(item => ({
+      label: item.text,
+      value: item.value
+    }));
+    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD !== undefined ? process.env.VUE_APP_ADMIN_PASSWORD : "HelloWorld";
+  },
+  computed: {
     values() {
-        this.$store.state.attendees.forEach(element => {
-        element.presence = format(addMinutes(new Date(0),differenceInMinutes(element.end, element.start)),'HH:mm');
-        element.date = format(element.start, 'DD.MM.YYYY');
-        element.start = format(element.start,'HH:mm');
-        element.end = format(element.end,'HH:mm');
-      });
-    return this.$store.state.attendees;
+      const newvalues = this.$store.state.attendees;
+      return newvalues.map(element => ({ ...element, ...this.format(element) }));
     },
-//    data() {
-//          return this.$store.state.attendees;
-//    },
-    fields() {
-      return this.headers.map(item => item.text);
-    },
-//    csv() {
-//      const opts = {...this.fields, delimiter: this.delimiter, quote: this.quote };
-//
-//      const csv = parse(this.values, opts);
-//
-//      return csv;
- //   },
-    mancsv() {
-      let output = "";
-     
-        Object.keys(this.fields).forEach(element => {
-      // this.fields.forEach(element => {
-        output += element;
-        output += this.delimiter; 
-        
-      } );
-      output += '\n';
-      this.$store.state.attendees.forEach(element => {
-        output += element.date + this.delimiter;
-        output += element.id + this.delimiter;
-        output += element.start + this.delimiter;
-        output += element.end + this.delimiter;
-        output += element.presence + this.delimiter;
-        output += element.faculty + this.delimiter;
-        output += element.semester + this.delimiter;
-        output += element.courses.join(', ') + this.delimiter;
-        output += element.comments + this.delimiter;
-        output += '\n';
-      });
-      return output;
-    },
-//    downloadURL() {
-//     return this.$store.state.attendees.length > 0
-//        ? "data:text/csv," + encodeURIComponent(this.csv)
-//        : "javascript:void(0);";
-//    },
+    csv() {
+      const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
+      const csv = parse(this.values, opts);
+
+      return csv;
+    },  
     downloadURL() {
       return this.$store.state.attendees.length > 0
-        ? "data:text/csv," + encodeURIComponent(this.mancsv)
+        ? "data:text/csv," + encodeURIComponent(this.csv)
         : "javascript:void(0);";
     }
   }
 };
+
 </script>
