@@ -19,8 +19,8 @@
           <v-card>
             <v-card-text>
               <v-text-field
-                v-model="form.id"
-                :rules="rules.id"
+                v-model="form.pid"
+                :rules="rules.pid"
                 maxlength="8"
                 label="ID"
                 append-outer-icon="help"
@@ -181,7 +181,7 @@
                   <v-list-tile>
                     <v-list-tile-content>
                       <v-list-tile-sub-title>ID</v-list-tile-sub-title>
-                      {{form.id}}
+                      {{form.pid}}
                     </v-list-tile-content>
                   </v-list-tile>
                   <v-divider></v-divider>
@@ -245,7 +245,7 @@ import configuration from '../assets/courses_ws.json'
 
 function initializeForm() {
   return {
-    id: "",
+    pid: "",
     start: isBefore(setHours(new Date(),8), subHours(new Date(),2)) ? subHours(new Date(),2) : (setHours(setMinutes(new Date(),0),8)),
     end: new Date(),
     faculty: null,
@@ -284,7 +284,7 @@ export default {
       valid2: true,
       disabled: 0,
       rules: {
-        id: [
+        pid: [
           v => !!v || "Bitte geben Sie Ihre persönlichen 8 stellige ID an",
           v => v.length === 8 || "Ihre ID muss 8 Zeichen lang sein"
         ],
@@ -368,7 +368,7 @@ export default {
     submit() {
       this.$store.dispatch("submitForm", {
         ...this.localizedForm,
-        idnumber: uuid()
+        id: uuid()
       });
       this.form = initializeForm();
       this.$refs.form_studinfo.resetValidation();

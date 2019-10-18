@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 <template>
   <v-layout v-if="!authenticated">
     <v-flex xs12 sm6 offset-sm3>
@@ -54,7 +53,7 @@
           <v-data-table :headers="headers" :items="attendeeTable" class="elevation-1">
             <template v-slot:items="props">
               <td class="text-xs-left">{{ props.item.date }}</td>
-              <td class="text-xs-left">{{ props.item.id }}</td>
+              <td class="text-xs-left">{{ props.item.pid }}</td>
               <td class="text-xs-left">{{ props.item.start }}</td>
               <td class="text-xs-left">{{ props.item.end }}</td>
               <td class="text-xs-left">{{ props.item.presence }}</td>
@@ -83,7 +82,7 @@
             <v-btn class="warning" @click="clearconfirm = true" :disabled="attendees.length === 0">
               Clear
             </v-btn>
-            <v-btn class="primary" @click="attendees.push(defaultvalue)">
+            <v-btn class="primary" @click="dummydata">
               Populate DB
             </v-btn>
           </v-card-actions>
@@ -120,9 +119,7 @@
          </v-list>
         </v-card>
       </v-tab-item>
-
     </v-tabs>
-    {{attendees}}
   </div>
 </template>
 
@@ -144,7 +141,6 @@ export default {
       course: "",
       course_act: "",
       clearconfirm: false,
-      defaultvalue: {"id":"idididid","start":"Fri Oct 18 2019 15:47:57 GMT+0200 (Mitteleuropäische Sommerzeit)","end":"Fri Oct 18 2019 17:48:30 GMT+0200 (Mitteleuropäische Sommerzeit)","faculty":"Sonstige","semester":"7+","courses":["MathChem1","AP2"],"comments":"","idnumber":"c923593d-ba64-416d-8d6f-03462bf86b12"},
       attendeeTable: [],
       headers: [
         {
@@ -157,7 +153,7 @@ export default {
           text: "ID",
           align: "left",
           sortable: true,
-          value: "id"
+          value: "pid"
         },
         { text: "Startzeit", value: "start" },
         { text: "Endzeit", value: "end" },
@@ -188,10 +184,12 @@ export default {
     select(course) {
        this.$store.state.faculties_act.push(course)
     },
-    clearlist() {
-      
+    clearlist() {     
       this.$store.dispatch("clearlist")
       this.clearconfirm = false
+    },
+    dummydata() {
+      this.$store.dispatch("dummydata")
     },
     format(element) {
       const differenceMinutes = differenceInMinutes(element.end, element.start);
@@ -211,7 +209,7 @@ export default {
       if (newValue === undefined) {
         this.attendeeTable = [];
       }
-      console.log("ICU!");
+      console.log("Attendees changed!");
       this.attendeeTable = newValue.map(element => ({ ...element, ...this.format(element) }));
     }
   },
