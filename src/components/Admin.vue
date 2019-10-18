@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 <template>
   <v-layout v-if="!authenticated">
     <v-flex xs12 sm6 offset-sm3>
@@ -7,7 +8,7 @@
         </v-card-title>
           <v-card-text>
             <p>Bitte geben Sie das Passwort ein.</p>
-          <v-text-field v-model="password" label="Password"></v-text-field>
+          <v-text-field autofocus v-model="password" label="Password" @keyup.enter="authenticate"></v-text-field>
           </v-card-text>
 
           <v-card-actions class="justify-center">
@@ -18,12 +19,30 @@
     </v-flex>
   </v-layout>
 
+  
+
   <div v-else id="FormData">
+    
+    <v-dialog v-model="clearconfirm"  max-width="600">
+      <v-card>
+        <v-card-title class="headline">Liste löschen?</v-card-title>
+        <v-card-text>
+          Alle geloggten Zeiten und Studierenden werden gelöscht!
+        </v-card-text>
+        <v-btn class="warning" @click="clearlist">
+          Clear
+        </v-btn>
+        <v-btn class="primary" @click="clearconfirm = false">
+          Abbrechen
+        </v-btn>
+      </v-card>
+    </v-dialog>
+    
     <v-tabs>
       <v-tab ripple>Teilnehmerliste</v-tab>
-      <v-tab ripple>Kurse</v-tab>
+      <!--v-tab ripple>Kurse</v-tab>
       <v-tab ripple>Studienfächer</v-tab>
-      <!--v-tab ripple>Einstellungen</v-tab-->
+      <v-tab ripple>Einstellungen</v-tab-->
 
       <v-spacer></v-spacer>
       <v-btn class="secondary" to="/">
@@ -31,25 +50,44 @@
       </v-btn>
 
       <v-tab-item>
-        <v-data-table :headers="headers" :items="values" class="elevation-1">
-          <template v-slot:items="props">
-            <td class="text-xs-left">{{ props.item.date }}</td>
-            <td class="text-xs-left">{{ props.item.id }}</td>
-            <td class="text-xs-left">{{ props.item.start }}</td>
-            <td class="text-xs-left">{{ props.item.end }}</td>
-            <td class="text-xs-left">{{ props.item.presence }}</td>
-            <td class="text-xs-left">{{ props.item.faculty }}</td>
-            <td class="text-xs-center">{{ props.item.semester }}</td>
-            <td class="text-xs-left">{{ props.item.courses }}</td>
-            <td class="text-xs-left">{{ props.item.comments }}</td>
-          </template>
-        </v-data-table>
-        <!--v-btn class="warning" :href="downloadURL">
-          Clear
-        </v-btn-->
-        <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
-          Download
-        </v-btn>
+        <v-card>
+          <v-data-table :headers="headers" :items="attendeeTable" class="elevation-1">
+            <template v-slot:items="props">
+              <td class="text-xs-left">{{ props.item.date }}</td>
+              <td class="text-xs-left">{{ props.item.id }}</td>
+              <td class="text-xs-left">{{ props.item.start }}</td>
+              <td class="text-xs-left">{{ props.item.end }}</td>
+              <td class="text-xs-left">{{ props.item.presence }}</td>
+              <td class="text-xs-left">{{ props.item.faculty }}</td>
+              <td class="text-xs-left">{{ props.item.semester }}</td>
+              <td class="text-xs-left">{{ props.item.comments }}</td>
+              <td class="text-xs-left">{{ props.item.courses }}</td>
+            </template>
+
+            <template v-slot:no-data>
+              <v-alert
+              :value="true"
+              color="info"
+              outline
+            >
+              Keine Daten vorhanden.
+              </v-alert>
+            </template>
+          </v-data-table>
+          
+          <v-card-actions>
+            <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="attendees.length === 0">
+              Download
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn class="warning" @click="clearconfirm = true" :disabled="attendees.length === 0">
+              Clear
+            </v-btn>
+            <v-btn class="primary" @click="attendees.push(defaultvalue)">
+              Populate DB
+            </v-btn>
+          </v-card-actions>
+        </v-card>
       </v-tab-item>
 
       <v-tab-item>
@@ -84,8 +122,7 @@
       </v-tab-item>
 
     </v-tabs>
-
-
+    {{attendees}}
   </div>
 </template>
 
@@ -94,16 +131,21 @@ import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
 import configuration from '../assets/courses_ws.json'
 
+import { mapGetters } from "vuex";
+
 export default {
   config: configuration,
   data: function() {
     return {
-      authenticated: false,
+      authenticated: true,
       password: null,
       requiredPassword: "HelloWorld",
       flds: [],
       course: "",
       course_act: "",
+      clearconfirm: false,
+      defaultvalue: {"id":"idididid","start":"Fri Oct 18 2019 15:47:57 GMT+0200 (Mitteleuropäische Sommerzeit)","end":"Fri Oct 18 2019 17:48:30 GMT+0200 (Mitteleuropäische Sommerzeit)","faculty":"Sonstige","semester":"7+","courses":["MathChem1","AP2"],"comments":"","idnumber":"c923593d-ba64-416d-8d6f-03462bf86b12"},
+      attendeeTable: [],
       headers: [
         {
           text: "Datum",
@@ -122,9 +164,9 @@ export default {
         { text: "Anwesend", value: "presence" },
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
-        { text: "Kurse", value: "courses" },
         { text: "Kommentar", value: "comments" },
-      ]
+        { text: "Kurse", value: "courses" }
+      ],
     };
   },
   props: {
@@ -146,6 +188,11 @@ export default {
     select(course) {
        this.$store.state.faculties_act.push(course)
     },
+    clearlist() {
+      
+      this.$store.dispatch("clearlist")
+      this.clearconfirm = false
+    },
     format(element) {
       const differenceMinutes = differenceInMinutes(element.end, element.start);
       const differenceDate = addMinutes(new Date(0), differenceMinutes);
@@ -159,30 +206,42 @@ export default {
       };
     }
   },
+  watch: {
+    "attendees": function(newValue) {
+      if (newValue === undefined) {
+        this.attendeeTable = [];
+      }
+      console.log("ICU!");
+      this.attendeeTable = newValue.map(element => ({ ...element, ...this.format(element) }));
+    }
+  },
   created() {
-        this.flds = this.headers.map(item => ({
+    this.attendeeTable = this.attendees.map(element => ({ ...element, ...this.format(element) }));
+    this.flds = this.headers.map(item => ({
       label: item.text,
       value: item.value
     }));
     this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD !== undefined ? process.env.VUE_APP_ADMIN_PASSWORD : "HelloWorld";
   },
   computed: {
-    values() {
+    ...mapGetters({ attendees: "attendees" }),
+    /*values() {
       const newvalues = this.$store.state.attendees;
       return newvalues.map(element => ({ ...element, ...this.format(element) }));
-    },
+    },*/
     csv() {
       const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
-      const csv = parse(this.values, opts);
+      const csv = parse(this.attendeeTable, opts);
 
       return csv;
     },  
     downloadURL() {
-      return this.$store.state.attendees.length > 0
+      return this.attendees.length > 0
         ? "data:text/csv," + encodeURIComponent(this.csv)
         : "javascript:void(0);";
     }
-  }
+  },
+  
 };
 
 </script>

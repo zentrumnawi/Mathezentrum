@@ -69,7 +69,7 @@
                 chips
                 label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
-                item-value="name"
+                item-value="tag"
                 multiple
               >
                 <template v-slot:selection="data">
@@ -106,7 +106,7 @@
                 chips
                 label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
-                item-value="name"
+                item-value="tag"
                 multiple
               >
                 <template v-slot:selection="data">
