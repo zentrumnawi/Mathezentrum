@@ -39,9 +39,10 @@
     
     <v-tabs>
       <v-tab ripple>Teilnehmerliste</v-tab>
-      <!--v-tab ripple>Kurse</v-tab>
+      <v-tab ripple>LV Mathe</v-tab>
+      <v-tab ripple>LV Physik</v-tab>
       <v-tab ripple>Studienfächer</v-tab>
-      <v-tab ripple>Einstellungen</v-tab-->
+      <!--v-tab ripple>Einstellungen</v-tab-->
 
       <v-spacer></v-spacer>
       <v-btn class="secondary" to="/">
@@ -91,27 +92,45 @@
 
       <v-tab-item>
         <v-card>
-           <v-card-title>Work in Progress...</v-card-title>
+           <v-list dense>
+             <template v-for="(course) in $options.config.courses_math">
+               <v-list-tile :key="course">
+                 <v-list-tile-content>
+                   <v-list-tile-title>{{ course.name }} ({{course.tag}})</v-list-tile-title>
+              </v-list-tile-content>
 
-          <v-card-text>
-            {{ $options.config.courses_math }}
-          </v-card-text>
+            </v-list-tile>
+          </template>
+         </v-list>
         </v-card>
       </v-tab-item>
 
       <v-tab-item>
         <v-card>
-          <v-card-title>Work in Progress...</v-card-title>
-          <v-card-text>{{this.$store.state.faculties_act}}</v-card-text>
+           <v-list dense>
+             <template v-for="(course) in $options.config.courses_physics">
+               <v-list-tile :key="course">
+                 <v-list-tile-content>
+                   <v-list-tile-title>{{ course.name }} ({{course.tag}})</v-list-tile-title>
+              </v-list-tile-content>
+
+            </v-list-tile>
+          </template>
+         </v-list>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card>
+          <!--v-card-title>Work in Progress...</v-card-title>
+          <v-card-text>{{this.$store.state.faculties_act}}</v-card-text-->
           <v-list dense>
-          <template v-for="(course) in $options.config.faculties">
+          <template v-for="(faculty) in $options.config.faculties">
             <v-list-tile
-              :key="course"
-              ripple
-              @click="select(course)"
+              :key="faculty"
             >
               <v-list-tile-content>
-                <v-list-tile-title>{{ course }}</v-list-tile-title>
+                <v-list-tile-title>{{ faculty }}</v-list-tile-title>
               </v-list-tile-content>
 
             </v-list-tile>
@@ -120,7 +139,6 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
-    <hr>
   </div>
 </template>
 
@@ -219,7 +237,7 @@ export default {
       label: item.text,
       value: item.value
     }));
-    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD !== undefined ? process.env.VUE_APP_ADMIN_PASSWORD : "HelloWorld";
+    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD
   },
   computed: {
     ...mapGetters({ attendees: "attendees" }),
