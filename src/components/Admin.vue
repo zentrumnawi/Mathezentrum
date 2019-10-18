@@ -120,6 +120,7 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
+    <hr>
   </div>
 </template>
 
@@ -134,7 +135,7 @@ export default {
   config: configuration,
   data: function() {
     return {
-      authenticated: true,
+      authenticated: false,
       password: null,
       requiredPassword: "HelloWorld",
       flds: [],
