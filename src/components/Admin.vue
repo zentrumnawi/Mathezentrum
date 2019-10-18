@@ -209,7 +209,6 @@ export default {
       if (newValue === undefined) {
         this.attendeeTable = [];
       }
-      console.log("Attendees changed!");
       this.attendeeTable = newValue.map(element => ({ ...element, ...this.format(element) }));
     }
   },
@@ -223,10 +222,6 @@ export default {
   },
   computed: {
     ...mapGetters({ attendees: "attendees" }),
-    /*values() {
-      const newvalues = this.$store.state.attendees;
-      return newvalues.map(element => ({ ...element, ...this.format(element) }));
-    },*/
     csv() {
       const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
       const csv = parse(this.attendeeTable, opts);
