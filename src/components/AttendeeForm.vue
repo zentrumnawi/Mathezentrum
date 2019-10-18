@@ -19,8 +19,8 @@
           <v-card>
             <v-card-text>
               <v-text-field
-                v-model="form.id"
-                :rules="rules.id"
+                v-model="form.pid"
+                :rules="rules.pid"
                 maxlength="8"
                 label="ID"
                 append-outer-icon="help"
@@ -40,8 +40,8 @@
 
               <v-select
                 v-model="form.faculty"
+                :items="this.$options.config.faculties"
                 :rules="rules.faculty"
-                :items="faculties"
                 label="Studiengang"
                 required
               ></v-select>
@@ -64,12 +64,12 @@
             <v-card-text>
               <v-autocomplete
                 v-model="form.courses"
+                :items="this.$options.config.courses_math"
                 :rules="rules.course"
-                :items="courses_math"
                 chips
                 label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
-                item-value="name"
+                item-value="tag"
                 multiple
               >
                 <template v-slot:selection="data">
@@ -101,12 +101,12 @@
             <v-card-text>
               <v-autocomplete
                 v-model="form.courses"
+                :items="this.$options.config.courses_physics"
                 :rules="rules.course"
-                :items="courses_physics"
                 chips
                 label="Zu welchen Lehrveranstaltungen haben Sie heute gearbeitet?"
                 item-text="name"
-                item-value="name"
+                item-value="tag"
                 multiple
               >
                 <template v-slot:selection="data">
@@ -181,7 +181,7 @@
                   <v-list-tile>
                     <v-list-tile-content>
                       <v-list-tile-sub-title>ID</v-list-tile-sub-title>
-                      {{form.id}}
+                      {{form.pid}}
                     </v-list-tile-content>
                   </v-list-tile>
                   <v-divider></v-divider>
@@ -241,9 +241,11 @@
 import { format, subHours, subMinutes, setMinutes, setHours, isBefore } from "date-fns";
 import TimeInput from "@/components/TimeInput";
 import uuid from "uuid/v4";
+import configuration from '../assets/courses_ws.json'
+
 function initializeForm() {
   return {
-    id: "",
+    pid: "",
     start: isBefore(setHours(new Date(),8), subHours(new Date(),2)) ? subHours(new Date(),2) : (setHours(setMinutes(new Date(),0),8)),
     end: new Date(),
     faculty: null,
@@ -253,6 +255,7 @@ function initializeForm() {
   };
 }
 export default {
+  config: configuration,
   components: { TimeInput },
   data: function() {
     return {
@@ -274,70 +277,14 @@ export default {
       interval: null,
       form: initializeForm(),
       courses_selected: [],
-      courses_physics: [
-        { name: "Theoretische Physik 1" },
-        { name: "Theoretische Physik 2" },
-        { name: "Theoretische Physik 3" },
-        { name: "Theoretische Physik 4" },
-        { name: "Experimentalphysik 1a" },
-        { name: "Experimentalphysik 1b" },
-        { name: "Experimentalphysik 2" },
-        { name: "Experimentalphysik 4a" },
-        { name: "Experimentalphysik 4b" },
-        { name: "Anfängerpraktikum 1" },
-        { name: "Anfängerpraktikum 2" },
-        { name: "Numerische Methoden der Physik" },
-        { name: "Einführung in Programmierung 2" },
-        { name: "Einführung in Programmierung 1" },
-        { name: "Astrophysik 1" },
-        { name: "Astrophysik 2" },
-        { name: "Physikalische Chemie I" },
-        { name: "Physik und Chemie der Atmosphäre" },
-        { name: "Einführung in die Geophysik" },
-        { name: "Physik für Biologen" },
-        { name: "Physik für Pharmazeuten" },
-        { name: "Physik für Zahnmediziner" },
-        { name: "Physik für Chemiker & andere NatWiss 2" },
-        { name: "Physik für Chemiker & andere NatWiss 2" }
-      ].sort((a, b)=> (a.name > b.name) ? 1 : -1),
-      courses_math: [
-        { name: "Mathe 1 (Physik)" },
-        { name: "Mathe 2 (Physik)" },
-        { name: "Mathe 3 (Physik)" },
-        { name: "Mathe 1 (Meteorologie)" },
-        { name: "Mathe 2 (Meteorologie)" },
-        { name: "Mathe 1 (Informatik)" },
-        { name: "Mathe 2 (Informatik)" },
-        { name: "Mathe 1 (Naturwissenschaften)" },
-        { name: "Mathe 2 (Naturwissenschaften)" },
-        { name: "Mathe (Pharmazie)" },
-        { name: "Mathematische Verfahren 1 (Chemie)" },
-        { name: "Mathematische Verfahren 2 (Chemie)" }
-      ].sort((a, b)=> (a.name > b.name) ? 1 : -1),
-      semester: ["1", "2", "3", "4", "5", "6", "6+"],
-      faculties: [
-        "Mathematik",
-        "Physik",
-        "Meteorologie",
-        "Informatik",
-        "Chemie",
-        "Geowissenschaften",
-        "Biophysik",
-        "Bioinformatik",
-        "Biochemie",
-        "Pharmazie",
-        "Medizin",
-        "Zahnmedizin",
-        "Wirtschaftspädagogik",
-        "Sonstige"
-      ].sort((a, b)=> (a > b) ? 1 : -1),
+      semester: ["1", "2", "3", "4", "5", "6", "7+"],
       dialog: false,
       idhelper: false,
       valid: true,
       valid2: true,
       disabled: 0,
       rules: {
-        id: [
+        pid: [
           v => !!v || "Bitte geben Sie Ihre persönlichen 8 stellige ID an",
           v => v.length === 8 || "Ihre ID muss 8 Zeichen lang sein"
         ],
@@ -421,7 +368,7 @@ export default {
     submit() {
       this.$store.dispatch("submitForm", {
         ...this.localizedForm,
-        idnumber: uuid()
+        id: uuid()
       });
       this.form = initializeForm();
       this.$refs.form_studinfo.resetValidation();

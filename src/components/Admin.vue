@@ -7,7 +7,7 @@
         </v-card-title>
           <v-card-text>
             <p>Bitte geben Sie das Passwort ein.</p>
-          <v-text-field v-model="password" label="Password"></v-text-field>
+          <v-text-field autofocus v-model="password" label="Password" @keyup.enter="authenticate"></v-text-field>
           </v-card-text>
 
           <v-card-actions class="justify-center">
@@ -18,44 +18,149 @@
     </v-flex>
   </v-layout>
 
+  
+
   <div v-else id="FormData">
-    <v-card-title color="black">
-      <div>
-        <h3 class="headline mb-0">Teilnehmerliste</h3>
-      </div>
-    </v-card-title>
-    <v-data-table :headers="headers" :items="values" item-key="idnumber" class="elevation-1">
-      <template v-slot:items="props">
-        <td class="text-xs-left">{{ props.item.date }}</td>
-        <td class="text-xs-left">{{ props.item.id }}</td>
-        <td class="text-xs-left">{{ props.item.start }}</td>
-        <td class="text-xs-left">{{ props.item.end }}</td>
-        <td class="text-xs-left">{{ props.item.presence }}</td>
-        <td class="text-xs-left">{{ props.item.faculty }}</td>
-        <td class="text-xs-left">{{ props.item.semester }}</td>
-        <td class="text-xs-left">{{ props.item.courses.join(', ') }}</td>
-        <td class="text-xs-left">{{ props.item.comments }}</td>
-      </template>
-    </v-data-table>
-    <!--v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
-      Download
-    </v-btn-->
-    <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="this.$store.state.attendees.length === 0">
-      Download
-    </v-btn>
     
+    <v-dialog v-model="clearconfirm"  max-width="600">
+      <v-card>
+        <v-card-title class="headline">Liste löschen?</v-card-title>
+        <v-card-text>
+          Alle geloggten Zeiten und Studierenden werden gelöscht!
+        </v-card-text>
+        <v-btn class="warning" @click="clearlist">
+          Clear
+        </v-btn>
+        <v-btn class="primary" @click="clearconfirm = false">
+          Abbrechen
+        </v-btn>
+      </v-card>
+    </v-dialog>
+    
+    <v-tabs>
+      <v-tab ripple>Teilnehmerliste</v-tab>
+      <v-tab ripple>LV Mathe</v-tab>
+      <v-tab ripple>LV Physik</v-tab>
+      <v-tab ripple>Studienfächer</v-tab>
+      <!--v-tab ripple>Einstellungen</v-tab-->
+
+      <v-spacer></v-spacer>
+      <v-btn class="secondary" to="/">
+        Logout
+      </v-btn>
+
+      <v-tab-item>
+        <v-card>
+          <v-data-table :headers="headers" :items="attendeeTable" class="elevation-1">
+            <template v-slot:items="props">
+              <td class="text-xs-left">{{ props.item.date }}</td>
+              <td class="text-xs-left">{{ props.item.pid }}</td>
+              <td class="text-xs-left">{{ props.item.start }}</td>
+              <td class="text-xs-left">{{ props.item.end }}</td>
+              <td class="text-xs-left">{{ props.item.presence }}</td>
+              <td class="text-xs-left">{{ props.item.faculty }}</td>
+              <td class="text-xs-left">{{ props.item.semester }}</td>
+              <td class="text-xs-left">{{ props.item.comments }}</td>
+              <td class="text-xs-left">{{ props.item.courses }}</td>
+            </template>
+
+            <template v-slot:no-data>
+              <v-alert
+              :value="true"
+              color="info"
+              outline
+            >
+              Keine Daten vorhanden.
+              </v-alert>
+            </template>
+          </v-data-table>
+          
+          <v-card-actions>
+            <v-btn class="success" :download="downloadName" :href="downloadURL" :disabled="attendees.length === 0">
+              Download
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-btn class="warning" @click="clearconfirm = true" :disabled="attendees.length === 0">
+              Clear
+            </v-btn>
+            <v-btn class="primary" @click="dummydata">
+              Populate DB
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card>
+           <v-list dense>
+             <template v-for="(course) in $options.config.courses_math">
+               <v-list-tile :key="course">
+                 <v-list-tile-content>
+                   <v-list-tile-title>{{ course.name }} ({{course.tag}})</v-list-tile-title>
+              </v-list-tile-content>
+
+            </v-list-tile>
+          </template>
+         </v-list>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card>
+           <v-list dense>
+             <template v-for="(course) in $options.config.courses_physics">
+               <v-list-tile :key="course">
+                 <v-list-tile-content>
+                   <v-list-tile-title>{{ course.name }} ({{course.tag}})</v-list-tile-title>
+              </v-list-tile-content>
+
+            </v-list-tile>
+          </template>
+         </v-list>
+        </v-card>
+      </v-tab-item>
+
+      <v-tab-item>
+        <v-card>
+          <!--v-card-title>Work in Progress...</v-card-title>
+          <v-card-text>{{this.$store.state.faculties_act}}</v-card-text-->
+          <v-list dense>
+          <template v-for="(faculty) in $options.config.faculties">
+            <v-list-tile
+              :key="faculty"
+            >
+              <v-list-tile-content>
+                <v-list-tile-title>{{ faculty }}</v-list-tile-title>
+              </v-list-tile-content>
+
+            </v-list-tile>
+          </template>
+         </v-list>
+        </v-card>
+      </v-tab-item>
+    </v-tabs>
   </div>
 </template>
 
 <script>
-//import { parse } from "json2csv";
+import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
+import configuration from '../assets/courses_ws.json'
+
+import { mapGetters } from "vuex";
+
 export default {
+  config: configuration,
   data: function() {
     return {
       authenticated: false,
       password: null,
       requiredPassword: "HelloWorld",
+      flds: [],
+      course: "",
+      course_act: "",
+      clearconfirm: false,
+      attendeeTable: [],
       headers: [
         {
           text: "Datum",
@@ -67,16 +172,16 @@ export default {
           text: "ID",
           align: "left",
           sortable: true,
-          value: "id"
+          value: "pid"
         },
         { text: "Startzeit", value: "start" },
         { text: "Endzeit", value: "end" },
-        { text: "Präsenzzeit", value: "presence" },
+        { text: "Anwesend", value: "presence" },
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
-        { text: "Kurse", value: "courses" },
         { text: "Kommentar", value: "comments" },
-      ]
+        { text: "Kurse", value: "courses" }
+      ],
     };
   },
   props: {
@@ -91,68 +196,64 @@ export default {
     }
   },
   methods: {
-      authenticate() {
+    authenticate() {
         if (this.password != this.requiredPassword) return;
         this.authenticated = true;
+    },
+    select(course) {
+       this.$store.state.faculties_act.push(course)
+    },
+    clearlist() {     
+      this.$store.dispatch("clearlist")
+      this.clearconfirm = false
+    },
+    dummydata() {
+      this.$store.dispatch("dummydata")
+    },
+    format(element) {
+      const differenceMinutes = differenceInMinutes(element.end, element.start);
+      const differenceDate = addMinutes(new Date(0), differenceMinutes);
+
+      return {
+        presence: format(differenceDate,'HH:mm'),
+        date: format(element.start, 'DD.MM.YYYY'),
+        start: format(element.start,'HH:mm'),
+        end: format(element.end,'HH:mm'),
+        courses: element.courses.join(', ')
+      };
+    }
+  },
+  watch: {
+    "attendees": function(newValue) {
+      if (newValue === undefined) {
+        this.attendeeTable = [];
       }
-    },
-  computed: {    
-    values() {
-        this.$store.state.attendees.forEach(element => {
-        element.presence = format(addMinutes(new Date(0),differenceInMinutes(element.end, element.start)),'HH:mm');
-        element.date = format(element.start, 'DD.MM.YYYY');
-        element.start = format(element.start,'HH:mm');
-        element.end = format(element.end,'HH:mm');
-      });
-    return this.$store.state.attendees;
-    },
-//    data() {
-//          return this.$store.state.attendees;
-//    },
-    fields() {
-      return this.headers.map(item => item.text);
-    },
-//    csv() {
-//      const opts = {...this.fields, delimiter: this.delimiter, quote: this.quote };
-//
-//      const csv = parse(this.values, opts);
-//
-//      return csv;
- //   },
-    mancsv() {
-      let output = "";
-     
-        Object.keys(this.fields).forEach(element => {
-      // this.fields.forEach(element => {
-        output += element;
-        output += this.delimiter; 
-        
-      } );
-      output += '\n';
-      this.$store.state.attendees.forEach(element => {
-        output += element.date + this.delimiter;
-        output += element.id + this.delimiter;
-        output += element.start + this.delimiter;
-        output += element.end + this.delimiter;
-        output += element.presence + this.delimiter;
-        output += element.faculty + this.delimiter;
-        output += element.semester + this.delimiter;
-        output += element.courses.join(', ') + this.delimiter;
-        output += element.comments + this.delimiter;
-        output += '\n';
-      });
-      return output;
-    },
-//    downloadURL() {
-//     return this.$store.state.attendees.length > 0
-//        ? "data:text/csv," + encodeURIComponent(this.csv)
-//        : "javascript:void(0);";
-//    },
+      this.attendeeTable = newValue.map(element => ({ ...element, ...this.format(element) }));
+    }
+  },
+  created() {
+    this.attendeeTable = this.attendees.map(element => ({ ...element, ...this.format(element) }));
+    this.flds = this.headers.map(item => ({
+      label: item.text,
+      value: item.value
+    }));
+    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD
+  },
+  computed: {
+    ...mapGetters({ attendees: "attendees" }),
+    csv() {
+      const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
+      const csv = parse(this.attendeeTable, opts);
+
+      return csv;
+    },  
     downloadURL() {
-      return this.$store.state.attendees.length > 0
-        ? "data:text/csv," + encodeURIComponent(this.mancsv)
+      return this.attendees.length > 0
+        ? "data:text/csv," + encodeURIComponent(this.csv)
         : "javascript:void(0);";
     }
-  }
+  },
+  
 };
+
 </script>
