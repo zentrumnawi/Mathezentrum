@@ -139,6 +139,8 @@
         </v-card>
       </v-tab-item>
     </v-tabs>
+    <hr>
+    {{flds}}
   </div>
 </template>
 
@@ -153,7 +155,7 @@ export default {
   config: configuration,
   data: function() {
     return {
-      authenticated: false,
+      authenticated: true,
       password: null,
       requiredPassword: "HelloWorld",
       flds: [],
