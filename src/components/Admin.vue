@@ -123,8 +123,6 @@
 
       <v-tab-item>
         <v-card>
-          <!--v-card-title>Work in Progress...</v-card-title>
-          <v-card-text>{{this.$store.state.faculties_act}}</v-card-text-->
            <v-data-table
             :items="$options.config.faculties"
             :headers="faculty_headers"
@@ -290,8 +288,7 @@ export default {
     csv() {
       const opts = {fields: this.csv_flds, delimiter: this.delimiter, quote: this.quote, withBOM: true}
       this.matrix
-      const csv = parse(this.attendees, opts)
-      
+      const csv = parse(this.attendees, opts)    
       return csv
     },  
     downloadURL() {
