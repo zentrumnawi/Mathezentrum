@@ -15,8 +15,8 @@
     { "semester": "WiSe", "tag": "PhyBio", "name": "Physik für Biologen" },
     { "semester": "WiSe", "tag": "PhyPharma", "name": "Physik für Pharmazeuten" },
     { "semester": "WiSe", "tag": "PhyZahn", "name": "Physik für Zahnmediziner" },
-    { "semester": "WiSe", "tag": "PhyChemNawi 1", "name": "Physik für Chemiker & andere NatWiss 1" },
-    { "semester": "WiSe", "tag": "PhyChemNawi 2", "name": "Physik für Chemiker & andere NatWiss 2" }
+    { "semester": "WiSe", "tag": "PhyNawi 1", "name": "Physik für Chemiker & andere NatWiss 1" },
+    { "semester": "WiSe", "tag": "PhyNawi 2", "name": "Physik für Chemiker & andere NatWiss 2" }
   ],
   "courses_math": [
     { "semester": "WiSe", "tag": "MathPhy1", "name": "Mathe 1 (Physik)" },

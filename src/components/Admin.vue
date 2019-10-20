@@ -51,7 +51,13 @@
 
       <v-tab-item>
         <v-card>
-          <v-data-table :headers="headers" :items="attendeeTable" class="elevation-1">
+          <v-data-table
+            :headers="headers"
+            :items="attendeeTable"
+            no-data-text="Keine Daten vorhanden"
+            disable-initial-sort
+            class="elevation-1"
+          >
             <template v-slot:items="props">
               <td class="text-xs-left">{{ props.item.date }}</td>
               <td class="text-xs-left">{{ props.item.pid }}</td>
@@ -60,18 +66,8 @@
               <td class="text-xs-left">{{ props.item.presence }}</td>
               <td class="text-xs-left">{{ props.item.faculty }}</td>
               <td class="text-xs-left">{{ props.item.semester }}</td>
-              <td class="text-xs-left">{{ props.item.comments }}</td>
               <td class="text-xs-left">{{ props.item.courses }}</td>
-            </template>
-
-            <template v-slot:no-data>
-              <v-alert
-              :value="true"
-              color="info"
-              outline
-            >
-              Keine Daten vorhanden.
-              </v-alert>
+              <td class="text-xs-left">{{ props.item.comments }}</td>
             </template>
           </v-data-table>
           
@@ -92,31 +88,36 @@
 
       <v-tab-item>
         <v-card>
-           <v-list dense>
-             <template v-for="(course) in $options.config.courses_math">
-               <v-list-tile :key="course">
-                 <v-list-tile-content>
-                   <v-list-tile-title>{{ course.name }} ({{course.tag}})</v-list-tile-title>
-              </v-list-tile-content>
+          <v-data-table
+            :items="$options.config.courses_math"
+            :headers="course_headers"
+            class="elevation-1"
+            hide-actions
+          >
+            <template v-slot:items="courses">
+              <td class="text-xs-left">{{ courses.item.name }}</td>
+              <td class="text-xs-left">{{ courses.item.tag }}</td>
+              <td class="text-xs-left">{{ courses.item.semester }}</td>
+            </template>
+          </v-data-table>
 
-            </v-list-tile>
-          </template>
-         </v-list>
         </v-card>
       </v-tab-item>
 
       <v-tab-item>
         <v-card>
-           <v-list dense>
-             <template v-for="(course) in $options.config.courses_physics">
-               <v-list-tile :key="course">
-                 <v-list-tile-content>
-                   <v-list-tile-title>{{ course.name }} ({{course.tag}})</v-list-tile-title>
-              </v-list-tile-content>
-
-            </v-list-tile>
-          </template>
-         </v-list>
+          <v-data-table
+            :items="$options.config.courses_physics"
+            :headers="course_headers"
+            class="elevation-1"
+            hide-actions
+          >
+            <template v-slot:items="courses">
+              <td class="text-xs-left">{{ courses.item.name }}</td>
+              <td class="text-xs-left">{{ courses.item.tag }}</td>
+              <td class="text-xs-left">{{ courses.item.semester }}</td>
+            </template>
+          </v-data-table>
         </v-card>
       </v-tab-item>
 
@@ -124,32 +125,28 @@
         <v-card>
           <!--v-card-title>Work in Progress...</v-card-title>
           <v-card-text>{{this.$store.state.faculties_act}}</v-card-text-->
-          <v-list dense>
-          <template v-for="(faculty) in $options.config.faculties">
-            <v-list-tile
-              :key="faculty"
-            >
-              <v-list-tile-content>
-                <v-list-tile-title>{{ faculty }}</v-list-tile-title>
-              </v-list-tile-content>
-
-            </v-list-tile>
-          </template>
-         </v-list>
+           <v-data-table
+            :items="$options.config.faculties"
+            :headers="faculty_headers"
+            class="elevation-1"
+            hide-actions
+          >
+            <template v-slot:items="faculties">
+              <td class="text-xs-left">{{ faculties.item }}</td>
+            </template>
+          </v-data-table>
         </v-card>
       </v-tab-item>
     </v-tabs>
-    <hr>
-    {{flds}}
   </div>
 </template>
 
 <script>
 import { parse } from "json2csv";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
-import configuration from '../assets/courses_ws.json'
-
 import { mapGetters } from "vuex";
+import configuration from '../assets/courses_ws.json'
+import { log } from 'util';
 
 export default {
   config: configuration,
@@ -159,10 +156,15 @@ export default {
       password: null,
       requiredPassword: "HelloWorld",
       flds: [],
+      csv_flds: [],
+      crs_math: [],
+      crs_phys: [],
+      crs_headers: [],
       course: "",
-      course_act: "",
+      courses_act: "",
       clearconfirm: false,
       attendeeTable: [],
+      attendeesExport: [],
       headers: [
         {
           text: "Datum",
@@ -181,9 +183,17 @@ export default {
         { text: "Anwesend", value: "presence" },
         { text: "Studiengang", value: "faculty" },
         { text: "Semester", value: "semester" },
-        { text: "Kommentar", value: "comments" },
-        { text: "Kurse", value: "courses" }
+        { text: "Lehrveranstaltungen", value: "courses" },
+        { text: "Kommentar", value: "comments" }
       ],
+      course_headers: [
+        {text: "Lehrveranstaltung", value: "name"},
+        {text: "Kürzel", value: "tag"},
+        {text: "Semester", value: "semester"},
+      ],
+      faculty_headers: [     
+        {text: "Studienfach", value: "name"},
+      ]
     };
   },
   props: {
@@ -212,7 +222,10 @@ export default {
     dummydata() {
       this.$store.dispatch("dummydata")
     },
-    format(element) {
+    format(Attendee) {
+      Attendee.map(element => ({ ...element, ...this.formatDates(element) }));  
+    },
+    formatDates(element) {
       const differenceMinutes = differenceInMinutes(element.end, element.start);
       const differenceDate = addMinutes(new Date(0), differenceMinutes);
 
@@ -223,31 +236,63 @@ export default {
         end: format(element.end,'HH:mm'),
         courses: element.courses.join(', ')
       };
-    }
+    },
+      buildheader(courses) {
+      return courses.map(course => ({label: course.tag, value: course.tag}))
+    },
+    
   },
   watch: {
     "attendees": function(newValue) {
       if (newValue === undefined) {
         this.attendeeTable = [];
       }
-      this.attendeeTable = newValue.map(element => ({ ...element, ...this.format(element) }));
+      //this.attendeeTable = this.format(newValue) //Why doesn't this work?
+      this.attendeeTable = newValue.map(element => ({ ...element, ...this.formatDates(element) }));
     }
   },
   created() {
-    this.attendeeTable = this.attendees.map(element => ({ ...element, ...this.format(element) }));
-    this.flds = this.headers.map(item => ({
-      label: item.text,
-      value: item.value
-    }));
+
+    //set passeword to .env
     this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD
+
+    //this.attendeeTable = this.format(this.attendees) //Why doesn't this work?
+    this.attendeeTable = this.attendees.map(element => ({ ...element, ...this.formatDates(element) }))
+
+    //build courseheaders
+    this.crs_headers = [...this.buildheader([...this.$options.config.courses_math, ...this.$options.config.courses_physics])]
+
+    //build 'fields'-Array from header object for CSV-Parser
+    this.flds = this.headers.map(item => ({label: item.text, value: item.value}))
+    
+    
+    //remove 'courses' from header/fields array
+    this.flds.splice(this.flds.findIndex(item => item.value == "courses"),1)
+    
+    //build csv header
+    this.csv_flds = [...this.flds, ...this.crs_headers]
+
   },
   computed: {
     ...mapGetters({ attendees: "attendees" }),
-    csv() {
-      const opts = {fields: this.flds, delimiter: this.delimiter, quote: this.quote, withBOM: true};
-      const csv = parse(this.attendeeTable, opts);
+    matrix() {
 
-      return csv;
+      this.attendees.forEach(attendee => {
+
+        this.crs_headers.forEach(course => {
+
+          attendee[course.label] = attendee.courses.findIndex(element => element === course.label ) >= 0 ? 1 : 0
+
+        });
+       
+      });
+    },
+    csv() {
+      const opts = {fields: this.csv_flds, delimiter: this.delimiter, quote: this.quote, withBOM: true}
+      this.matrix
+      const csv = parse(this.attendees, opts)
+      
+      return csv
     },  
     downloadURL() {
       return this.attendees.length > 0
