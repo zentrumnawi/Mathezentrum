@@ -52,7 +52,7 @@
       <v-tab-item>
         <v-card>
           <v-data-table
-            :headers="headers"
+            :headers="tbl_headers"
             :items="attendeeTable"
             no-data-text="Keine Daten vorhanden"
             disable-initial-sort
@@ -151,19 +151,11 @@ export default {
   data: function() {
     return {
       authenticated: true,
+      clearconfirm: false,
       password: null,
       requiredPassword: "HelloWorld",
-      flds: [],
-      csv_flds: [],
-      crs_math: [],
-      crs_phys: [],
-      crs_headers: [],
-      course: "",
-      courses_act: "",
-      clearconfirm: false,
       attendeeTable: [],
-      attendeesExport: [],
-      headers: [
+      tbl_headers: [
         {
           text: "Datum",
           align: "left",
@@ -191,7 +183,10 @@ export default {
       ],
       faculty_headers: [     
         {text: "Studienfach", value: "name"},
-      ]
+      ],
+      crs_headers: [],
+      csv_flds: [],
+
     };
   },
   props: {
@@ -261,19 +256,18 @@ export default {
     this.crs_headers = [...this.buildheader([...this.$options.config.courses_math, ...this.$options.config.courses_physics])]
 
     //build 'fields'-Array from header object for CSV-Parser
-    this.flds = this.headers.map(item => ({label: item.text, value: item.value}))
+    this.csv_flds = this.tbl_headers.map(item => ({label: item.text, value: item.value}))
     
+    //remove 'courses' from fields array
+    this.csv_flds.splice(this.csv_flds.findIndex(item => item.value == "courses"),1)
     
-    //remove 'courses' from header/fields array
-    this.flds.splice(this.flds.findIndex(item => item.value == "courses"),1)
-    
-    //build csv header
-    this.csv_flds = [...this.flds, ...this.crs_headers]
+    //append courseheaders
+    this.csv_flds = [...this.csv_flds, ...this.crs_headers]
 
   },
   computed: {
     ...mapGetters({ attendees: "attendees" }),
-    matrix() {
+    buildmatrix() {
 
       this.attendees.forEach(attendee => {
 
@@ -287,7 +281,7 @@ export default {
     },
     csv() {
       const opts = {fields: this.csv_flds, delimiter: this.delimiter, quote: this.quote, withBOM: true}
-      this.matrix
+      this.buildmatrix
       const csv = parse(this.attendees, opts)    
       return csv
     },  
