@@ -150,7 +150,7 @@ export default {
   config: configuration,
   data: function() {
     return {
-      authenticated: true,
+      authenticated: false,
       clearconfirm: false,
       password: null,
       requiredPassword: "HelloWorld",
