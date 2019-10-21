@@ -53,7 +53,7 @@
         <v-card>
           <v-data-table
             :headers="tbl_headers"
-            :items="attendeeTable"
+            :items="attendeesTable"
             no-data-text="Keine Daten vorhanden"
             disable-initial-sort
             class="elevation-1"
@@ -79,9 +79,9 @@
             <v-btn class="warning" @click="clearconfirm = true" :disabled="attendees.length === 0">
               Clear
             </v-btn>
-            <v-btn class="primary" @click="dummydata">
+            <!--v-btn class="primary" @click="dummydata">
               Populate DB
-            </v-btn>
+            </v-btn-->
           </v-card-actions>
         </v-card>
       </v-tab-item>
@@ -154,7 +154,7 @@ export default {
       clearconfirm: false,
       password: null,
       requiredPassword: "HelloWorld",
-      attendeeTable: [],
+      attendeesTable: [],
       tbl_headers: [
         {
           text: "Datum",
@@ -238,10 +238,10 @@ export default {
   watch: {
     "attendees": function(newValue) {
       if (newValue === undefined) {
-        this.attendeeTable = [];
+        this.attendeesTable = [];
       }
-      //this.attendeeTable = this.format(newValue) //Why doesn't this work?
-      this.attendeeTable = newValue.map(element => ({ ...element, ...this.formatDates(element) }));
+      //this.attendeesTable = this.format(newValue) //Why doesn't this work?
+      this.attendeesTable = newValue.map(element => ({ ...element, ...this.formatDates(element) }));
     }
   },
   created() {
@@ -249,8 +249,8 @@ export default {
     //set passeword to .env
     this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD
 
-    //this.attendeeTable = this.format(this.attendees) //Why doesn't this work?
-    this.attendeeTable = this.attendees.map(element => ({ ...element, ...this.formatDates(element) }))
+    //this.attendeesTable = this.format(this.attendees) //Why doesn't this work?
+    this.attendeesTable = this.attendees.map(element => ({ ...element, ...this.formatDates(element) }))
 
     //build courseheaders
     this.crs_headers = [...this.buildheader([...this.$options.config.courses_math, ...this.$options.config.courses_physics])]
@@ -267,22 +267,22 @@ export default {
   },
   computed: {
     ...mapGetters({ attendees: "attendees" }),
-    buildmatrix() {
+    export() {
 
       this.attendees.forEach(attendee => {
 
         this.crs_headers.forEach(course => {
-
-          attendee[course.label] = attendee.courses.findIndex(element => element === course.label ) >= 0 ? 1 : 0
+          attendee[course.value] = attendee.courses.findIndex(element => element === course.value ) >= 0 ? 1 : 0
 
         });
        
       });
+      return this.attendees.map(element => ({ ...element, ...this.formatDates(element) }))
+
     },
     csv() {
       const opts = {fields: this.csv_flds, delimiter: this.delimiter, quote: this.quote, withBOM: true}
-      this.buildmatrix
-      const csv = parse(this.attendees, opts)    
+      const csv = parse(this.export, opts)
       return csv
     },  
     downloadURL() {
