@@ -62,7 +62,7 @@
             </v-card-title>
 
             <v-card-text>
-              <v-autocomplete
+              <v-select
                 v-model="form.courses"
                 :items="this.$options.config.courses_math"
                 :rules="rules.course"
@@ -91,7 +91,7 @@
                     </v-list-tile-content>
                   </template>
                 </template>
-              </v-autocomplete>
+              </v-select>
             </v-card-text>
 
             <v-card-title class="justify-center">
@@ -99,7 +99,7 @@
             </v-card-title>
 
             <v-card-text>
-              <v-autocomplete
+              <v-select
                 v-model="form.courses"
                 :items="this.$options.config.courses_physics"
                 :rules="rules.course"
@@ -130,7 +130,7 @@
                     </v-list-tile-content>
                   </template>
                 </template>
-              </v-autocomplete>
+              </v-select>
             </v-card-text>
 
             <v-card-actions>

@@ -7,7 +7,16 @@
         </v-card-title>
           <v-card-text>
             <p>Bitte geben Sie das Passwort ein.</p>
-          <v-text-field autofocus v-model="password" label="Password" @keyup.enter="authenticate"></v-text-field>
+          <v-text-field
+            autofocus v-model="password"
+            :append-icon="show_pw ? 'visibility' : 'visibility_off'"
+            :type="show_pw ? 'text' : 'password'"
+            label="Password"
+            @keyup.enter="authenticate"
+            @click:append="show_pw = !show_pw"
+            >
+          </v-text-field>
+
           </v-card-text>
 
           <v-card-actions class="justify-center">
@@ -153,6 +162,7 @@ export default {
       authenticated: false,
       clearconfirm: false,
       password: null,
+      show_pw: false,
       requiredPassword: "HelloWorld",
       attendeesTable: [],
       tbl_headers: [
