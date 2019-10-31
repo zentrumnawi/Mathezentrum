@@ -20,6 +20,7 @@
           </v-card-text>
 
           <v-card-actions class="justify-center">
+            <v-btn class="secondary" to="/">Zurück</v-btn>
             <v-spacer></v-spacer>
             <v-btn class="error" @click="authenticate">Absenden</v-btn>
           </v-card-actions>
@@ -163,7 +164,6 @@ export default {
       clearconfirm: false,
       password: null,
       show_pw: false,
-      requiredPassword: "HelloWorld",
       attendeesTable: [],
       tbl_headers: [
         {
