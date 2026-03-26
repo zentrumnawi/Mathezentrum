@@ -149,11 +149,10 @@
 </template>
 
 <script>
-import { parse } from "json2csv";
+import { Parser } from "@json2csv/plainjs";
 import { format, addMinutes, differenceInMinutes } from "date-fns";
 import { mapGetters } from "vuex";
-import configuration from '../assets/courses_ws.json'
-import { log } from 'util';
+import configuration from '../assets/courses_ws.json';
 
 export default {
   config: configuration,
@@ -201,7 +200,7 @@ export default {
   },
   props: {
     downloadName: {
-      default: format(Date.now(), 'YYMMDD_HHmm') + '_mz.csv'
+      default: format(Date.now(), 'yyMMdd_HHmm') + '_mz.csv'
     },
     delimiter: {
       default: ";"
@@ -257,7 +256,7 @@ export default {
   created() {
 
     //set passeword to .env
-    this.requiredPassword = process.env.VUE_APP_ADMIN_PASSWORD
+    this.requiredPassword = import.meta.env.VITE_ADMIN_PASSWORD
 
     //this.attendeesTable = this.format(this.attendees) //Why doesn't this work?
     this.attendeesTable = this.attendees.map(element => ({ ...element, ...this.formatDates(element) }))
@@ -292,7 +291,7 @@ export default {
     },
     csv() {
       const opts = {fields: this.csv_flds, delimiter: this.delimiter, quote: this.quote, withBOM: true}
-      const csv = parse(this.export, opts)
+      const csv = Parser.parse(this.export, opts)
       return csv
     },  
     downloadURL() {
